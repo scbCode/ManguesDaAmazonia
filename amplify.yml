@@ -1,0 +1,19 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - git clone https://github.com/flutter/flutter.git
+        - export PATH="$PATH:`pwd`/flutter/bin"
+    # IMPORTANT - Please verify your build commands
+    build:
+      commands:
+        - flutter config --enable-web
+        - flutter build web --no-sound-null-safety
+  artifacts:
+    # IMPORTANT - Please verify your build output directory
+    baseDirectory: build/web
+    files:
+      - '**/*'
+  cache:
+    paths: []
