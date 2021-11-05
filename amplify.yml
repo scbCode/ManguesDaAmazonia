@@ -8,12 +8,7 @@ frontend:
     # IMPORTANT - Please verify your build commands
     build:
       commands:
-        - flutter config --enable-web
-        - flutter build web --no-sound-null-safety
-    postBuild:
-      commands:
-        - git commit master
-        - git push
+        - flutter build web
   artifacts:
     # IMPORTANT - Please verify your build output directory
     baseDirectory: build/web
