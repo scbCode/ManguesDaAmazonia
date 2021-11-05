@@ -34,7 +34,7 @@ class _Splash extends State<Splash> with TickerProviderStateMixin {
     return Container(child:
         Transform.scale(
         scale: animScale,
-        child: Text("Mangues Da Amazonia...")
+        child: Text("Mangues Da Amazonia...")));
   }
 
 }
