@@ -10,6 +10,8 @@ frontend:
       commands:
         - flutter config --enable-web
         - flutter build web --no-sound-null-safety
+    postBuild:
+      commands:
         - git commit master
         - git push
   artifacts:
