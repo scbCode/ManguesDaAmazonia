@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: 150.0,
                 height: 150.0,
                 color: Colors.green,
-                child: Icon(Icons.ac_unit),
+                child: Text("TESTESTES"),
               ),
             ),
           ],
