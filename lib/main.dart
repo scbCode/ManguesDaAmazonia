@@ -34,7 +34,15 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('MANGUES DA AMAZONIA'),
+            Transform.scale(
+              scale: 1,
+              child: Container(
+                width: 150.0,
+                height: 150.0,
+                color: Colors.green,
+                child: Icon(Icons.ac_unit),
+              ),
+            ),
           ],
         ),
       ),
