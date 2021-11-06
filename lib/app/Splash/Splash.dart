@@ -32,9 +32,7 @@ class _Splash extends State<Splash> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Container(child:
-        Transform.scale(
-        scale: animScale,
-        child: Text("Mangues Da Amazonia...")));
+        Text("Mangues Da Amazonia..."));
   }
 
 }
