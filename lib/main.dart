@@ -41,6 +41,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
 
     );
     _controller.repeat();
+  
   }
 
   Tween<double> _tween = Tween(begin: 0.4, end: 1);
