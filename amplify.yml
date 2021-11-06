@@ -8,7 +8,6 @@ frontend:
     # IMPORTANT - Please verify your build commands
     build:
       commands:
-        - flutter config --enable-web
         - flutter build web --no-sound-null-safety
   artifacts:
     # IMPORTANT - Please verify your build output directory
