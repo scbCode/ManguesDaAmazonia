@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mangues_da_amazonia/app/Aguarde/AguardePage.dart';
 
 import 'app/Splash/Splash.dart';
 
@@ -27,12 +28,26 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin  {
+  late AnimationController _controller;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds:1000),
+      vsync: this,
+
+    );
+    _controller.repeat();
+  }
+
+  Tween<double> _tween = Tween(begin: 0.4, end: 1);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Splash(),
+      body:AguardePage()
     );
   }
 }
