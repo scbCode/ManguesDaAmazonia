@@ -10,8 +10,6 @@ frontend:
       commands:
         - flutter config --enable-web
         - flutter build web --no-sound-null-safety
-        - git commit master
-        - git push
   artifacts:
     # IMPORTANT - Please verify your build output directory
     baseDirectory: build/web

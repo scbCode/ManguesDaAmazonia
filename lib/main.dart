@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'app/Splash/Splash.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -30,22 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Transform.scale(
-              scale: 1,
-              child: Container(
-                width: 150.0,
-                height: 150.0,
-                color: Colors.green,
-                child: Icon(Icons.ac_unit),
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: Splash(),
     );
   }
 }
