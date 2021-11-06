@@ -11,7 +11,7 @@ class Splash extends StatefulWidget {
 
 class _Splash extends State<Splash> with TickerProviderStateMixin {
   late AnimationController _controllerA;
-  late double animScale;
+  late double animScale=0.0;
 
   @override
   void initState() {
