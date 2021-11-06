@@ -22,32 +22,35 @@ class _AguardePage extends State<AguardePage> with SingleTickerProviderStateMixi
   Widget build(BuildContext context) {
     return Scaffold(
         body:
-
         Center(child:
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          ScaleTransition(
-          scale: _tween.animate(CurvedAnimation(parent: _controller, curve: Curves.easeInExpo)),
-            child:
-            Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [BoxShadow(color: Colors.black45,blurRadius:
-                  15,spreadRadius: 5)],
-                ),
-                margin: EdgeInsets.all(15),
-                child:
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child:
-                    Image.asset('img_app.jpg',width: 150,)))),
+            logoAnimated(),
             Container(
               margin: EdgeInsets.fromLTRB(0,15,0,0),
               child:
               Text("Game Mangues da Amazônia",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,fontFamily: 'MochiyPopPOne'),),),
-              Text("Em construção...",style: TextStyle(color:Colors.black54,fontSize: 16,fontWeight: FontWeight.bold,fontFamily: 'MochiyPopPOne'),)
+            Text("Em construção...",style: TextStyle(color:Colors.black54,fontSize: 16,fontWeight: FontWeight.bold,fontFamily: 'MochiyPopPOne'),)
           ],),)
     );
+  }
+
+  Widget logoAnimated(){
+    return           ScaleTransition(
+        scale: _tween.animate(CurvedAnimation(parent: _controller, curve: Curves.easeInExpo)),
+        child:
+        Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              boxShadow: [BoxShadow(color: Colors.black45,blurRadius:
+              15,spreadRadius: 5)],
+            ),
+            margin: EdgeInsets.all(15),
+            child:
+            ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child:
+                Image.asset('img_app.jpg',width: 150,))));
   }
 }
