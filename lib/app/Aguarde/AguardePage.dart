@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mangues_da_amazonia/app/LocalDB/Repository.dart';
 
 class AguardePage extends StatefulWidget {
   AguardePage();
