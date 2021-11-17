@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mangues_da_amazonia/app/Aguarde/AguardePage.dart';
 
+import 'app/Presenter/home/Home.dart';
 import 'app/Splash/Splash.dart';
 
 void main() {
@@ -48,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:AguardePage()
+      body: Home()
     );
   }
 }
