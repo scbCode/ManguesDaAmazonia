@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mangues_da_amazonia/app/Aguarde/AguardePage.dart';
 
+import 'app/Presenter/GameMap/GameMap.dart';
 import 'app/Presenter/home/Home.dart';
 import 'app/Splash/Splash.dart';
 

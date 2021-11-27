@@ -4,20 +4,26 @@ import 'package:mangues_da_amazonia/app/Models/Jogador.dart';
 
 class Repository {
 
-  late AppDatabase dataBase;
+  late AppDatabase dataBase = AppDatabase();
+  Jogador jogador = Jogador(pontos: 0,nome: "teste",faseAtual: "0", id: 100);
 
   Repository();
 
   initBD(){
-    dataBase.initDB();
+    dataBase. initDB();
   }
 
-  setJogador(Jogador jogador){
+  setJogador(){
     dataBase.setJogador(jogador);
   }
 
-  Future<Jogador> getJogador(int id){
-    return dataBase.getJogador(id);
+  Future<dynamic> getJogador(){
+    return dataBase.getJogador(100);
+  }
+
+  setPontos(int pontos){
+    jogador.pontos=pontos;
+    dataBase.setJogador(jogador);
   }
 
 }
