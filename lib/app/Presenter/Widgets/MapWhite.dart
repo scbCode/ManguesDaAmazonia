@@ -197,6 +197,9 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                   boxShadow: [BoxShadow(color:Colors.black54)],
                   borderRadius: BorderRadius.circular(20)),
               child:
+              FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child:
               Column(children: [
                 Container(
                   margin:EdgeInsets.all(15),
@@ -329,7 +332,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                     Colors.green : _start < 6 ? Colors.red : Colors.yellow))
 
 
-              ])
+              ]))
           ));
   }
 
