@@ -187,16 +187,22 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
     return
       ConstrainedBox(
           constraints:BoxConstraints(
+            maxHeight:    MediaQuery.of(context).size.height*.98,
             minWidth:    MediaQuery.of(context).size.width*.2,
             maxWidth:
             MediaQuery.of(context).size.width*.3,),
           child:
+
           Container(
               margin: EdgeInsets.all(10),
+              height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(color:Colors.white,
                   boxShadow: [BoxShadow(color:Colors.black54)],
                   borderRadius: BorderRadius.circular(20)),
               child:
+              FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child:
               Column(children: [
                 Container(
                   margin:EdgeInsets.all(15),
@@ -330,7 +336,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
 
               ])
-          ));
+          )));
   }
 
   void startTimer() {
