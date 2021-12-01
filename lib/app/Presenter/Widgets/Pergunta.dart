@@ -39,6 +39,12 @@ class _BotaoPergunta extends State<BotaoPergunta> with SingleTickerProviderState
             ativo = false;
           }
         },
-          child: Icon(Icons.ac_unit,color:ativo ? Colors.grey : Colors.white,));
+          child:
+          ativo ?
+            Container(width: MediaQuery.of(context).size.width*.1,height:
+                 MediaQuery.of(context).size.height*.25,color: Colors.white.withAlpha(150))
+              :
+              Container(width: 0,height: 0,color: Colors.white.withAlpha(150)
+              ,));
   }
 }

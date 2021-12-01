@@ -1,6 +1,9 @@
 
+import 'dart:async';
+
 import 'package:animated_rotation/animated_rotation.dart';
 import 'package:flutter/material.dart';
+import 'package:mangues_da_amazonia/app/Presenter/home/Home.dart';
 
 class Splash extends StatefulWidget {
 
@@ -11,23 +14,48 @@ class Splash extends StatefulWidget {
 }
 
 class _Splash extends State<Splash> with SingleTickerProviderStateMixin  {
-
+  late Timer _timer;
+  int _start = 5;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    startTimer();
   }
 
   @override
   Widget build(BuildContext context) {
     return
       Container(
-          height: 150.0,
-          width: 150.0,
-          child: new Image.asset('img_app.jpg'),
+          alignment:Alignment.center,
+          height:MediaQuery.of(context).size.height,
+          width:MediaQuery.of(context).size.width,
+          child: new Image.asset('lib/assets/images/tela_01.jpg',  width:MediaQuery.of(context).size.width,fit: BoxFit.cover,),
       );
   }
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Home()),
+            );
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
+
 
 
 }

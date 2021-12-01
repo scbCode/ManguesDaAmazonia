@@ -10,7 +10,7 @@ import 'package:mangues_da_amazonia/app/Presenter/GameMap/GameMap.dart';
 import 'package:mobx/mobx.dart';
 
 import 'Pergunta.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 
 class MapRed extends StatefulWidget {
   Function finalizado;
@@ -32,6 +32,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
   int mapaSelect_red=0;
   bool acerto = false;
   bool erro = false;
+  bool gameOver = false;
   bool finalizado_ = false;
   bool visible_itensmap = true;
   bool tempo_finalizado = false;
@@ -46,12 +47,14 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
   bool btn_3 = true;
   bool btn_4 = true;
   bool btn_5 = true;
+  int vidas = 3;
 
   int totalPerguntas_respondidas = 0;
 
   Repository repository = Repository();
 
   dynamic form;
+  dynamic imageForm;
 
   late List<List<String>> form_red = [
       ["A) AAAAAAAA AAAAA","B) B","C) C","D) D","E) E"],
@@ -63,6 +66,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
+
     // TODO: implement initState
     super.initState();
     _controller = AnimationController(
@@ -78,13 +82,13 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
           alignment: Alignment.center,
           children:[
 
-            Positioned(top: 0,child:
-            Text( totalPerguntas_respondidas.toString()+" de 5"
-              ,style: TextStyle(color:Colors.black,fontSize: 16,fontFamily: 'MochiyPopPOne'),)),
-
-            Visibility(
+       Container(
+            height: MediaQuery.of(context).size.height,
+            width:MediaQuery.of(context).size.width,
+            child:
+          Visibility(
                 visible: form_red_v,
-                child:Form_red()),
+                child:Form_red())),
 
             Visibility(visible: visible_itensmap,child:
             mapPerguntas()),
@@ -104,8 +108,12 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
             Visibility(visible: erro,child:
             popErro()),
 
+            Visibility(visible: gameOver,child:
+            GameOver()),
+
             Visibility(visible: finalizado_,child:
             popFinalMap()),
+
 
           ]);
 
@@ -113,13 +121,13 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
   Widget mapPerguntas(){
     return
-      Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+          Stack(
               children:[
 
+                Positioned(
+                    top: MediaQuery.of(context).size.height*.15,
+                    left: MediaQuery.of(context).size.width*.3,
+                    child:
                 BotaoPergunta(ativo: btn_1,click: (){
                   setState(() {
                     mapaSelect_red=0;
@@ -129,18 +137,27 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                     btn_1=false;
                     startTimer();
                   });
-                }),
+                })),
+
+                Positioned(
+                    top: MediaQuery.of(context).size.height*.4,
+                    left: MediaQuery.of(context).size.width*.15,
+                child:
                 BotaoPergunta(ativo:btn_2,click: (){
                   setState(() {
                     mapaSelect_red=1;
                     form_red_v=true;
-                    resp_red=1;
+                    resp_red=0;
                     visible_itensmap=false;
                     btn_2=false;
                     startTimer();
                   });
-                }),
-              ]),
+                })),
+
+            Positioned(
+                bottom: MediaQuery.of(context).size.height*.0,
+                right: MediaQuery.of(context).size.width*.15,
+            child:
           BotaoPergunta(ativo:btn_3,click: (){
             setState(() {
               mapaSelect_red=2;
@@ -148,28 +165,35 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
               visible_itensmap=false;
               startTimer();
               btn_3=false;
-              resp_red=2;
+              resp_red=0;
             });
-          }),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children:[
+          })),
 
-                BotaoPergunta(ativo:btn_4,click: (){
+
+         Positioned(
+               top: MediaQuery.of(context).size.height*.2,
+               right: MediaQuery.of(context).size.width*.15,
+               child:
+            BotaoPergunta(ativo:btn_4,click: (){
                   setState(() {
                     mapaSelect_red=3;
-                    resp_red=3;
+                    resp_red=0;
                     form_red_v=true;
                     visible_itensmap=false;
                     btn_4=false;
 
                     startTimer();
                   });
-                }),
+                })),
+
+             Positioned(
+                    top: MediaQuery.of(context).size.height*.225,
+                    right: MediaQuery.of(context).size.width*.34,
+                child:
                 BotaoPergunta(ativo:btn_5,click: (){
                   setState(() {
                     mapaSelect_red=4;
-                    resp_red=4;
+                    resp_red=0;
                     form_red_v=true;
                     visible_itensmap=false;
                     btn_5=false;
@@ -177,36 +201,42 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                     startTimer();
 
                   });
-                }),
+                })),
 
-              ])
-        ]);
+              ]);
   }
 
   Widget Form_red(){
     return
-      ConstrainedBox(
-          constraints:BoxConstraints(
-            maxHeight:    MediaQuery.of(context).size.height*.98,
-            minWidth:    MediaQuery.of(context).size.width*.2,
-            maxWidth:
-            MediaQuery.of(context).size.width*.3,),
-          child:
+      Container(
+          height: MediaQuery.of(context).size.height,
+          width:MediaQuery.of(context).size.width,
+          child: 
+      Stack(children:[
 
-          Container(
-              margin: EdgeInsets.all(10),
-              height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(color:Colors.white,
+          Image.asset('lib/assets/images/tela_08.jpg',
+          width:MediaQuery.of(context).size.width,
+          height:MediaQuery.of(context).size.height,
+          fit: BoxFit.cover),
+
+
+        Positioned(
+            bottom:30,
+            left: 50,
+            child:
+        Container(
+            margin: EdgeInsets.all(10),
+            height:MediaQuery.of(context).size.height*.6,
+            decoration: BoxDecoration(color:Colors.white,
                   boxShadow: [BoxShadow(color:Colors.black54)],
                   borderRadius: BorderRadius.circular(20)),
               child:
-              FittedBox(
-                  fit: BoxFit.fitHeight,
-                  child:
+            FittedBox(
+                      child:
               Column(children: [
-                Container(
-                  margin:EdgeInsets.all(15),
-                  padding: EdgeInsets.all(15),child: Text("Titulo",style: TextStyle(color:Colors.black,fontSize: 16,fontFamily: 'MochiyPopPOne'),),),
+                // Container(
+                //   margin:EdgeInsets.all(15),
+                //   padding: EdgeInsets.all(15),child: Text("Titulo",style: TextStyle(color:Colors.black,fontSize: 16,fontFamily: 'MochiyPopPOne'),),),
 
                 GestureDetector(
                     onTap: (){
@@ -216,13 +246,19 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                           acerto=true;
                           _timer.cancel();
                         }else{
-                        _timer.cancel();
-                        erro=true;}
+
+                             vidas--;
+
+
+                            erro=true;
+
+                          _timer.cancel();
+                        }
                       });
                     },
                     child:
                     Container(
-                      width: MediaQuery.of(context).size.width*.25,
+                      width: MediaQuery.of(context).size.width*.7,
                       margin:EdgeInsets.all(15),
                       padding: EdgeInsets.all(15), decoration: BoxDecoration(color:resp_jogada==0 ?
                     Colors.black12 : Colors.white,
@@ -238,12 +274,18 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                           acerto=true;
                           _timer.cancel();
                         }else{
+
+                            vidas--;
+
+
+                            erro=true;
+
                           _timer.cancel();
-                          erro=true;}
+                        }
                       });
                     },
                     child:
-                    Container(            width: MediaQuery.of(context).size.width*.25,
+                    Container(            width: MediaQuery.of(context).size.width*.7,
                       margin:EdgeInsets.all(15),
                       padding: EdgeInsets.all(15), decoration: BoxDecoration(color:resp_jogada==1 ?
                       Colors.black12 : Colors.white,
@@ -260,13 +302,21 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                           acerto=true;
                           _timer.cancel();
                         }else{
+
+
+                            vidas--;
+
+
+                            erro=true;
+
                           _timer.cancel();
-                          erro=true;}
+
+                        }
                       });
                     },
                     child:
                     Container(
-                      width: MediaQuery.of(context).size.width*.25,
+                      width: MediaQuery.of(context).size.width*.7,
                       margin:EdgeInsets.all(15),
                       padding: EdgeInsets.all(15), decoration: BoxDecoration(color:resp_jogada==2 ?
                     Colors.black12 : Colors.white,
@@ -282,13 +332,18 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                           acerto=true;
                           _timer.cancel();
                         }else{
+
+                            vidas--;
+
+                            erro=true;
+
                           _timer.cancel();
-                          erro=true;}
+                        }
 
                       });
                     },
                     child:
-                    Container(            width: MediaQuery.of(context).size.width*.25,
+                    Container(            width: MediaQuery.of(context).size.width*.7,
                       margin:EdgeInsets.all(15),
                       padding: EdgeInsets.all(15), decoration: BoxDecoration(color:resp_jogada==3 ? Colors.black12 : Colors.white,
                           boxShadow: [BoxShadow(color:Colors.black54)],
@@ -303,22 +358,26 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                           acerto=true;
                           _timer.cancel();
                         }else{
+
+                            vidas--;
+
+                            erro=true;
+
                           _timer.cancel();
-                          erro=true;}
+                        }
 
                       });
                     },
                     child:
-                    Container(            width: MediaQuery.of(context).size.width*.25,
+                    Container(            width: MediaQuery.of(context).size.width*.7,
                       margin:EdgeInsets.all(15),
                       padding: EdgeInsets.all(15), decoration: BoxDecoration(color:resp_jogada==4 ?  Colors.black12 : Colors.white,
                           boxShadow: [BoxShadow(color:Colors.black54)],
                           borderRadius: BorderRadius.circular(20)),
                       child: Text( form_red[mapaSelect_red][4],style: TextStyle(color:Colors.black,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
 
-
                 Container(
-                  width: MediaQuery.of(context).size.width*.25,
+                  width: MediaQuery.of(context).size.width*.7,
                   margin:EdgeInsets.all(15),
                   padding: EdgeInsets.all(15), decoration: BoxDecoration(color:Colors.white,
                     boxShadow: [BoxShadow(color:Colors.black54)],
@@ -326,7 +385,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                   child: Text("Tempo: "+_start.toString(),style: TextStyle(color:Colors.black,fontSize: 16,fontFamily: 'MochiyPopPOne'),),),
 
                 Container(
-                    width: MediaQuery.of(context).size.width*.25,
+                    width: MediaQuery.of(context).size.width*.7,
                     margin:EdgeInsets.all(15),
                     padding: EdgeInsets.all(15),
                     decoration: BoxDecoration(color:Colors.white),
@@ -335,8 +394,12 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                     Colors.green : _start < 6 ? Colors.red : Colors.yellow))
 
 
-              ])
-          )));
+              ]))
+          ))
+
+
+      ]))
+    ;
   }
 
   void startTimer() {
@@ -406,6 +469,35 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
   }
 
+  Widget GameOver(){
+    return
+      Container(
+          width: 260,
+          height: 230,
+          padding: EdgeInsets.all(15),
+          decoration: BoxDecoration(color: Colors.white,
+              boxShadow: [BoxShadow(color:Colors.black26,blurRadius: 3,spreadRadius: 3)]),
+          child:
+          Column(children: [
+            Container(
+                margin: EdgeInsets.all(15),
+                child:
+                Text("Suas vidas acabaram",style: TextStyle(color:Colors.black,fontSize: 16,fontFamily: 'MochiyPopPOne'),)),
+
+            Container(
+                margin: EdgeInsets.all(15),
+                child:
+                OutlinedButton(onPressed: (){
+                  setState((){
+                    finalizado(false);
+
+                  });
+                }, child: Text("Continuar",style: TextStyle(color:Colors.black,fontSize: 16,fontFamily: 'MochiyPopPOne'),)))
+          ],)
+      );
+
+  }
+
   Widget popErro(){
     return
       Container(
@@ -426,14 +518,18 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                 child:
                 OutlinedButton(onPressed: (){
                   setState((){
-                    form_red_v=false;
-                    acerto=false;
-                    erro=false;
-                    mapaSelect_red=0;
-                    resp_jogada=-1;
-                    _start=30;
-                    visible_itensmap=true;
-                    setPerguntaRespondida();
+                    if (vidas==0)
+                      gameOver=true;
+                    else {
+                      form_red_v = false;
+                      acerto = false;
+                      erro = false;
+                      mapaSelect_red = 0;
+                      resp_jogada = -1;
+                      _start = 30;
+                      visible_itensmap = true;
+                      setPerguntaRespondida();
+                    }
                   });
                 }, child: Text("Continuar",style: TextStyle(color:Colors.black,fontSize: 16,fontFamily: 'MochiyPopPOne'),)))
           ],)
@@ -444,26 +540,27 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
   Widget popFinalMap(){
     return
       Container(
-          width: 260,
-          height: 230,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
           padding: EdgeInsets.all(15),
           decoration: BoxDecoration(color: Colors.white,
               boxShadow: [BoxShadow(color:Colors.black26,blurRadius: 3,spreadRadius: 3)]),
           child:
-          Column(children: [
-            Container(
-                margin: EdgeInsets.all(15),
-                child:
-                Text("MAPA VERMELHO FINALIZADO",style: TextStyle(color:Colors.black,fontSize: 16,fontFamily: 'MochiyPopPOne'),)),
+          Stack(children: [
 
+            Image.asset('lib/assets/images/tela_12.jpg',
+              width:MediaQuery.of(context).size.width,fit: BoxFit.cover,),
+
+            Positioned(right:5,child:
             Container(
                 margin: EdgeInsets.all(15),
                 child:
                 OutlinedButton(onPressed: (){
                   setState((){
-                    finalizado();
+                    launch("https://youtu.be/qOODbkMOjKQ?start=1&fs=1&autoplay=1");
                   });
-                }, child: Text("Continuar",style: TextStyle(color:Colors.black,fontSize: 16,fontFamily: 'MochiyPopPOne'),)))
+                }, child: Container(height:MediaQuery.of(context).size.height*.25 ,
+                  width:MediaQuery.of(context).size.width*.2,color:Colors.white.withAlpha(200) ,))))
           ],)
       );
 
@@ -473,6 +570,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
     totalPerguntas_respondidas++;
     if (totalPerguntas_respondidas==5){
       setState(() {
+        if (vidas>0)
         finalizado_=true;
       });
     }

@@ -74,11 +74,8 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
     return
       Container(
         alignment: Alignment.center,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children:[
-              intro(),
-            ]),
+        child:
+         intro(),
       );
   }
 
@@ -87,14 +84,23 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
     Stack(
         alignment: Alignment.center,
         children: [
-      Column(
+
+          Container(
+            child: width_red !=3 ?
+               new Image.asset('lib/assets/images/tela_06.png',
+                 width:MediaQuery.of(context).size.width,fit: BoxFit.cover,) :
+               new Image.asset('lib/assets/images/tela_05.png',
+                 height:MediaQuery.of(context).size.height,
+                 width:MediaQuery.of(context).size.width,fit: BoxFit.cover) ,
+          ),
+
+          Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children:[
             Container(
                   alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width*.827,
-                  height: MediaQuery.of(context).size.height*.8,
-                  padding: EdgeInsets.all(12),
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
                   child:
                Row(
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -103,6 +109,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
 
                  GestureDetector(
                      onTap:(){setState(() {
+                       print("MAPA VERMELHO");
                        width_red=3;
                        width_black=0.0;
                        width_white=0.0;
@@ -113,19 +120,28 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                          duration: const Duration(milliseconds: 500),
                          child:
                      Container(
-                         width: (MediaQuery.of(context).size.width*.27) * width_red,
+                         width: width_red==3  ? (MediaQuery.of(context).size.width)  : MediaQuery.of(context).size.width*.27,
+                         height: MediaQuery.of(context).size.height,
                          alignment: Alignment.center,
-                         decoration: BoxDecoration(color:Colors.red),
+                         decoration: BoxDecoration(color:Colors.transparent),
                          child:
-                         Visibility(child: MapRed((){
+                         Visibility(child: MapRed((value){
+
+                           if (!value)
+                             setState(() {
+                               width_red=1;
+                               width_black=1.0;
+                               width_white=1.0;
+                               map_red_finalizado=false;
+                          });
+                             else
                            setState(() {
                              width_red=1;
                              width_black=1.0;
                              width_white=1.0;
                              map_red_finalizado=true;
                            });
-                         }),visible:
-                         width_red==3)
+                         }),visible: width_red==3)
                        ,))),
 
                  GestureDetector(
@@ -143,7 +159,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                          Container(
                              width: (MediaQuery.of(context).size.width*.27)*width_black,
                              alignment: Alignment.center,
-                           decoration: BoxDecoration(color:Colors.black54),
+                           decoration: BoxDecoration(color:Colors.transparent),
                            padding: EdgeInsets.all(12),
                             child: Visibility(child: MapBlack((){
                               setState(() {
@@ -171,7 +187,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                        Container(
                            width: (MediaQuery.of(context).size.width*.27)*width_white,
                            alignment: Alignment.center,
-                          decoration: BoxDecoration(color:Colors.black12),
+                          decoration: BoxDecoration(color:Colors.transparent),
                           padding: EdgeInsets.all(12),child:
                        Visibility(child: MapWhite((){
                        setState(() {
