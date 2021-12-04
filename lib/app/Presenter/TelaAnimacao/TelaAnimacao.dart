@@ -54,7 +54,6 @@ class _TelaAnimacao extends State<TelaAnimacao> with SingleTickerProviderStateMi
       Stack(children: [
 
         Container(
-          padding: EdgeInsets.all(15),
           alignment:Alignment.center,
           height:MediaQuery.of(context).size.height,
           width:MediaQuery.of(context).size.width,
@@ -62,19 +61,22 @@ class _TelaAnimacao extends State<TelaAnimacao> with SingleTickerProviderStateMi
         ),
 
         Positioned (
-            bottom:75,
-            right: 155,
+            bottom:MediaQuery.of(context).size.height*.05,
+            right: MediaQuery.of(context).size.width*.025,
             child:
             GestureDetector(
                 onTap: (){
                   setState(() {
-                    Navigator.pop(context,Home());
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Home()),
+                    );
                   });
                 },
                 child:
                 Container(
                   child:
-                  Icon(Icons.play_circle_fill, size:280),
+                  Icon(Icons.play_circle_fill, size:MediaQuery.of(context).size.width*.18),
                   decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(100)),)))
       ],);
 

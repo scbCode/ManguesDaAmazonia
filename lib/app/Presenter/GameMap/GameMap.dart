@@ -73,7 +73,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   Widget build(BuildContext context) {
     return
       Container(
-        alignment: Alignment.center,
+        alignment: Alignment.topCenter,
         child:
          intro(),
       );
@@ -82,17 +82,43 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   Widget intro(){
     return
     Stack(
-        alignment: Alignment.center,
+        alignment: Alignment.topCenter,
         children: [
 
-          Container(
-            child: width_red !=3 ?
-               new Image.asset('lib/assets/images/tela_06.png',
-                 width:MediaQuery.of(context).size.width,fit: BoxFit.cover,) :
-               new Image.asset('lib/assets/images/tela_05.png',
-                 height:MediaQuery.of(context).size.height,
-                 width:MediaQuery.of(context).size.width,fit: BoxFit.cover) ,
-          ),
+          bg_map(),
+
+          Visibility(visible: (width_red==1) && (width_black==1) && (width_white==1),child:
+          Positioned(
+              top: 0,
+              child:
+                 !map_red_finalizado ?
+                  Image.asset('lib/assets/images/elementos/arvore_1.png',
+                      width: MediaQuery
+                      .of(context)
+                      .size
+                      .width*.5, fit: BoxFit.cover):
+                 !map_black_finalizado && map_red_finalizado?
+                  Image.asset('lib/assets/images/elementos/arvore_2.png',
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width*.5, fit: BoxFit.cover) :
+
+                 Image.asset('lib/assets/images/elementos/arvore_3.png',
+                     width: MediaQuery
+                         .of(context)
+                         .size
+                         .width*.5, fit: BoxFit.cover),
+              )),
+
+          Visibility(visible: (width_red==1) && (width_black==1) && (width_white==1),child:
+          lixos_map_vermelho()),
+
+          Visibility(visible: (width_red==1) && (width_black==1) && (width_white==1),child:
+          lixos_map_preto_desativado()),
+
+          Visibility(visible: (width_red==1) && (width_black==1) && (width_white==1),child:
+          lixos_map_branco_desativado()),
 
           Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -144,13 +170,18 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                          }),visible: width_red==3)
                        ,))),
 
+
                  GestureDetector(
-                      onTap:(){setState(() {
+                      onTap:(){
+                        if (!map_black_finalizado && map_red_finalizado)
+                        setState(() {
                         width_red=0;
                         width_black=3;
                         width_white=0;
 
-                      });},
+                      });
+                        }
+                      ,
                       child:
                       AnimatedSize(
                           curve: Curves.easeInOut,
@@ -173,12 +204,14 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                          ))),
 
                  GestureDetector(
-                      onTap:(){setState(() {
-                        width_red=0;
-                        width_black=0;
-                        width_white=3;
-
-                      });},
+                      onTap:(){
+                        if (!map_white_finalizado && map_red_finalizado && map_black_finalizado)
+                            setState(() {
+                              width_red=0;
+                              width_black=0;
+                              width_white=3;
+                            });
+                        },
                       child:
                       AnimatedSize(
                           curve: Curves.easeInOut,
@@ -207,5 +240,344 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
 
   }
 
+  Widget bg_map(){
+
+    if (!map_red_finalizado) {
+      return
+        width_red != 3 ?
+        new Image.asset('lib/assets/images/elementos/mapa_vermelho.png',
+          width: MediaQuery
+              .of(context)
+              .size
+              .width, fit: BoxFit.cover,) :
+        new Image.asset('lib/assets/images/elementos/mangue_01_vermelho.jpg',
+            height: MediaQuery
+                .of(context)
+                .size
+                .height,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width, fit: BoxFit.cover);
+    }else
+        if (map_red_finalizado && !map_black_finalizado){
+          return
+            width_black != 3 ?
+            new Image.asset('lib/assets/images/tela_13.png',
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width, fit: BoxFit.cover,) :
+            new Image.asset('lib/assets/images/tela_14.png',
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width, fit: BoxFit.cover);
+      }else {
+
+   return
+   width_white != 3 ?
+   new Image.asset('lib/assets/images/tela_13.png',
+   width: MediaQuery
+       .of(context)
+       .size
+       .width, fit: BoxFit.cover,) :
+   new Image.asset('lib/assets/images/tela_14.png',
+   height: MediaQuery
+       .of(context)
+       .size
+       .height,
+   width: MediaQuery
+       .of(context)
+       .size
+       .width, fit: BoxFit.cover);
+   }}
+
+
+  Widget lixos_map_vermelho(){
+    return
+    Container(
+       alignment: Alignment.topCenter,
+        child:
+      Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          
+        Positioned(
+          left: 5,
+          top: MediaQuery
+              .of(context)
+              .size
+              .height*.3,
+          child:
+            Container(child:
+              Image.asset('lib/assets/images/elementos/lixo_sombrinha.png',
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width*.09, fit: BoxFit.cover))
+          ),
+        Positioned(
+          top: MediaQuery
+              .of(context)
+              .size
+              .height*.2,
+          left: MediaQuery
+              .of(context)
+              .size.width*.125,
+          child:
+          Container(child:
+          Image.asset('lib/assets/images/elementos/lixo_cadeira.png',
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width*.05, fit: BoxFit.cover))
+          ),
+        Positioned(
+          top: MediaQuery
+              .of(context)
+              .size
+              .height*.28,
+          left: MediaQuery
+              .of(context)
+              .size.width*.22,
+          child:
+          Container(child:
+          Image.asset('lib/assets/images/elementos/lixo_garrafa.png',
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width*.0425, fit: BoxFit.cover))
+          ,),
+        Positioned(
+          top: MediaQuery
+              .of(context)
+              .size
+              .height*.47,
+          left: MediaQuery
+              .of(context)
+              .size.width*.15,
+          child:
+          Container(child:
+          Image.asset('lib/assets/images/elementos/lixo_pneu.png',
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width*.081, fit: BoxFit.cover))
+          ,),
+        Positioned(
+          top: MediaQuery
+              .of(context)
+              .size
+              .height*.432,
+          left: MediaQuery
+              .of(context)
+              .size.width*.27,
+          child:
+          Container(child:
+          Image.asset('lib/assets/images/elementos/lixo_caixa.png',
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width*.09, fit: BoxFit.cover))
+          ,),
+
+      ],));
+  }
+
+
+  Widget lixos_map_preto_desativado(){
+    return Container(
+      alignment: Alignment.center,
+      child: Stack(children: [
+
+        Positioned(
+            left: MediaQuery
+                .of(context)
+                .size
+                .width*.45,
+            bottom: MediaQuery
+                .of(context)
+                .size
+                .height*.15,
+            child:
+            Container(child:
+            Image.asset('lib/assets/images/elementos/lixo_somb_bloqueado.png',
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width*.09, fit: BoxFit.cover))
+        ),
+
+        Positioned(
+            bottom: MediaQuery
+                .of(context)
+                .size
+                .height*.225,
+            left: MediaQuery
+                .of(context)
+                .size.width*.58,
+            child:
+            Container(child:
+            Image.asset('lib/assets/images/elementos/lixo_cadeira_bloqueada.png',
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width*.06, fit: BoxFit.cover))
+        ),
+
+        Positioned(
+          bottom: MediaQuery
+              .of(context)
+              .size
+              .height*.08,
+          left: MediaQuery
+              .of(context)
+              .size.width*.58,
+          child:
+          Container(child:
+          Image.asset('lib/assets/images/elementos/lixo_garrafa_bloqueada.png',
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width*.0425, fit: BoxFit.cover))
+          ,),
+
+        Positioned(
+          bottom: MediaQuery
+              .of(context)
+              .size
+              .height*.07,
+          left: MediaQuery
+              .of(context)
+              .size.width*.37,
+          child:
+          Container(child:
+          Image.asset('lib/assets/images/elementos/lixo_pneu_bloqueada.png',
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width*.081, fit: BoxFit.cover))
+          ,),
+
+        Positioned(
+          bottom: MediaQuery
+              .of(context)
+              .size
+              .height*.35,
+          left: MediaQuery
+              .of(context)
+              .size.width*.34,
+          child:
+          Container(child:
+          Image.asset('lib/assets/images/elementos/lixo_caixa_bloqueada.png',
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width*.1, fit: BoxFit.cover))
+          ,),
+
+      ],),
+    );
+
+  }
+
+
+  Widget lixos_map_branco_desativado(){
+    return
+      Container(
+          alignment: Alignment.topCenter,
+          child:
+          Stack(
+            alignment: Alignment.topCenter,
+            children: [
+
+              Positioned(
+                  right: 5,
+                  top: MediaQuery
+                      .of(context)
+                      .size
+                      .height*.3,
+                  child:
+                  Container(child:
+                  Image.asset('lib/assets/images/elementos/lixo_somb_bloqueado.png',
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width*.09, fit: BoxFit.cover))
+              ),
+              Positioned(
+                  top: MediaQuery
+                      .of(context)
+                      .size
+                      .height*.2,
+                  right: MediaQuery
+                      .of(context)
+                      .size.width*.125,
+                  child:
+                  Container(child:
+                  Image.asset('lib/assets/images/elementos/lixo_cadeira_bloqueada.png',
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width*.05, fit: BoxFit.cover))
+              ),
+              Positioned(
+                top: MediaQuery
+                    .of(context)
+                    .size
+                    .height*.325,
+                right: MediaQuery
+                    .of(context)
+                    .size.width*.18,
+                child:
+                Container(child:
+                Image.asset('lib/assets/images/elementos/lixo_garrafa_bloqueada.png',
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.0425, fit: BoxFit.cover))
+                ,),
+              Positioned(
+                top: MediaQuery
+                    .of(context)
+                    .size
+                    .height*.47,
+                right: MediaQuery
+                    .of(context)
+                    .size.width*.25,
+                child:
+                Container(child:
+                Image.asset('lib/assets/images/elementos/lixo_pneu_bloqueada.png',
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.09, fit: BoxFit.cover))
+                ,),
+              Positioned(
+                top: MediaQuery
+                    .of(context)
+                    .size
+                    .height*.32,
+                right: MediaQuery
+                    .of(context)
+                    .size.width*.27,
+                child:
+                Container(child:
+                Image.asset('lib/assets/images/elementos/lixo_caixa_bloqueada.png',
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.09, fit: BoxFit.cover))
+                ,),
+
+            ],));
+  }
+
 
 }
+

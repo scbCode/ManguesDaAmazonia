@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:animated_rotation/animated_rotation.dart';
 import 'package:flutter/material.dart';
+import 'package:mangues_da_amazonia/app/Presenter/TelaAnimacao/TelaAnimacao.dart';
 import 'package:mangues_da_amazonia/app/Presenter/home/Home.dart';
 
 class Splash extends StatefulWidget {
@@ -44,7 +45,7 @@ class _Splash extends State<Splash> with SingleTickerProviderStateMixin  {
             timer.cancel();
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Home()),
+              MaterialPageRoute(builder: (context) => TelaAnimacao()),
             );
           });
         } else {

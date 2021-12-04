@@ -50,23 +50,46 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
               ),
 
               Positioned(
-                  bottom: 10,
-                  right: MediaQuery.of(context).size.width*.06,
+                  top: 5,
+                  right: MediaQuery.of(context).size.width*.025,
                   child:
+                  Container(
+                      padding: EdgeInsets.all(15),
+                      alignment:Alignment.center,
+                      child: Image.asset('lib/assets/images/elementos/botao_audio.png',
+                        width:MediaQuery.of(context).size.width*.04,fit: BoxFit.cover,)
+                  )),
+
+              Positioned(
+                  top: 5,
+                  right: MediaQuery.of(context).size.width*.1,
+                  child:
+                  Container(
+                      padding: EdgeInsets.all(15),
+                      alignment:Alignment.center,
+                      child: Image.asset('lib/assets/images/elementos/botao_opcao.png',
+                        width:MediaQuery.of(context).size.width*.04,fit: BoxFit.cover,)
+                  )),
+
+
+              Positioned(
+                  bottom: 10,
+                  right: MediaQuery.of(context).size.width*.03,
+                  child:
+              GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => GameMap()),
+                        );
+                      },
+                   child:
               Container(
                   padding: EdgeInsets.all(15),
                   alignment:Alignment.center,
-                  color:
-                  Colors.white,
-                  width: MediaQuery.of(context).size.width*.3,
-                  height: MediaQuery.of(context).size.height*.35,
-                  child:
-              OutlinedButton(onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => GameMap()),
-                );
-              }, child: Text("Jogar", style: TextStyle(fontSize:MediaQuery.of(context).size.width*.05),))))
+                  width: MediaQuery.of(context).size.width*.28,
+                  height: MediaQuery.of(context).size.height*.285,
+                  child: Image.asset('lib/assets/images/elementos/botao_jogar.png',fit: BoxFit.cover,)))),
 
 
             ]),

@@ -23,14 +23,15 @@ class MapRed extends StatefulWidget {
 class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
   Function finalizado;
-  _MapRed(this.finalizado);
 
+  _MapRed(this.finalizado);
 
   late AnimationController _controller;
   Tween<double> _tween = Tween(begin: 0.9, end: 1.5);
   bool form_red_v=false;
   int mapaSelect_red=0;
   bool acerto = false;
+  bool anim_carangueijo = true;
   bool erro = false;
   bool gameOver = false;
   bool finalizado_ = false;
@@ -38,6 +39,9 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
   bool tempo_finalizado = false;
   late Timer _timer;
   int _start = 30;
+
+  late Timer _timer_carang;
+  int _start_carang = 20;
   int totalTime = 30;
   int resp_red = 1;
   int resp_jogada = -1;
@@ -54,7 +58,12 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
   Repository repository = Repository();
 
   dynamic form;
-  dynamic imageForm;
+
+  late Image img_bg;
+
+  final img_bg_form = Image.asset(
+      "lib/assets/images/elementos/fundo_mangue_vermelho.jpg",
+      fit: BoxFit.cover);
 
   late List<List<String>> form_red = [
       ["A) AAAAAAAA AAAAA","B) B","C) C","D) D","E) E"],
@@ -66,14 +75,22 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
+    super.initState();
 
     // TODO: implement initState
-    super.initState();
     _controller = AnimationController(
         duration: const Duration(milliseconds: 1200), vsync: this);
     _controller.repeat(reverse: true);
+    startTimerAnim();
 
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    precacheImage(img_bg_form.image, context);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +109,31 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
             Visibility(visible: visible_itensmap,child:
             mapPerguntas()),
+
+            Positioned(
+                bottom: MediaQuery.of(context).size.height*.25,
+                right: MediaQuery.of(context).size.width*.45,
+                child:
+                Visibility(visible: anim_carangueijo,child:
+                Container(child:
+                Image.asset('lib/assets/images/elementos/balao_carangueijo.png',
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.3, fit: BoxFit.cover)))),
+
+            Positioned(
+                bottom: MediaQuery.of(context).size.height*.08,
+                right: MediaQuery.of(context).size.width*.25,
+              child:
+              Visibility(visible: anim_carangueijo,child:
+               Container(child:
+                Image.asset('lib/assets/images/elementos/carangueijo.png',
+                    width: MediaQuery
+                        .of(context)
+                    .size
+                    .width*.20, fit: BoxFit.cover)))),
+
 
             ClipRect(
                 child: new BackdropFilter(
@@ -114,36 +156,37 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
             Visibility(visible: finalizado_,child:
             popFinalMap()),
 
-
           ]);
 
   }
 
   Widget mapPerguntas(){
     return
-          Stack(
+       Stack(
               children:[
 
                 Positioned(
-                    top: MediaQuery.of(context).size.height*.15,
-                    left: MediaQuery.of(context).size.width*.3,
+                    bottom: MediaQuery.of(context).size.height*.1,
+                    left: MediaQuery.of(context).size.width*.05,
                     child:
-                BotaoPergunta(ativo: btn_1,click: (){
-                  setState(() {
-                    mapaSelect_red=0;
-                    resp_red=0;
-                    form_red_v=true;
-                    visible_itensmap=false;
-                    btn_1=false;
-                    startTimer();
-                  });
+                BotaoPergunta(url: 'lib/assets/images/elementos/lixo_sombrinha.png',
+                    ativo: btn_1,click: (){
+                    setState(() {
+                      mapaSelect_red=0;
+                      resp_red=0;
+                      form_red_v=true;
+                      visible_itensmap=false;
+                      btn_1=false;
+                      startTimer();
+                    });
                 })),
 
                 Positioned(
-                    top: MediaQuery.of(context).size.height*.4,
-                    left: MediaQuery.of(context).size.width*.15,
+                    top: MediaQuery.of(context).size.height*.1,
+                    left: MediaQuery.of(context).size.width*.25,
                 child:
-                BotaoPergunta(ativo:btn_2,click: (){
+                BotaoPergunta(url:'lib/assets/images/elementos/lixo_cadeira.png',
+                    ativo:btn_2,click: (){
                   setState(() {
                     mapaSelect_red=1;
                     form_red_v=true;
@@ -155,10 +198,11 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                 })),
 
             Positioned(
-                bottom: MediaQuery.of(context).size.height*.0,
-                right: MediaQuery.of(context).size.width*.15,
+                top: MediaQuery.of(context).size.height*.1,
+                right: MediaQuery.of(context).size.width*.35,
             child:
-          BotaoPergunta(ativo:btn_3,click: (){
+          BotaoPergunta(url:'lib/assets/images/elementos/lixo_garrafa.png',
+              ativo:btn_3,click: (){
             setState(() {
               mapaSelect_red=2;
               form_red_v=true;
@@ -171,26 +215,27 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
 
          Positioned(
-               top: MediaQuery.of(context).size.height*.2,
+               bottom: MediaQuery.of(context).size.height*.05,
                right: MediaQuery.of(context).size.width*.15,
                child:
-            BotaoPergunta(ativo:btn_4,click: (){
+            BotaoPergunta(url:'lib/assets/images/elementos/lixo_pneu.png',
+                ativo:btn_4,click: (){
                   setState(() {
                     mapaSelect_red=3;
                     resp_red=0;
                     form_red_v=true;
                     visible_itensmap=false;
                     btn_4=false;
-
                     startTimer();
                   });
                 })),
 
              Positioned(
-                    top: MediaQuery.of(context).size.height*.225,
-                    right: MediaQuery.of(context).size.width*.34,
+                    top: MediaQuery.of(context).size.height*.23,
+                    right: MediaQuery.of(context).size.width*.14,
                 child:
-                BotaoPergunta(ativo:btn_5,click: (){
+                BotaoPergunta(url:'lib/assets/images/elementos/lixo_caixa.png',
+                    ativo:btn_5,click: (){
                   setState(() {
                     mapaSelect_red=4;
                     resp_red=0;
@@ -214,11 +259,22 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
           child: 
       Stack(children:[
 
-          Image.asset('lib/assets/images/tela_08.jpg',
-          width:MediaQuery.of(context).size.width,
-          height:MediaQuery.of(context).size.height,
-          fit: BoxFit.cover),
+        Image.asset('lib/assets/images/elementos/fundo_mangue_vermelho.jpg',
+            width:MediaQuery.of(context).size.width,
+            height:MediaQuery.of(context).size.height,
+            fit: BoxFit.cover),
 
+        Positioned(
+            bottom: 3,
+            right: MediaQuery.of(context).size.width*.02,
+            child:
+            Visibility(child:
+            Container(child:
+            Image.asset('lib/assets/images/elementos/garca_questoes.png',
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width*.25, fit: BoxFit.cover)))),
 
         Positioned(
             bottom:30,
@@ -232,7 +288,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                   borderRadius: BorderRadius.circular(20)),
               child:
             FittedBox(
-                      child:
+                 child:
               Column(children: [
                 // Container(
                 //   margin:EdgeInsets.all(15),
@@ -260,11 +316,12 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                     Container(
                       width: MediaQuery.of(context).size.width*.7,
                       margin:EdgeInsets.all(15),
-                      padding: EdgeInsets.all(15), decoration: BoxDecoration(color:resp_jogada==0 ?
-                    Colors.black12 : Colors.white,
+                      decoration: BoxDecoration(color:resp_jogada==0 ?
+                    Colors.white : Colors.amberAccent,
                         boxShadow: [BoxShadow(color:Colors.black54)],
-                        borderRadius: BorderRadius.circular(20)),
-                      child: Text( form_red[mapaSelect_red][0],style: TextStyle(color:Colors.black,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
+                        border:  Border.all(color: Colors.brown,width: 4),
+                        borderRadius: BorderRadius.circular(10)),
+                      child: Text( form_red[mapaSelect_red][0],style: TextStyle(color:Colors.brown,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
 
                 GestureDetector(
                     onTap: (){
@@ -421,6 +478,25 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
     );
   }
 
+  void startTimerAnim() {
+    const oneSec = const Duration(seconds: 1);
+    _timer_carang = new Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        if (_start_carang == 0) {
+          setState(() {
+            timer.cancel();
+            anim_carangueijo=false;
+          });
+        } else {
+          setState(() {
+            _start_carang--;
+          });
+        }
+      },
+    );
+  }
+
   Widget popAcerto(){
     return
       Container(
@@ -548,16 +624,27 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
           child:
           Stack(children: [
 
-            Image.asset('lib/assets/images/tela_12.jpg',
-              width:MediaQuery.of(context).size.width,fit: BoxFit.cover,),
+            img_bg_form,
 
-            Positioned(right:5,child:
+            Positioned(top:MediaQuery.of(context).size.height*.01,right:5,child:
             Container(
                 margin: EdgeInsets.all(15),
                 child:
                 OutlinedButton(onPressed: (){
                   setState((){
-                    launch("https://youtu.be/qOODbkMOjKQ?start=1&fs=1&autoplay=1");
+                    launch("https://youtu.be/qOODbkMOjKQ?t=1");
+                  });
+                }, child: Container(height:MediaQuery.of(context).size.height*.25 ,
+                  width:MediaQuery.of(context).size.width*.2,color:Colors.white.withAlpha(200) ,)))),
+            Positioned(
+                bottom:0,
+                right:MediaQuery.of(context).size.width*.35,child:
+            Container(
+                margin: EdgeInsets.all(15),
+                child:
+                OutlinedButton(onPressed: (){
+                  setState((){
+                    finalizado(true);
                   });
                 }, child: Container(height:MediaQuery.of(context).size.height*.25 ,
                   width:MediaQuery.of(context).size.width*.2,color:Colors.white.withAlpha(200) ,))))
@@ -570,8 +657,9 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
     totalPerguntas_respondidas++;
     if (totalPerguntas_respondidas==5){
       setState(() {
-        if (vidas>0)
-        finalizado_=true;
+        if (vidas>0){
+          finalizado_=true;
+        }
       });
     }
   }

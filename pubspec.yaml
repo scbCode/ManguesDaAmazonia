@@ -58,7 +58,30 @@ flutter:
     - tela_05.png
     - tela_08.jpg
     - tela_12.jpg
-  #   - images/a_dot_ham.jpeg
+    - tela_14.jpg
+    - botao_opcao.png
+    - botao_audio.png
+    - botao_jogar.png
+    - mapa_vermelho.png
+    - arvore_1.png
+    - arvore_2.png
+    - arvore_3.png
+    - lixo_sombrinha.png
+    - lixo_cadeira.png
+    - lixo_garrafa.png
+    - lixo_pneu.png
+    - lixo_caixa.png
+    - lixo_caixa_bloqueada.png
+    - lixo_garrafa_bloqueada.png
+    - lixo_pneu_bloqueada.png
+    - lixo_somb_bloqueado.png
+    - lixo_cadeira_bloqueada.png
+    - mangue_01_vermelho.jpg
+    - carangueijo.png
+    - balao_carangueijo.png
+    - fundo_mangue_vermelho.jpg
+    - garca_questoes.png
+  # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

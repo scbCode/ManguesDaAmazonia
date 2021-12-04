@@ -113,74 +113,85 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
 
   Widget mapPerguntas(){
     return
-      Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children:[
+      Stack(
+          children:[
 
-                BotaoPergunta(ativo: btn_1,click: (){
-                  setState(() {
-                    mapaSelect_black=0;
-                    resp_black=0;
-                    form_black_v=true;
-                    visible_itensmap=false;
-                    btn_1=false;
-                    startTimer();
-                  });
-                }),
-                BotaoPergunta(ativo:btn_2,click: (){
-                  setState(() {
-                    mapaSelect_black=1;
-                    form_black_v=true;
-                    resp_black=1;
-                    visible_itensmap=false;
-                    btn_2=false;
-                    startTimer();
-                  });
-                }),
-              ]),
-          BotaoPergunta(ativo:btn_3,click: (){
-            setState(() {
-              mapaSelect_black=2;
-              form_black_v=true;
-              visible_itensmap=false;
-              startTimer();
-              btn_3=false;
-              resp_black=2;
-            });
-          }),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children:[
+            Positioned(
+                top: MediaQuery.of(context).size.height*.15,
+                left: MediaQuery.of(context).size.width*.3,
+                child:
+                BotaoPergunta(url: 'lib/assets/images/elementos/lixo_sombrinha.png',
+                    ativo: btn_1,click: (){
+                      setState(() {
 
-                BotaoPergunta(ativo:btn_4,click: (){
-                  setState(() {
-                    mapaSelect_black=3;
-                    resp_black=3;
-                    form_black_v=true;
-                    visible_itensmap=false;
-                    btn_4=false;
+                        visible_itensmap=false;
+                        btn_1=false;
+                        startTimer();
+                      });
+                    })),
 
-                    startTimer();
-                  });
-                }),
-                BotaoPergunta(ativo:btn_5,click: (){
-                  setState(() {
-                    mapaSelect_black=4;
-                    resp_black=4;
-                    form_black_v=true;
-                    visible_itensmap=false;
-                    btn_5=false;
+            Positioned(
+                top: MediaQuery.of(context).size.height*.4,
+                left: MediaQuery.of(context).size.width*.15,
+                child:
+                BotaoPergunta(url:'lib/assets/images/elementos/lixo_cadeira.png',
+                    ativo:btn_2,click: (){
+                      setState(() {
 
-                    startTimer();
+                        visible_itensmap=false;
+                        btn_2=false;
+                        startTimer();
+                      });
+                    })),
 
-                  });
-                }),
+            Positioned(
+                bottom: MediaQuery.of(context).size.height*.0,
+                right: MediaQuery.of(context).size.width*.15,
+                child:
+                BotaoPergunta(url:'lib/assets/images/elementos/lixo_garrafa.png',
+                    ativo:btn_3,click: (){
+                      setState(() {
 
-              ])
-        ]);
+                        visible_itensmap=false;
+                        startTimer();
+                        btn_3=false;
+                      });
+                    })),
+
+
+            Positioned(
+                top: MediaQuery.of(context).size.height*.2,
+                right: MediaQuery.of(context).size.width*.15,
+                child:
+                BotaoPergunta(url:'lib/assets/images/elementos/lixo_pneu.png',
+                    ativo:btn_4,click: (){
+                      setState(() {
+
+                        visible_itensmap=false;
+                        btn_4=false;
+
+                        startTimer();
+                      });
+                    })),
+
+            Positioned(
+                top: MediaQuery.of(context).size.height*.225,
+                right: MediaQuery.of(context).size.width*.34,
+                child:
+                BotaoPergunta(url:'lib/assets/images/elementos/lixo_caixa.png',
+                    ativo:btn_5,click: (){
+                      setState(() {
+
+                        visible_itensmap=false;
+                        btn_5=false;
+
+                        startTimer();
+
+                      });
+                    })),
+
+          ]);
+
   }
 
   Widget Form_black(){

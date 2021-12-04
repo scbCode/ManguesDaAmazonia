@@ -10,18 +10,20 @@ class BotaoPergunta extends StatefulWidget {
 
   Function click;
   bool ativo;
-  BotaoPergunta({required this.ativo,required this.click});
+  String url;
+  BotaoPergunta({required this.url,required this.ativo,required this.click});
 
   @override
-  _BotaoPergunta createState() => _BotaoPergunta(ativo: ativo,click:click);
+  _BotaoPergunta createState() => _BotaoPergunta(url: url,ativo: ativo,click:click);
 }
 
 class _BotaoPergunta extends State<BotaoPergunta> with SingleTickerProviderStateMixin {
 
    bool ativo=true;
-  Function click;
+   Function click;
+   String url;
 
-  _BotaoPergunta({required this.ativo,required this.click});
+  _BotaoPergunta({required this.url,required this.ativo,required this.click});
 
   @override
   void initState() {
@@ -41,10 +43,14 @@ class _BotaoPergunta extends State<BotaoPergunta> with SingleTickerProviderState
         },
           child:
           ativo ?
-            Container(width: MediaQuery.of(context).size.width*.1,height:
-                 MediaQuery.of(context).size.height*.25,color: Colors.white.withAlpha(150))
+          Container(child:
+          Image.asset(url,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width*.125, fit: BoxFit.cover))
               :
               Container(width: 0,height: 0,color: Colors.white.withAlpha(150)
-              ,));
+              ));
   }
 }
