@@ -306,21 +306,24 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
       Stack(
         alignment: Alignment.topCenter,
         children: [
-          
-        Positioned(
-          left: 5,
-          top: MediaQuery
-              .of(context)
-              .size
-              .height*.3,
-          child:
-            Container(child:
+
+          Positioned(
+              left: 5,
+              top: MediaQuery
+                  .of(context)
+                  .size
+                  .height*.3,
+              child:
+              Container(child:
               Image.asset('lib/assets/images/elementos/lixo_sombrinha.png',
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width*.09, fit: BoxFit.cover))
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width*.09, fit: BoxFit.cover))
           ),
+
+
+
         Positioned(
           top: MediaQuery
               .of(context)

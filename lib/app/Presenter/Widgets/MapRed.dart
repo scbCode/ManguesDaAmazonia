@@ -52,6 +52,8 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
   bool btn_4 = true;
   bool btn_5 = true;
   int vidas = 3;
+  String textCarang = "A nossa casa tá uma zona! Mas tu podes "
+      "ajudar a gente a colocar ordem no lugar.";
 
   int totalPerguntas_respondidas = 0;
 
@@ -116,11 +118,25 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                 child:
                 Visibility(visible: anim_carangueijo,child:
                 Container(child:
-                Image.asset('lib/assets/images/elementos/balao_carangueijo.png',
+                Image.asset('lib/assets/images/elementos/balao_empty.png',
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.3, fit: BoxFit.cover)))),
+                        .width*.34, fit: BoxFit.cover)))),
+                Positioned(
+                    top: MediaQuery.of(context).size.height*.4,
+                    left: MediaQuery.of(context).size.width*.225,
+                    child:
+                    Visibility(visible: anim_carangueijo,child:
+              Container(
+                padding: EdgeInsets.all(10),
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width*.3,
+                  child:Text(textCarang,style:
+                  TextStyle(color:  Colors.black,fontSize: 16),))
+            )),
 
             Positioned(
                 bottom: MediaQuery.of(context).size.height*.08,
@@ -490,7 +506,18 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
           });
         } else {
           setState(() {
+
             _start_carang--;
+
+            if (_start_carang == 15)
+              textCarang = 'Basta tu tocar em um dos lixos que uma caixa de pergunta vai se abrir.';
+
+            if (_start_carang == 7)
+              textCarang = 'Basta escolher a pergunta certa e PUFF! Magicamente o lixo vai sumir.';
+
+            if (_start_carang == 3)
+              textCarang = 'Boa sorte!';
+
           });
         }
       },

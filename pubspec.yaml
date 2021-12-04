@@ -81,6 +81,7 @@ flutter:
     - balao_carangueijo.png
     - fundo_mangue_vermelho.jpg
     - garca_questoes.png
+    - balao_empty.png
   # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
