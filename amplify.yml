@@ -2,7 +2,6 @@ version: 1
 frontend:
   phases:
     preBuild:
-    []
     # IMPORTANT - Please verify your build commands
     build:
       commands:
