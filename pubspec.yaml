@@ -83,6 +83,22 @@ flutter:
     - garca_questoes.png
     - balao_empty.png
     - logo_mangue.jpeg
+    - pop_acerto.png
+    - voce_errou.png
+    - link_360.png
+    - botao_pular.png
+    - cenario_tralhoto.jpg
+    - garca_e_carangueijo.png
+    - tralhoto.png
+    - mapa_completo.png
+    - mangue_preto.jpg
+    - mao_pelada.png
+    - mao_pelada_feliz.png
+    - garca_e_mao_pelada.png
+    - mangue_branco.jpg
+    - garca_triste.png
+    - garca_feliz.png
+    - garca_e_mao_pelada.jpg
   # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

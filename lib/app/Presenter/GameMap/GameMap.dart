@@ -114,8 +114,11 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
           Visibility(visible: (width_red==1) && (width_black==1) && (width_white==1),child:
           lixos_map_vermelho()),
 
-          Visibility(visible: (width_red==1) && (width_black==1) && (width_white==1),child:
+          Visibility(visible:!map_red_finalizado &&  (width_red==1) && (width_black==1) && (width_white==1),child:
           lixos_map_preto_desativado()),
+
+          Visibility(visible:map_red_finalizado &&  (width_red==1) && (width_black==1) && (width_white==1),child:
+          lixos_map_preto_ativado()),
 
           Visibility(visible: (width_red==1) && (width_black==1) && (width_white==1),child:
           lixos_map_branco_desativado()),
@@ -146,7 +149,8 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                          duration: const Duration(milliseconds: 500),
                          child:
                      Container(
-                         width: width_red==3  ? (MediaQuery.of(context).size.width)  : MediaQuery.of(context).size.width*.27,
+                    width: width_red==3 ? (MediaQuery.of(context).size.width) :
+                    width_black==3 || width_white== 3 ? 0.0 :  MediaQuery.of(context).size.width*.3,
                          height: MediaQuery.of(context).size.height,
                          alignment: Alignment.center,
                          decoration: BoxDecoration(color:Colors.transparent),
@@ -162,6 +166,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                           });
                              else
                            setState(() {
+                             print("MAPA Finalizado");
                              width_red=1;
                              width_black=1.0;
                              width_white=1.0;
@@ -173,34 +178,44 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
 
                  GestureDetector(
                       onTap:(){
+                        print("MAPA PRETO");
+                        print(map_red_finalizado);
                         if (!map_black_finalizado && map_red_finalizado)
-                        setState(() {
-                        width_red=0;
-                        width_black=3;
-                        width_white=0;
-
-                      });
-                        }
-                      ,
+                          setState(() {
+                            width_red=0;
+                            width_black=3;
+                            width_white=0;
+                          });
+                        },
                       child:
                       AnimatedSize(
                           curve: Curves.easeInOut,
                           duration: const Duration(milliseconds: 500),
                           child:
                          Container(
-                             width: (MediaQuery.of(context).size.width*.27)*width_black,
+                             height: MediaQuery.of(context).size.height,
+                             width: width_black==3  ? (MediaQuery.of(context).size.width)  :
+                               width_red==3 || width_white == 3 ? 0.0 :
+                              MediaQuery.of(context).size.width*.3,
                              alignment: Alignment.center,
-                           decoration: BoxDecoration(color:Colors.transparent),
-                           padding: EdgeInsets.all(12),
-                            child: Visibility(child: MapBlack((){
-                              setState(() {
-                                width_red = 1.0;
-                                width_black = 1.0;
-                                width_white = 1.0;
-                                map_black_finalizado = true;
-                              });
-                            }),visible:
-                            width_black==3),
+                             decoration: BoxDecoration(color:Colors.transparent),
+                             child:  Visibility(child:
+                            MapBlack((value){
+                                        if (!value)
+                                          setState(() {
+                                            width_red=1;
+                                            width_black=1.0;
+                                            width_white=1.0;
+                                            map_black_finalizado=false;
+                                          });
+                                 else
+                                        setState(() {
+                                          width_red=1;
+                                          width_black=1.0;
+                                          width_white=1.0;
+                                            map_black_finalizado=true;
+                                        });
+                                        }),visible: width_black==3)
                          ))),
 
                  GestureDetector(
@@ -218,17 +233,28 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                           duration: const Duration(milliseconds: 500),
                           child:
                        Container(
-                           width: (MediaQuery.of(context).size.width*.27)*width_white,
-                           alignment: Alignment.center,
-                          decoration: BoxDecoration(color:Colors.transparent),
-                          padding: EdgeInsets.all(12),child:
-                       Visibility(child: MapWhite((){
-                       setState(() {
-                         width_red = 1.0;
-                         width_black = 1.0;
-                         width_white = 1.0;
-                         map_white_finalizado = true;
-                       });
+                              height: MediaQuery.of(context).size.height,
+                              width: width_white==3  ? (MediaQuery.of(context).size.width)  :
+                              width_black==3 || width_red == 3 ? 0.0 :
+                              MediaQuery.of(context).size.width*.3,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(color:Colors.transparent),
+                         child:
+                       Visibility(child: MapWhite((value){
+                         if (!value)
+                           setState(() {
+                             width_red=1;
+                             width_black=1.0;
+                             width_white=1.0;
+                             map_white_finalizado=false;
+                           });
+                         else
+                           setState(() {
+                             width_red=1;
+                             width_black=1.0;
+                             width_white=1.0;
+                             map_white_finalizado=true;
+                           });
                        }),visible:
                        width_white==3),))),
 
@@ -263,12 +289,12 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
         if (map_red_finalizado && !map_black_finalizado){
           return
             width_black != 3 ?
-            new Image.asset('lib/assets/images/tela_13.png',
+            new Image.asset('lib/assets/images/elementos/mapa_completo.png',
               width: MediaQuery
                   .of(context)
                   .size
                   .width, fit: BoxFit.cover,) :
-            new Image.asset('lib/assets/images/tela_14.png',
+            new Image.asset('lib/assets/images/elementos/mangue_preto.jpg',
                 height: MediaQuery
                     .of(context)
                     .size
@@ -280,21 +306,21 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
       }else {
 
    return
-   width_white != 3 ?
-   new Image.asset('lib/assets/images/tela_13.png',
-   width: MediaQuery
-       .of(context)
-       .size
-       .width, fit: BoxFit.cover,) :
-   new Image.asset('lib/assets/images/tela_14.png',
-   height: MediaQuery
-       .of(context)
-       .size
-       .height,
-   width: MediaQuery
-       .of(context)
-       .size
-       .width, fit: BoxFit.cover);
+       width_white != 3 ?
+         new Image.asset('lib/assets/images/elementos/mapa_completo.png',
+         width: MediaQuery
+             .of(context)
+             .size
+             .width, fit: BoxFit.cover,) :
+       new Image.asset('lib/assets/images/tela_14.png',
+       height: MediaQuery
+           .of(context)
+           .size
+           .height,
+       width: MediaQuery
+           .of(context)
+           .size
+           .width, fit: BoxFit.cover);
    }}
 
 
@@ -478,6 +504,102 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
           child:
           Container(child:
           Image.asset('lib/assets/images/elementos/lixo_caixa_bloqueada.png',
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width*.1, fit: BoxFit.cover))
+          ,),
+
+      ],),
+    );
+
+  }
+
+  Widget lixos_map_preto_ativado(){
+    return Container(
+      alignment: Alignment.center,
+      child: Stack(children: [
+
+        Positioned(
+            left: MediaQuery
+                .of(context)
+                .size
+                .width*.45,
+            bottom: MediaQuery
+                .of(context)
+                .size
+                .height*.15,
+            child:
+            Container(child:
+            Image.asset('lib/assets/images/elementos/lixo_sombrinha.png',
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width*.09, fit: BoxFit.cover))
+        ),
+
+        Positioned(
+            bottom: MediaQuery
+                .of(context)
+                .size
+                .height*.225,
+            left: MediaQuery
+                .of(context)
+                .size.width*.58,
+            child:
+            Container(child:
+            Image.asset('lib/assets/images/elementos/lixo_cadeira.png',
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width*.06, fit: BoxFit.cover))
+        ),
+
+        Positioned(
+          bottom: MediaQuery
+              .of(context)
+              .size
+              .height*.08,
+          left: MediaQuery
+              .of(context)
+              .size.width*.58,
+          child:
+          Container(child:
+          Image.asset('lib/assets/images/elementos/lixo_garrafa.png',
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width*.0425, fit: BoxFit.cover))
+          ,),
+
+        Positioned(
+          bottom: MediaQuery
+              .of(context)
+              .size
+              .height*.07,
+          left: MediaQuery
+              .of(context)
+              .size.width*.37,
+          child:
+          Container(child:
+          Image.asset('lib/assets/images/elementos/lixo_pneu.png',
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width*.081, fit: BoxFit.cover))
+          ,),
+
+        Positioned(
+          bottom: MediaQuery
+              .of(context)
+              .size
+              .height*.35,
+          left: MediaQuery
+              .of(context)
+              .size.width*.34,
+          child:
+          Container(child:
+          Image.asset('lib/assets/images/elementos/lixo_caixa.png',
               width: MediaQuery
                   .of(context)
                   .size

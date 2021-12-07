@@ -76,7 +76,10 @@ class _TelaAnimacao extends State<TelaAnimacao> with SingleTickerProviderStateMi
                 child:
                 Container(
                   child:
-                  Icon(Icons.play_circle_fill, size:MediaQuery.of(context).size.width*.18),
+                  Image.asset(
+                    "lib/assets/images/elementos/botao_pular.png",
+                     height:MediaQuery.of(context).size.height*.25,
+                    width:MediaQuery.of(context).size.width*.25,),
                   decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(100)),)))
       ],);
 
