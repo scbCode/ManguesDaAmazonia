@@ -228,6 +228,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                             });
                         },
                       child:
+
                       AnimatedSize(
                           curve: Curves.easeInOut,
                           duration: const Duration(milliseconds: 500),
