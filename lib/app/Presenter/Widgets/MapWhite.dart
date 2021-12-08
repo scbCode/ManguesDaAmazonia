@@ -140,15 +140,15 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
 
             Positioned(
                 bottom: MediaQuery.of(context).size.height*.08,
-                right: MediaQuery.of(context).size.width*.25,
+                right: MediaQuery.of(context).size.width*.2,
                 child:
                 Visibility(visible: anim_carangueijo,child:
                 Container(child:
-                Image.asset('lib/assets/images/elementos/garca_e_mao_pelada.png',
+                Image.asset('lib/assets/images/elementos/arvore_falando.png',
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.20, fit: BoxFit.cover)))),
+                        .width*.30, fit: BoxFit.cover)))),
 
 
             Visibility(visible: acerto,child:
@@ -277,7 +277,17 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                 child:
                 Visibility(child:
                 Container(child:
-                Image.asset('lib/assets/images/elementos/garca_questoes.png',
+                erro ? Image.asset('lib/assets/images/elementos/garca_triste.png' ,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.25, fit: BoxFit.cover) :
+                acerto ? Image.asset('lib/assets/images/elementos/garca_feliz.png' ,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.25, fit: BoxFit.cover) :
+                Image.asset('lib/assets/images/elementos/garca_questoes.png' ,
                     width: MediaQuery
                         .of(context)
                         .size
@@ -679,7 +689,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
               margin: EdgeInsets.all(15),
               child:
               Image.asset(
-                "lib/assets/images/elementos/garca_e_carangueijo.png",
+                "lib/assets/images/elementos/garca_e_arvore.png",
                 height:MediaQuery.of(context).size.height*.6,),)),
 
             Positioned(

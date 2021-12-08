@@ -103,8 +103,13 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                           .of(context)
                           .size
                           .width*.5, fit: BoxFit.cover) :
-
+                 !map_white_finalizado && map_black_finalizado && map_red_finalizado?
                  Image.asset('lib/assets/images/elementos/arvore_3.png',
+                     width: MediaQuery
+                         .of(context)
+                         .size
+                         .width*.5, fit: BoxFit.cover) :
+                 Image.asset('lib/assets/images/elementos/arvore_4.png',
                      width: MediaQuery
                          .of(context)
                          .size
@@ -160,7 +165,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
           Visibility(visible: !map_black_finalizado &&  (width_red==1) && (width_black==1) && (width_white==1),child:
           lixos_map_branco_desativado()),
 
-          Visibility(visible: map_black_finalizado && (width_red==1) && (width_black==1) && (width_white==1),child:
+          Visibility(visible: !map_white_finalizado && map_black_finalizado && (width_red==1) && (width_black==1) && (width_white==1),child:
           lixos_map_branco_ativado()),
 
           Visibility(visible: map_black_finalizado && (width_red==1) && (width_black==1) && (width_white==1),child:
@@ -371,7 +376,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
              .of(context)
              .size
              .width, fit: BoxFit.cover,) :
-       new Image.asset('lib/assets/images/tela_14.png',
+       new Image.asset('lib/assets/images/elementos/mangue_branco.jpg',
        height: MediaQuery
            .of(context)
            .size
