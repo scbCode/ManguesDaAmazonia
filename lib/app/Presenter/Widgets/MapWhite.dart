@@ -294,7 +294,9 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20)),
                     child:
-
+                    FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child:
                     Column(children: [
 
                       GestureDetector(
@@ -447,7 +449,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                             child: Text( form_red[mapaSelect_red][4],style: TextStyle(color:Colors.brown,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
 
 
-                    ]))
+                    ])))
             )
 
 

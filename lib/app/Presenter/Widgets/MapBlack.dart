@@ -305,7 +305,9 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20)),
                     child:
-
+                    FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child:
                     Column(children: [
 
                       GestureDetector(
@@ -458,7 +460,7 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                             child: Text( form_red[mapaSelect_red][4],style: TextStyle(color:Colors.brown,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
 
 
-                    ]))
+                    ])))
             )
 
 
@@ -688,7 +690,7 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
               margin: EdgeInsets.all(15),
               child:
               Image.asset(
-                "lib/assets/images/elementos/garca_e_mao_pelada.jpg",
+                "lib/assets/images/elementos/garca_e_mao_pelada.png",
                 height:MediaQuery.of(context).size.height*.6,),)),
 
             Positioned(

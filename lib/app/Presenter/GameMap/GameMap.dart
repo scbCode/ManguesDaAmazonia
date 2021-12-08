@@ -38,8 +38,8 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   int resp_red = 1;
   int resp_jogada = -1;
   bool acerto = false;
-  bool map_red_finalizado= false;
-  bool map_black_finalizado= false;
+  bool map_red_finalizado= true;
+  bool map_black_finalizado= true;
   bool map_white_finalizado= false;
   List<bool> acertos_red = [false,false,false,false,false];
 
@@ -111,17 +111,75 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                          .width*.5, fit: BoxFit.cover),
               )),
 
-          Visibility(visible: (width_red==1) && (width_black==1) && (width_white==1),child:
+          Visibility(visible: !map_red_finalizado && (width_red==1) && (width_black==1) && (width_white==1),child:
           lixos_map_vermelho()),
+
+          //cad vermelho
+          Visibility(visible:  (width_red==1) && (width_black==1) && (width_white==1),child:
+            Positioned(
+            bottom: MediaQuery
+                .of(context)
+                .size
+                .height*.1,
+            left: MediaQuery
+                .of(context)
+                .size.width*.1,
+            child:
+            Container(child:
+            Image.asset('lib/assets/images/elementos/cadeado_aberto.png',
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width*.09, fit: BoxFit.cover))
+            ,)),
 
           Visibility(visible:!map_red_finalizado &&  (width_red==1) && (width_black==1) && (width_white==1),child:
           lixos_map_preto_desativado()),
 
-          Visibility(visible:map_red_finalizado &&  (width_red==1) && (width_black==1) && (width_white==1),child:
+          Visibility(visible:map_red_finalizado &&  !map_black_finalizado && (width_red==1) && (width_black==1) && (width_white==1),child:
           lixos_map_preto_ativado()),
 
-          Visibility(visible: (width_red==1) && (width_black==1) && (width_white==1),child:
+          Visibility(visible: map_red_finalizado &&  (width_red==1) && (width_black==1) && (width_white==1),child:
+          Positioned(
+                    bottom: MediaQuery
+                        .of(context)
+                        .size
+                        .height*.1,
+                    left: MediaQuery
+                        .of(context)
+                        .size.width*.45,
+                    child:
+                    Container(child:
+                    Image.asset('lib/assets/images/elementos/cadeado_aberto.png',
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width*.09, fit: BoxFit.cover) )
+                )),
+
+          Visibility(visible: !map_black_finalizado &&  (width_red==1) && (width_black==1) && (width_white==1),child:
           lixos_map_branco_desativado()),
+
+          Visibility(visible: map_black_finalizado && (width_red==1) && (width_black==1) && (width_white==1),child:
+          lixos_map_branco_ativado()),
+
+          Visibility(visible: map_black_finalizado && (width_red==1) && (width_black==1) && (width_white==1),child:
+           Positioned(
+                bottom: MediaQuery
+                    .of(context)
+                    .size
+                    .height*.1,
+                right: MediaQuery
+                    .of(context)
+                    .size.width*.125,
+              child:
+              Container(child:
+              Image.asset('lib/assets/images/elementos/cadeado_aberto.png',
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width*.09, fit: BoxFit.cover) )
+          )),
 
           Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -323,7 +381,6 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
            .width, fit: BoxFit.cover);
    }}
 
-
   Widget lixos_map_vermelho(){
     return
     Container(
@@ -347,77 +404,74 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                       .size
                       .width*.09, fit: BoxFit.cover))
           ),
+          Positioned(
+            top: MediaQuery
+                .of(context)
+                .size
+                .height*.2,
+            left: MediaQuery
+                .of(context)
+                .size.width*.125,
+            child:
+            Container(child:
+            Image.asset('lib/assets/images/elementos/lixo_cadeira.png',
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width*.05, fit: BoxFit.cover))
+            ),
+          Positioned(
+            top: MediaQuery
+                .of(context)
+                .size
+                .height*.28,
+            left: MediaQuery
+                .of(context)
+                .size.width*.22,
+            child:
+            Container(child:
+            Image.asset('lib/assets/images/elementos/lixo_garrafa.png',
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width*.0425, fit: BoxFit.cover))
+            ,),
+          Positioned(
+            top: MediaQuery
+                .of(context)
+                .size
+                .height*.47,
+            left: MediaQuery
+                .of(context)
+                .size.width*.15,
+            child:
+            Container(child:
+            Image.asset('lib/assets/images/elementos/lixo_pneu.png',
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width*.081, fit: BoxFit.cover))
+            ,),
+          Positioned(
+            top: MediaQuery
+                .of(context)
+                .size
+                .height*.432,
+            left: MediaQuery
+                .of(context)
+                .size.width*.27,
+            child:
+            Container(child:
+            Image.asset('lib/assets/images/elementos/lixo_caixa.png',
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width*.09, fit: BoxFit.cover))
+            ,),
 
-
-
-        Positioned(
-          top: MediaQuery
-              .of(context)
-              .size
-              .height*.2,
-          left: MediaQuery
-              .of(context)
-              .size.width*.125,
-          child:
-          Container(child:
-          Image.asset('lib/assets/images/elementos/lixo_cadeira.png',
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width*.05, fit: BoxFit.cover))
-          ),
-        Positioned(
-          top: MediaQuery
-              .of(context)
-              .size
-              .height*.28,
-          left: MediaQuery
-              .of(context)
-              .size.width*.22,
-          child:
-          Container(child:
-          Image.asset('lib/assets/images/elementos/lixo_garrafa.png',
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width*.0425, fit: BoxFit.cover))
-          ,),
-        Positioned(
-          top: MediaQuery
-              .of(context)
-              .size
-              .height*.47,
-          left: MediaQuery
-              .of(context)
-              .size.width*.15,
-          child:
-          Container(child:
-          Image.asset('lib/assets/images/elementos/lixo_pneu.png',
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width*.081, fit: BoxFit.cover))
-          ,),
-        Positioned(
-          top: MediaQuery
-              .of(context)
-              .size
-              .height*.432,
-          left: MediaQuery
-              .of(context)
-              .size.width*.27,
-          child:
-          Container(child:
-          Image.asset('lib/assets/images/elementos/lixo_caixa.png',
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width*.09, fit: BoxFit.cover))
-          ,),
 
       ],));
   }
-
 
   Widget lixos_map_preto_desativado(){
     return Container(
@@ -510,6 +564,23 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                   .width*.1, fit: BoxFit.cover))
           ,),
 
+
+        Positioned(
+          bottom: MediaQuery
+              .of(context)
+              .size
+              .height*.1,
+          left: MediaQuery
+              .of(context)
+              .size.width*.45,
+          child:
+          Container(child:
+            Image.asset('lib/assets/images/elementos/cadeado_fechado.png',
+            width: MediaQuery
+                .of(context)
+                .size
+                .width*.09, fit: BoxFit.cover) )
+          ),
       ],),
     );
 
@@ -606,11 +677,11 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                   .width*.1, fit: BoxFit.cover))
           ,),
 
+
       ],),
     );
 
   }
-
 
   Widget lixos_map_branco_desativado(){
     return
@@ -694,6 +765,113 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                 child:
                 Container(child:
                 Image.asset('lib/assets/images/elementos/lixo_caixa_bloqueada.png',
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.09, fit: BoxFit.cover))
+                ,),
+              Positioned(
+                  bottom: MediaQuery
+                      .of(context)
+                      .size
+                      .height*.1,
+                  right: MediaQuery
+                      .of(context)
+                      .size.width*.125,
+                  child:
+                  Container(child:
+                  Image.asset('lib/assets/images/elementos/cadeado_fechado.png',
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width*.09, fit: BoxFit.cover) )
+              ),
+
+            ],));
+  }
+
+  Widget lixos_map_branco_ativado(){
+    return
+      Container(
+          alignment: Alignment.topCenter,
+          child:
+          Stack(
+            alignment: Alignment.topCenter,
+            children: [
+
+              Positioned(
+                  right: 5,
+                  top: MediaQuery
+                      .of(context)
+                      .size
+                      .height*.3,
+                  child:
+                  Container(child:
+                  Image.asset('lib/assets/images/elementos/lixo_sombrinha.png',
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width*.09, fit: BoxFit.cover))
+              ),
+              Positioned(
+                  top: MediaQuery
+                      .of(context)
+                      .size
+                      .height*.2,
+                  right: MediaQuery
+                      .of(context)
+                      .size.width*.125,
+                  child:
+                  Container(child:
+                  Image.asset('lib/assets/images/elementos/lixo_cadeira.png',
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width*.05, fit: BoxFit.cover))
+              ),
+              Positioned(
+                top: MediaQuery
+                    .of(context)
+                    .size
+                    .height*.325,
+                right: MediaQuery
+                    .of(context)
+                    .size.width*.18,
+                child:
+                Container(child:
+                Image.asset('lib/assets/images/elementos/lixo_garrafa.png',
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.0425, fit: BoxFit.cover))
+                ,),
+              Positioned(
+                top: MediaQuery
+                    .of(context)
+                    .size
+                    .height*.47,
+                right: MediaQuery
+                    .of(context)
+                    .size.width*.25,
+                child:
+                Container(child:
+                Image.asset('lib/assets/images/elementos/lixo_pneu.png',
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.09, fit: BoxFit.cover))
+                ,),
+              Positioned(
+                top: MediaQuery
+                    .of(context)
+                    .size
+                    .height*.32,
+                right: MediaQuery
+                    .of(context)
+                    .size.width*.27,
+                child:
+                Container(child:
+                Image.asset('lib/assets/images/elementos/lixo_caixa.png',
                     width: MediaQuery
                         .of(context)
                         .size

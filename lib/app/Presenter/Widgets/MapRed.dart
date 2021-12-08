@@ -150,9 +150,6 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                     .size
                     .width*.20, fit: BoxFit.cover)))),
 
-
-
-
             Visibility(visible: acerto,child:
             popAcerto()),
 
@@ -300,14 +297,16 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
             bottom:30,
             left: 50,
             child:
-        Container(
-            margin: EdgeInsets.all(10),
-            width:MediaQuery.of(context).size.width*.4,
-            height:MediaQuery.of(context).size.height*.6,
-            decoration: BoxDecoration(
+          Container(
+                margin: EdgeInsets.all(10),
+                width:MediaQuery.of(context).size.width*.4,
+                height:MediaQuery.of(context).size.height*.6,
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20)),
               child:
-
+              FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child:
               Column(children: [
 
                 GestureDetector(
@@ -460,7 +459,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                       child: Text( form_red[mapaSelect_red][4],style: TextStyle(color:Colors.brown,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
 
 
-              ]))
+              ])))
           )
 
 
