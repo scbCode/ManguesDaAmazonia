@@ -267,7 +267,7 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
           child:
           Stack(children:[
 
-            Image.asset('lib/assets/images/elementos/mangue_preto.jpg',
+            Image.asset('lib/assets/images/elementos/fundo_mangue_preto.jpg',
                 width:MediaQuery.of(context).size.width,
                 height:MediaQuery.of(context).size.height,
                 fit: BoxFit.cover),

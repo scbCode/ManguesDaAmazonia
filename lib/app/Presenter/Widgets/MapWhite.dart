@@ -266,7 +266,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
           child:
           Stack(children:[
 
-            Image.asset('lib/assets/images/elementos/mangue_branco.jpg',
+            Image.asset('lib/assets/images/elementos/fundo_mangue_branco.jpg',
                 width:MediaQuery.of(context).size.width,
                 height:MediaQuery.of(context).size.height,
                 fit: BoxFit.cover),
@@ -684,17 +684,18 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
 
             Positioned(
                 bottom:0,
-                left:15,child:
+                left:0,child:
             Container(
               margin: EdgeInsets.all(15),
               child:
               Image.asset(
                 "lib/assets/images/elementos/garca_e_arvore.png",
-                height:MediaQuery.of(context).size.height*.6,),)),
+                height:MediaQuery.of(context).size.height*.98,fit:
+                BoxFit.cover,),)),
 
             Positioned(
                 top:20,
-                left:MediaQuery.of(context).size.width*.35,child:
+                left:MediaQuery.of(context).size.width*.3,child:
             Container(
               margin: EdgeInsets.all(15),
               child:

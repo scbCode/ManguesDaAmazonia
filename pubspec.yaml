@@ -103,6 +103,8 @@ flutter:
     - arvore_4.png
     - arvore_falando.png
     - garca_e_arvore.png
+    - fundo_mangue_branco.jpg
+    - fundo_mangue_preto.jpg
   # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
