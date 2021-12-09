@@ -501,10 +501,10 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
               top:0,
               left: 0,
               child:
-              Container( color:Colors.white.withAlpha(200),height: MediaQuery
+              Container( height: MediaQuery
                   .of(context)
                   .size
-                  .height,  width: MediaQuery
+                  .height, width: MediaQuery
                   .of(context)
                   .size
                   .width,child:
