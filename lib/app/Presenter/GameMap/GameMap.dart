@@ -490,6 +490,26 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
           ))),
 
 
+          Visibility(visible: limpou_mangue_vermelho,child:
+          GestureDetector(
+              onTap:(){
+                setState(() {
+                  limpou_mangue_vermelho=false;
+                });
+              },child:
+          Positioned(
+              top:0,
+              left: 0,
+              child:
+              Container( color:Colors.white.withAlpha(200),height: MediaQuery
+                  .of(context)
+                  .size
+                  .height,  width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,child:
+              Image.asset('lib/assets/images/elementos/limpou_vermelho.png',) )
+          ))),
 
 
 
