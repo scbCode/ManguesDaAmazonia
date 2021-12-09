@@ -446,10 +446,6 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                  limpou_mangue_preto=false;
                });
            },child:
-          Positioned(
-              top:0,
-              left: 0,
-              child:
               Container( color:Colors.white.withAlpha(200),height: MediaQuery
                   .of(context)
                   .size
@@ -462,7 +458,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                       .of(context)
                       .size
                       .height*.03) )
-          ))),
+          )),
 
           Visibility(visible: limpou_mangue_branco,child:
           GestureDetector(
@@ -471,10 +467,6 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                   limpou_mangue_branco=false;
                 });
               },child:
-          Positioned(
-              top:0,
-              left: 0,
-              child:
               Container( color:Colors.white.withAlpha(200),height: MediaQuery
                   .of(context)
                   .size
@@ -487,7 +479,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                       .of(context)
                       .size
                       .height*.03) )
-          ))),
+          )),
 
           Visibility(visible: limpou_mangue_vermelho,child:
           GestureDetector(
