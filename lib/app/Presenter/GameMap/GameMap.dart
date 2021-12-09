@@ -489,7 +489,6 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                       .height*.03) )
           ))),
 
-
           Visibility(visible: limpou_mangue_vermelho,child:
           GestureDetector(
               onTap:(){
@@ -497,10 +496,6 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                   limpou_mangue_vermelho=false;
                 });
               },child:
-          Positioned(
-              top:0,
-              left: 0,
-              child:
               Container( height: MediaQuery
                   .of(context)
                   .size
@@ -509,8 +504,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                   .size
                   .width,child:
               Image.asset('lib/assets/images/elementos/limpou_vermelho.png',) )
-          ))),
-
+          )),
 
 
           // Visibility(visible: load,child:
