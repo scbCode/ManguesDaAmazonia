@@ -27,7 +27,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   double width_white=1;
   int mapaSelect_red=0;
   bool form_red_v=false;
-  bool load =true;
+  bool load =false;
   bool limpou_mangue_vermelho =false;
   bool limpou_mangue_preto =false;
   bool limpou_mangue_branco =false;
@@ -120,7 +120,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   void initState() {
     // TODO: implement initState
     super.initState();
-    load=true;
+
     _controller_red = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
     _controller_black = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
     _controller_white = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
