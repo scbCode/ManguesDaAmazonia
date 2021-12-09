@@ -27,19 +27,14 @@ class _TelaAnimacao extends State<TelaAnimacao> with SingleTickerProviderStateMi
     // TODO: implement initState
     super.initState();
 
-    repository.initBD();
-    getJogador_().then((value) => setState((){  print(value.nome);}));
-
   }
 
-  Future<dynamic> getJogador_(){
-    return repository.getJogador();
-  }
 
   @override
   Widget build(BuildContext context) {
     return
       Container(
+
         alignment: Alignment.center,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -74,7 +69,7 @@ class _TelaAnimacao extends State<TelaAnimacao> with SingleTickerProviderStateMi
                   setState(() {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Home()),
+                      MaterialPageRoute(builder: (context) => Home(false)),
                     );
                   });
                 },

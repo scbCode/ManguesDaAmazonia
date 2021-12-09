@@ -67,11 +67,11 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
       fit: BoxFit.cover);
 
   late List<List<String>> form_red = [
-    ["A) AAAAAAAA AAAAA","B) B","C) C","D) D","E) E"],
-    ["A) 2","B) 3","C) 4","5) D","E) 6"],
-    ["A) 2A","B) 3A","C) 4A","5) DA","E) 6A"],
-    ["A) 1A","B) 2A","C) 3A","5) 4A","E) 5A"],
-    ["A) 1A","B) 2A","C) 3A","5) 4A","E) 5A"],
+    ["Resposta Certa","Resposta","Resposta","Resposta","Resposta"],
+    ["Resposta","Resposta","Resposta","Resposta","Resposta"],
+    ["Resposta","Resposta","Resposta","Resposta","Resposta"],
+    ["Resposta","Resposta","Resposta","Resposta","Resposta"],
+    ["Resposta","Resposta","Resposta","Resposta","Resposta"],
   ];
 
   double w_alt = 0.0;
@@ -620,9 +620,12 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
   Widget popAcerto(){
     return
       Container(
+          color: Colors.white.withAlpha(150),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child: Image.asset("lib/assets/images/elementos/pop_acerto.png"));
+          child: Image.asset("lib/assets/images/elementos/pop_acerto.png",
+              width: MediaQuery.of(context).size.width*.4,
+              height: MediaQuery.of(context).size.height*.4));
     // Container(
     //     width: 260,
     //     height: 230,

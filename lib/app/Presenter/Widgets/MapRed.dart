@@ -68,11 +68,11 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
       fit: BoxFit.cover);
 
   late List<List<String>> form_red = [
-      ["AAAAAAAA AAAAA abuebaub\nxcvbnmnbc","bbbbb","CCCCC","CCCC","CCCC"],
-      ["A) 2","B) 3","C) 4","5) D","E) 6"],
-      ["A) 2A","B) 3A","C) 4A","5) DA","E) 6A"],
-      ["A) 1A","B) 2A","C) 3A","5) 4A","E) 5A"],
-      ["A) 1A","B) 2A","C) 3A","5) 4A","E) 5A"],
+      ["Resposta Certa","Resposta","Resposta","Resposta","Resposta"],
+      ["Resposta","Resposta","Resposta","Resposta","Resposta"],
+      ["Resposta","Resposta","Resposta","Resposta","Resposta"],
+      ["Resposta","Resposta","Resposta","Resposta","Resposta"],
+      ["Resposta","Resposta","Resposta","Resposta","Resposta"],
   ];
 
    double w_alt = 0.0;
@@ -113,7 +113,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
             height: MediaQuery.of(context).size.height,
             width:MediaQuery.of(context).size.width,
             child:
-          Visibility(
+            Visibility(
                 visible: form_red_v,
                 child:Form_red())),
 
@@ -122,7 +122,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
             Positioned(
                 bottom: MediaQuery.of(context).size.height*.25,
-                right: MediaQuery.of(context).size.width*.45,
+                right: MediaQuery.of(context).size.width*.4325,
                 child:
                 Visibility(visible: anim_carangueijo,child:
                 Container(child:
@@ -133,23 +133,17 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                         .width*.34, fit: BoxFit.cover)))),
 
             Positioned(
-                    bottom: MediaQuery.of(context).size.height*.27,
+                    bottom: MediaQuery.of(context).size.height*.26,
                     left: MediaQuery.of(context).size.width*.27,
                     child:
                     Visibility(visible: anim_carangueijo,child:
               Container(
-                padding: EdgeInsets.all(10),
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height*.27,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width*.25,
-                  child:Text(textCarang,textAlign: TextAlign.start,style:
+                  padding: EdgeInsets.all(10),
+                  height: MediaQuery.of(context).size.height*.27,
+                  width: MediaQuery.of(context).size.width*.25,
+                child:Text(textCarang,textAlign: TextAlign.start,style:
                   TextStyle(color:  Colors.black,fontSize: MediaQuery.of(context).size.width*.018),))
-            )),
+              )),
 
             Positioned(
                 bottom: MediaQuery.of(context).size.height*.08,
@@ -175,7 +169,6 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
             Visibility(visible: finalizado_,child:
             popFinalMap()),
 
-
             Positioned(
                 top: 0,
                 right: MediaQuery.of(context).size.width*.4,
@@ -187,7 +180,6 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                         .of(context)
                         .size
                         .width*.25, fit: BoxFit.cover)))),
-
 
           ]);
   }

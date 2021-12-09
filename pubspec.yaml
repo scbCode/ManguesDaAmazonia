@@ -132,6 +132,7 @@ flutter:
     - placa_mangue_preto_map.png
     - loading.png
     - placa_mangue_branco_map.png
+    - selo.png
   # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

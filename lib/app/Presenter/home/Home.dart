@@ -9,17 +9,21 @@ import 'package:mobx/mobx.dart';
 
 
 class Home extends StatefulWidget {
+  bool selo=false;
 
-  Home();
+  Home(this.selo);
 
   @override
-  _Home createState() => _Home();
+  _Home createState() => _Home(selo);
 }
 
 class _Home extends State<Home> with SingleTickerProviderStateMixin  {
   Repository repository = Repository();
   late Jogador jogador;
   bool v_telaInicial=false;
+  bool selo=false;
+
+  _Home(this.selo);
 
   @override
   void initState() {
@@ -37,6 +41,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
   Widget build(BuildContext context) {
     return
       Container(
+
         alignment: Alignment.center,
         child: Stack(
             children:[
@@ -70,7 +75,6 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
                         width:MediaQuery.of(context).size.width*.04,fit: BoxFit.cover,)
                   )),
 
-
               Positioned(
                   bottom: 0,
                   right: MediaQuery.of(context).size.width*.05,
@@ -88,6 +92,23 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
                   alignment:Alignment.center,
                   width: MediaQuery.of(context).size.width*.4,
                   child: Image.asset('lib/assets/images/elementos/botao_jogar.png',fit: BoxFit.cover,)))),
+
+              Visibility(visible: selo,
+                  child:
+                  Positioned(
+                      top: MediaQuery.of(context).size.height*.3,
+                      right: MediaQuery.of(context).size.width*.05,
+                      child:
+              GestureDetector(
+                  onTap:(){
+                    setState(() {
+                    });
+                  },child:
+                  Image.asset('lib/assets/images/elementos/selo.png',
+                    fit: BoxFit.cover,
+                    height: MediaQuery.of(context).size.height*.2,
+                    width: MediaQuery.of(context).size.width*.2))
+              )),
 
 
             ]),

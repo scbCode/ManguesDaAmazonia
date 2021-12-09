@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:mangues_da_amazonia/app/Presenter/Widgets/MapBlack.dart';
 import 'package:mangues_da_amazonia/app/Presenter/Widgets/MapRed.dart';
 import 'package:mangues_da_amazonia/app/Presenter/Widgets/MapWhite.dart';
+import 'package:mangues_da_amazonia/app/Presenter/home/Home.dart';
 
 class GameMap extends StatefulWidget {
 
@@ -27,7 +28,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   double width_white=1;
   int mapaSelect_red=0;
   bool form_red_v=false;
-  bool load =false;
+  bool load = true;
 
   bool limpou_mangue_vermelho =false;
   bool limpou_mangue_preto =false;
@@ -464,7 +465,10 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
           GestureDetector(
               onTap:(){
                 setState(() {
-                  limpou_mangue_branco=false;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Home(true)),
+                  );
                 });
               },child:
               Container( color:Colors.white.withAlpha(200),height: MediaQuery
@@ -505,17 +509,17 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
           )),
 
 
-          // Visibility(visible: load,child:
-          // Positioned(
-          //     top:0,
-          //     left: 0,
-          //     child:
-          //     Container(
-          //         color: Colors.white,
-          //         height: MediaQuery.of(context).size.height,
-          //         width: MediaQuery.of(context).size.width,
-          //         )
-          // )),
+          Visibility(visible: load,child:
+          Positioned(
+              top:0,
+              left: 0,
+              child:
+              Container(
+                  color: Colors.white,
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  )
+          )),
 
 
         ]);
