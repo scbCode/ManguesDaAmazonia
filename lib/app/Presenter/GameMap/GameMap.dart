@@ -113,7 +113,6 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
     }));
     precacheImage(fundo_mangue_preto.image,context);
 
-    mapa_completo.image.evict();
   }
 
 
@@ -515,17 +514,17 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                       .height*.03) )
           ))),
 
-          Visibility(visible: load,child:
-          Positioned(
-              top:0,
-              left: 0,
-              child:
-              Container(
-                  color: Colors.white,
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  )
-          )),
+          // Visibility(visible: load,child:
+          // Positioned(
+          //     top:0,
+          //     left: 0,
+          //     child:
+          //     Container(
+          //         color: Colors.white,
+          //         height: MediaQuery.of(context).size.height,
+          //         width: MediaQuery.of(context).size.width,
+          //         )
+          // )),
 
 
         ]);
