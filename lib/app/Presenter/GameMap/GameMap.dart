@@ -514,6 +514,8 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                       .height*.03) )
           ))),
 
+
+
           // Visibility(visible: load,child:
           // Positioned(
           //     top:0,
