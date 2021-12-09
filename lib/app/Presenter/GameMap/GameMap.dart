@@ -503,7 +503,13 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                   .of(context)
                   .size
                   .width,child:
-              Image.asset('lib/assets/images/elementos/limpou_vermelho.png',) )
+              Image.asset('lib/assets/images/elementos/limpou_vermelho.png', fit: BoxFit.cover,height: MediaQuery
+                  .of(context)
+                  .size
+                  .height, width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,) )
           )),
 
 
