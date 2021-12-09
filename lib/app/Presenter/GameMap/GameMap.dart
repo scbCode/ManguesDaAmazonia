@@ -28,6 +28,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   int mapaSelect_red=0;
   bool form_red_v=false;
   bool load =false;
+
   bool limpou_mangue_vermelho =false;
   bool limpou_mangue_preto =false;
   bool limpou_mangue_branco =false;
