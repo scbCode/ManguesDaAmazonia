@@ -42,7 +42,6 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
             children:[
 
               Container(
-                padding: EdgeInsets.all(15),
                 alignment:Alignment.center,
                 height:MediaQuery.of(context).size.height,
                 width:MediaQuery.of(context).size.width,
@@ -73,8 +72,8 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
 
 
               Positioned(
-                  bottom: 10,
-                  right: MediaQuery.of(context).size.width*.03,
+                  bottom: 0,
+                  right: MediaQuery.of(context).size.width*.05,
                   child:
               GestureDetector(
                       onTap: (){
@@ -87,8 +86,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
               Container(
                   padding: EdgeInsets.all(15),
                   alignment:Alignment.center,
-                  width: MediaQuery.of(context).size.width*.28,
-                  height: MediaQuery.of(context).size.height*.285,
+                  width: MediaQuery.of(context).size.width*.4,
                   child: Image.asset('lib/assets/images/elementos/botao_jogar.png',fit: BoxFit.cover,)))),
 
 

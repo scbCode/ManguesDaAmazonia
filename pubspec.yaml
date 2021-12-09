@@ -105,6 +105,33 @@ flutter:
     - garca_e_arvore.png
     - fundo_mangue_branco.jpg
     - fundo_mangue_preto.jpg
+    - placa_mangue_vermelho.png
+    - placa_mangue_preto.png
+    - placa_mangue_branco.png
+    - caixa_dialogo.png
+    - placa_mangue_vermelho_map.png
+    - a_alternativa_normal.png
+    - a_alternativa_certa.png
+    - a_alternativa_errada.png
+    - b_alternativa_errada.png
+    - b_alternativa_certa.png
+    - b_alternativa_normal.png
+    - c_alternativa_certa.png
+    - c_alternativa_errada.png
+    - c_alternativa_normal.png
+    - d_alternativa_certa.png
+    - d_alternativa_errada.png
+    - d_alternativa_normal.png
+    - caixa_pergunta.png
+    - limpou_vermelho.png
+    - limpou_preto.png
+    - limpou_branco.png
+    - placa_intro.png
+    - seta.png
+    - seta_2.png
+    - placa_mangue_preto_map.png
+    - loading.png
+    - placa_mangue_branco_map.png
   # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

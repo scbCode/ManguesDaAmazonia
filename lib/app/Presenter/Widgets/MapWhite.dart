@@ -63,8 +63,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
 
   late Image img_bg;
 
-  final img_bg_form = Image.asset(
-      "lib/assets/images/elementos/fundo_mangue_vermelho.jpg",
+  final img_bg_form = Image.asset("lib/assets/images/elementos/fundo_mangue_vermelho.jpg",
       fit: BoxFit.cover);
 
   late List<List<String>> form_red = [
@@ -75,6 +74,10 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
     ["A) 1A","B) 2A","C) 3A","5) 4A","E) 5A"],
   ];
 
+  double w_alt = 0.0;
+  Image image_a_normal = Image.asset("lib/assets/images/elementos/a_alternativa_normal.png");
+  Image image_a_certa = Image.asset("lib/assets/images/elementos/a_alternativa_certa.png");
+
   @override
   void initState() {
     super.initState();
@@ -84,15 +87,16 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
         duration: const Duration(milliseconds: 1200), vsync: this);
     _controller.repeat(reverse: true);
     startTimerAnim();
-
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     precacheImage(img_bg_form.image, context);
+    w_alt = MediaQuery.of(context).size.width*.55;
+    precacheImage(image_a_normal.image,context);
+    precacheImage(image_a_certa.image,context);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -118,24 +122,29 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                 child:
                 Visibility(visible: anim_carangueijo,child:
                 Container(child:
-                Image.asset('lib/assets/images/elementos/balao_empty.png',
+                Image.asset('lib/assets/images/elementos/caixa_dialogo.png',
                     width: MediaQuery
                         .of(context)
                         .size
                         .width*.34, fit: BoxFit.cover)))),
+
             Positioned(
-                top: MediaQuery.of(context).size.height*.4,
-                left: MediaQuery.of(context).size.width*.225,
+                bottom: MediaQuery.of(context).size.height*.25,
+                left: MediaQuery.of(context).size.width*.25,
                 child:
                 Visibility(visible: anim_carangueijo,child:
                 Container(
                     padding: EdgeInsets.all(10),
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height*.27,
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.3,
-                    child:Text(textCarang,style:
-                    TextStyle(color:  Colors.black,fontSize: 16),))
+                        .width*.25,
+                    child:Text(textCarang,textAlign: TextAlign.start,style:
+                    TextStyle(color:  Colors.black,fontSize: MediaQuery.of(context).size.width*.02),))
                 )),
 
             Positioned(
@@ -150,7 +159,6 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                         .size
                         .width*.30, fit: BoxFit.cover)))),
 
-
             Visibility(visible: acerto,child:
             popAcerto()),
 
@@ -162,6 +170,19 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
 
             Visibility(visible: finalizado_,child:
             popFinalMap()),
+
+            Positioned(
+                top: 0,
+                right: MediaQuery.of(context).size.width*.4,
+                child:
+                Visibility(visible: !form_red_v && !finalizado_ ,child:
+                Container(child:
+                Image.asset('lib/assets/images/elementos/placa_mangue_branco_map.png',
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.25, fit: BoxFit.cover)))),
+
 
           ]);
 
@@ -272,6 +293,13 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                 fit: BoxFit.cover),
 
             Positioned(
+              top: 15,
+              right: MediaQuery.of(context).size.width*.2,
+              child:  Image.asset('lib/assets/images/elementos/caixa_pergunta.png',
+                  width:MediaQuery.of(context).size.width*.5,
+                  fit: BoxFit.cover),),
+
+            Positioned(
                 bottom: 3,
                 right: MediaQuery.of(context).size.width*.02,
                 child:
@@ -291,7 +319,8 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.25, fit: BoxFit.cover)))),
+                        .width*.25, fit: BoxFit.cover)
+                ))),
 
             Positioned(
                 bottom:30,
@@ -304,9 +333,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20)),
                     child:
-                    FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child:
+
                     Column(children: [
 
                       GestureDetector(
@@ -326,16 +353,30 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                             });
                           },
                           child:
-                          Container(
-                            margin: EdgeInsets.all(4),
-                            padding: EdgeInsets.all(8),
-                            width: MediaQuery.of(context).size.width*.7,
-                            decoration: BoxDecoration(color:resp_jogada==0 ?
-                            Colors.white : Colors.amberAccent,
-                                boxShadow: [BoxShadow(color:Colors.black54)],
-                                border:  Border.all(color: Colors.brown,width: 4),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text( form_red[mapaSelect_red][0],style: TextStyle(color:Colors.brown,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
+                          FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child:
+                              Stack(
+                                  children: <Widget>[
+
+                                    Container(
+                                        margin: EdgeInsets.all(4),
+                                        width: w_alt,
+                                        child : resp_jogada == -1 ?
+                                        image_a_normal :
+                                        resp_jogada == 0 && acerto ?
+                                        image_a_certa
+                                            :
+                                        erro && resp_jogada == 0?
+                                        Image.asset("lib/assets/images/elementos/a_alternativa_errada.png"):
+                                        image_a_normal
+                                    ),
+
+                                    Positioned(left:MediaQuery.of(context).size.width*.09,
+                                        top:17,child:
+                                        Text( form_red[mapaSelect_red][0],style: TextStyle(fontSize: MediaQuery.of(context).size.width*.023,color: Colors.white,
+                                            fontFamily: 'MochiyPopPOne'))),
+                                  ]))),
 
                       GestureDetector(
                           onTap: (){
@@ -346,120 +387,149 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                                 acerto=true;
                                 _timer.cancel();
                               }else{
-
                                 vidas--;
                                 startTimerPop();
-
-
                                 erro=true;
-
                                 _timer.cancel();
                               }
                             });
                           },
                           child:
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            margin: EdgeInsets.all(4),
-                            width: MediaQuery.of(context).size.width*.7,
-                            decoration: BoxDecoration(color:resp_jogada==0 ?
-                            Colors.white : Colors.amberAccent,
-                                boxShadow: [BoxShadow(color:Colors.black54)],
-                                border:  Border.all(color: Colors.brown,width: 4),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text( form_red[mapaSelect_red][1]
-                              ,style: TextStyle(color:Colors.brown,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
+                          FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child:
+                              Stack(
+                                  children: <Widget>[
+
+                                    Container(
+                                        margin: EdgeInsets.all(4),
+                                        padding: EdgeInsets.all(8),
+                                        width: w_alt,
+                                        child : resp_jogada == -1 ?
+                                        Image.asset("lib/assets/images/elementos/b_alternativa_normal.png") :
+                                        resp_jogada == 1 && acerto ?
+                                        Image.asset("lib/assets/images/elementos/b_alternativa_certa.png")
+                                            :
+                                        erro && resp_jogada == 1?
+                                        Image.asset("lib/assets/images/elementos/b_alternativa_errada.png"):
+                                        Image.asset("lib/assets/images/elementos/b_alternativa_normal.png")
+                                    ),
+
+                                    Positioned(left:MediaQuery.of(context).size.width*.09,top:20,child:
+                                    Text( form_red[mapaSelect_red][1],style: TextStyle(fontSize:
+                                    MediaQuery.of(context).size.width*.023,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
+                                  ]))),
 
                       GestureDetector(
                           onTap: (){
                             setState(() {
                               resp_jogada=2;
                               if (resp_jogada == resp_red){
-                                acerto=true;acerto=true;
                                 startTimerPop();
+                                acerto=true;
                                 _timer.cancel();
                               }else{
-
-
                                 vidas--;
-
                                 startTimerPop();
-
                                 erro=true;
-
                                 _timer.cancel();
-
                               }
                             });
                           },
                           child:
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            margin: EdgeInsets.all(4),
-                            width: MediaQuery.of(context).size.width*.7,
-                            decoration: BoxDecoration(color:resp_jogada==0 ?
-                            Colors.white : Colors.amberAccent,
-                                boxShadow: [BoxShadow(color:Colors.black54)],
-                                border:  Border.all(color: Colors.brown,width: 4),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text( form_red[mapaSelect_red][2],style: TextStyle(color:Colors.brown,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
+                          FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child:
+                              Stack(
+                                  children: <Widget>[
+
+                                    Container(
+                                        margin: EdgeInsets.all(4),
+                                        padding: EdgeInsets.all(8),
+                                        width: w_alt,
+                                        child : resp_jogada == -1 ?
+                                        Image.asset("lib/assets/images/elementos/c_alternativa_normal.png") :
+                                        resp_jogada == 2 && acerto ?
+                                        Image.asset("lib/assets/images/elementos/c_alternativa_certa.png")
+                                            :
+                                        erro && resp_jogada == 2?
+                                        Image.asset("lib/assets/images/elementos/c_alternativa_errada.png"):
+                                        Image.asset("lib/assets/images/elementos/c_alternativa_normal.png")
+                                    ),
+
+                                    Positioned(left:MediaQuery.of(context).size.width*.08,top:20,child:
+                                    Text( form_red[mapaSelect_red][2],style: TextStyle(fontSize: 14,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
+                                  ]))),
 
                       GestureDetector(
                           onTap: (){
                             setState(() {
                               resp_jogada=3;
                               if (resp_jogada == resp_red){
-                                acerto=true;
                                 startTimerPop();
+                                acerto=true;
                                 _timer.cancel();
                               }else{
                                 vidas--;
-                                erro=true;
                                 startTimerPop();
+                                erro=true;
                                 _timer.cancel();
                               }
                             });
                           },
                           child:
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            margin: EdgeInsets.all(4),
-                            width: MediaQuery.of(context).size.width*.7,
-                            decoration: BoxDecoration(color:resp_jogada==0 ?
-                            Colors.white : Colors.amberAccent,
-                                boxShadow: [BoxShadow(color:Colors.black54)],
-                                border:  Border.all(color: Colors.brown,width: 4),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text( form_red[mapaSelect_red][3],style: TextStyle(color:Colors.brown,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
+                          FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child:
+                              Stack(
+                                  children: <Widget>[
 
-                      GestureDetector(
-                          onTap: (){setState(() {resp_jogada=4;
-                          if (resp_jogada == resp_red){
-                            acerto=true;
-                            startTimerPop();
-                            _timer.cancel();
-                          }else{
-                            vidas--;
-                            erro=true;
-                            startTimerPop();
-                            _timer.cancel();
-                          }
-                          });
-                          },
-                          child:
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            margin: EdgeInsets.all(4),
-                            width: MediaQuery.of(context).size.width*.7,
-                            decoration: BoxDecoration(color:resp_jogada==0 ?
-                            Colors.white : Colors.amberAccent,
-                                boxShadow: [BoxShadow(color:Colors.black54)],
-                                border:  Border.all(color: Colors.brown,width: 4),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text( form_red[mapaSelect_red][4],style: TextStyle(color:Colors.brown,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
+                                    Container(
+                                        margin: EdgeInsets.all(4),
+                                        padding: EdgeInsets.all(8),
+                                        width: w_alt,
+                                        child : resp_jogada == -1 ?
+                                        Image.asset("lib/assets/images/elementos/d_alternativa_normal.png") :
+                                        resp_jogada == 3 && acerto ?
+                                        Image.asset("lib/assets/images/elementos/d_alternativa_certa.png")
+                                            :
+                                        erro && resp_jogada == 3?
+                                        Image.asset("lib/assets/images/elementos/d_alternativa_errada.png"):
+                                        Image.asset("lib/assets/images/elementos/d_alternativa_normal.png")
+                                    ),
+
+                                    Positioned(left:MediaQuery.of(context).size.width*.08,top:20,child:
+                                    Text( form_red[mapaSelect_red][3],style: TextStyle(fontSize: 14,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
+                                  ]))),
+
+                      // GestureDetector(
+                      //     onTap: (){setState(() {resp_jogada=4;
+                      //         if (resp_jogada == resp_red){
+                      //           acerto=true;
+                      //           startTimerPop();
+                      //           _timer.cancel();
+                      //         }else{
+                      //             vidas--;
+                      //             erro=true;
+                      //             startTimerPop();
+                      //             _timer.cancel();
+                      //         }
+                      //       });
+                      //     },
+                      //     child:
+                      //     Container(
+                      //       padding: EdgeInsets.all(8),
+                      //       margin: EdgeInsets.all(4),
+                      //       width: MediaQuery.of(context).size.width*.7,
+                      //       decoration: BoxDecoration(color:resp_jogada==0 ?
+                      //       Colors.white : Colors.amberAccent,
+                      //           boxShadow: [BoxShadow(color:Colors.black54)],
+                      //           border:  Border.all(color: Colors.brown,width: 4),
+                      //           borderRadius: BorderRadius.circular(10)),
+                      //       child: Text( form_red[mapaSelect_red][4],style: TextStyle(color:Colors.brown,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
 
 
-                    ])))
+                    ]))
             )
 
 
@@ -655,7 +725,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
               "lib/assets/images/elementos/cenario_tralhoto.jpg",
               fit: BoxFit.cover,  height:MediaQuery.of(context).size.height,
               width:MediaQuery.of(context).size.width,),
-            Positioned(top:MediaQuery.of(context).size.height*.01,right:5,child:
+            Positioned(top:MediaQuery.of(context).size.height*.01,right:0,child:
             Container(
                 margin: EdgeInsets.all(15),
                 child:
@@ -667,40 +737,23 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                   height:MediaQuery.of(context).size.height*.35,
                   width:MediaQuery.of(context).size.width*.35,), ))),
 
-
-            Positioned(
-                bottom:0,
-                right:MediaQuery.of(context).size.width*.35,child:
-            GestureDetector(onTap:(){
-              setState((){finalizado(true);});
-            },child:
-            Container(
-              margin: EdgeInsets.all(15),
-              child:
-              Image.asset(
-                "lib/assets/images/elementos/botao_pular.png",
-                height:MediaQuery.of(context).size.height*.25,
-                width:MediaQuery.of(context).size.width*.25,),))),
-
             Positioned(
                 bottom:0,
                 left:0,child:
-            Container(
-              margin: EdgeInsets.all(15),
-              child:
-              Image.asset(
+              Container(
+                child:
+                Image.asset(
                 "lib/assets/images/elementos/garca_e_arvore.png",
-                height:MediaQuery.of(context).size.height*.98,fit:
-                BoxFit.cover,),)),
+                height:MediaQuery.of(context).size.height,),)),
 
             Positioned(
                 top:20,
-                left:MediaQuery.of(context).size.width*.3,child:
+                right:MediaQuery.of(context).size.width*.35,child:
             Container(
               margin: EdgeInsets.all(15),
               child:
               Image.asset(
-                "lib/assets/images/elementos/balao_empty.png",
+                "lib/assets/images/elementos/caixa_dialogo.png",
                 height:MediaQuery.of(context).size.height*.4,),)),
 
             Positioned(
@@ -713,10 +766,24 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                 "lib/assets/images/elementos/tralhoto.png",
                 height:MediaQuery.of(context).size.height*.5,),)),
 
+            Positioned(
+                bottom:0,
+                right:MediaQuery.of(context).size.width*.35,child:
+            GestureDetector(onTap:(){
+              setState((){finalizado(true);});
+            },child:
+            Container(
+              margin: EdgeInsets.all(15),
+              child:
+              Image.asset("lib/assets/images/elementos/seta_2.png",
+                height:MediaQuery.of(context).size.height*.25,
+                width:MediaQuery.of(context).size.width*.25,),))),
+
           ],)
       );
 
   }
+
 
   setPerguntaRespondida(){
     totalPerguntas_respondidas++;

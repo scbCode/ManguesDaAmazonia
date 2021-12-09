@@ -54,11 +54,16 @@ class _TelaAnimacao extends State<TelaAnimacao> with SingleTickerProviderStateMi
       Stack(children: [
 
         Container(
-          alignment:Alignment.center,
-          height:MediaQuery.of(context).size.height,
-          width:MediaQuery.of(context).size.width,
-          child: new Image.asset('lib/assets/images/tela_03.jpg'),
-        ),
+            alignment:Alignment.center,
+            height:MediaQuery.of(context).size.height,
+            width:MediaQuery.of(context).size.width,
+            child: new Image.asset('lib/assets/images/tela_03.jpg'),
+          ),
+
+        Positioned (
+          top:0,
+          right: MediaQuery.of(context).size.width*.05,
+          child:Image.asset('lib/assets/images/elementos/placa_intro.png',width: MediaQuery.of(context).size.width*.2,)),
 
         Positioned (
             bottom:MediaQuery.of(context).size.height*.05,
