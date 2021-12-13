@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "644783046281",
+    "project_id": "manguesdaia",
+    "storage_bucket": "manguesdaia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644783046281:android:c997f80dc620e15f281058",
+        "android_client_info": {
+          "package_name": "com.muirak.mangues_da_amazonia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "644783046281-ifvnhpo5kjn4131dacvpmgn0cti4jvj7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNIKChoYcBCuU3T8-LprdrFy_I3G_oEjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644783046281-ifvnhpo5kjn4131dacvpmgn0cti4jvj7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
