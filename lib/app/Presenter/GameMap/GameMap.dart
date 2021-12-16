@@ -30,7 +30,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   bool form_red_v=false;
   bool load = true;
 
-  bool limpou_mangue_vermelho =true;
+  bool limpou_mangue_vermelho =false;
   bool limpou_mangue_preto =false;
   bool limpou_mangue_branco =false;
   late List<List<String>> form_red;

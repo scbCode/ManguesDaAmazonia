@@ -126,22 +126,23 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                 Visibility(visible: anim_carangueijo,child:
                 Container(child:
                 Image.asset('lib/assets/images/elementos/caixa_dialogo.png',
+                    height: MediaQuery.of(context).size.height*.4,
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.34, fit: BoxFit.cover)))),
+                        .width*.34, fit: BoxFit.contain)))),
 
             Positioned(
-                    bottom: MediaQuery.of(context).size.height*.29,
-                    left: MediaQuery.of(context).size.width*.275,
-                    child:
+                right: MediaQuery.of(context).size.width*.425,
+                bottom: MediaQuery.of(context).size.height*.25,
+                child:
                     Visibility(visible: anim_carangueijo,child:
               Container(
-                  padding: EdgeInsets.all(10),
                   height: MediaQuery.of(context).size.height*.27,
-                  width: MediaQuery.of(context).size.width*.25,
+                  width: MediaQuery.of(context).size.width*.3,
+                  padding: EdgeInsets.fromLTRB(0, 0, 35, 0),
                 child:Text(textCarang, textAlign: TextAlign.start,style:
-                  TextStyle(color:  Colors.black,fontSize: MediaQuery.of(context).size.width*.018),))
+                  TextStyle(fontFamily: "MochiyPopPOne",color:  Colors.black,fontSize: MediaQuery.of(context).size.width*.016),))
               )),
 
             Positioned(
@@ -290,7 +291,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
 
         Positioned(
-            top: 30,
+            top: MediaQuery.of(context).size.height*.1,
             left: MediaQuery.of(context).size.width*.35,
             child:
           Container(
@@ -299,7 +300,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
             child:
             Text(game.perguntas[0][mapaSelect_red],textAlign:
             TextAlign.center,style: TextStyle(fontFamily: "MochiyPopPOne",color: Colors.black,fontSize:
-            MediaQuery.of(context).size.width*.016),),)),
+            MediaQuery.of(context).size.height*.03),),)),
 
 
         Positioned(
@@ -402,10 +403,8 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                       resp_jogada=1;
                       if (resp_jogada == resp_red){
                         startTimerPop();
-
                         acerto=true;
-                            setPerguntaRespondida();
-
+                        setPerguntaRespondida();
                         // _timer.cancel();
                         if(mapaSelect_red==0)
                           btn_1=false;
@@ -513,11 +512,8 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                         resp_jogada=3;
                         if (resp_jogada == resp_red){
                           startTimerPop();
-
-                          btn_4=false;
                           acerto=true;
-                              setPerguntaRespondida();
-
+                          setPerguntaRespondida();
                           // _timer.cancel();
                           if(mapaSelect_red==0)
                             btn_1=false;
