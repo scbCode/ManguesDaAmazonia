@@ -44,8 +44,8 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   int resp_red = 1;
   int resp_jogada = -1;
   bool acerto = false;
-  bool map_red_finalizado= false;
-  bool map_black_finalizado= false;
+  bool map_red_finalizado= true;
+  bool map_black_finalizado= true;
   bool map_white_finalizado= false;
   List<bool> acertos_red = [false,false,false,false,false];
 

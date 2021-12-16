@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:animated_rotation/animated_rotation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mangues_da_amazonia/app/Engine/Game.dart';
 import 'package:mangues_da_amazonia/app/LocalDB/Repository.dart';
 import 'package:mangues_da_amazonia/app/Presenter/GameMap/GameMap.dart';
 import 'package:mobx/mobx.dart';
@@ -45,6 +46,7 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
   int totalTime = 30;
   int resp_red = 1;
   int resp_jogada = -1;
+  Game game = Game();
 
   bool btn_1 = true;
   bool btn_2 = true;
@@ -67,18 +69,13 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
       "lib/assets/images/elementos/fundo_mangue_vermelho.jpg",
       fit: BoxFit.cover);
 
-  late List<List<String>> form_red = [
-    ["Resposta Certa","Resposta","Resposta","Resposta","Resposta"],
-    ["Resposta","Resposta","Resposta","Resposta","Resposta"],
-    ["Resposta","Resposta","Resposta","Resposta","Resposta"],
-    ["Resposta","Resposta","Resposta","Resposta","Resposta"],
-    ["Resposta","Resposta","Resposta","Resposta","Resposta"],
-  ];
+  List<int> resposta_certa=[2,1,1,3,0];
+
+  late List<List<String>> form_red = [];
 
   double w_alt = 0.0;
   Image image_a_normal = Image.asset("lib/assets/images/elementos/a_alternativa_normal.png");
   Image image_a_certa = Image.asset("lib/assets/images/elementos/a_alternativa_certa.png");
-
   @override
   void initState() {
     super.initState();
@@ -88,9 +85,9 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
         duration: const Duration(milliseconds: 1200), vsync: this);
     _controller.repeat(reverse: true);
     startTimerAnim();
-
+    form_red.addAll(game.respostas[1]);
+    mapaSelect_red = resposta_certa[0];
   }
-
 
   @override
   void didChangeDependencies() {
@@ -121,28 +118,28 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
 
             Positioned(
                 bottom: MediaQuery.of(context).size.height*.25,
-                right: MediaQuery.of(context).size.width*.45,
+                right: MediaQuery.of(context).size.width*.4325,
                 child:
                 Visibility(visible: anim_carangueijo,child:
                 Container(child:
                 Image.asset('lib/assets/images/elementos/caixa_dialogo.png',
+                    height: MediaQuery.of(context).size.height*.4,
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.34, fit: BoxFit.cover)))),
+                        .width*.34, fit: BoxFit.contain)))),
+
             Positioned(
-                top: MediaQuery.of(context).size.height*.455,
-                left: MediaQuery.of(context).size.width*.235,
+                right: MediaQuery.of(context).size.width*.425,
+                bottom: MediaQuery.of(context).size.height*.25,
                 child:
                 Visibility(visible: anim_carangueijo,child:
                 Container(
-                    padding: EdgeInsets.all(10),
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width*.28,
-                    child:Text(textCarang,style:
-                    TextStyle(color:  Colors.black,fontSize: 14),))
+                    height: MediaQuery.of(context).size.height*.27,
+                    width: MediaQuery.of(context).size.width*.3,
+                    padding: EdgeInsets.fromLTRB(0, 0, 35, 0),
+                    child:Text(textCarang, textAlign: TextAlign.start,style:
+                    TextStyle(fontFamily: "MochiyPopPOne",color:  Colors.black,fontSize: MediaQuery.of(context).size.width*.016),))
                 )),
 
             Positioned(
@@ -201,7 +198,7 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                     ativo: btn_1,click: (){
                       setState(() {
                         mapaSelect_red=0;
-                        resp_red=0;
+                        resp_red=resposta_certa[mapaSelect_red];
                         form_red_v=true;
                         visible_itensmap=false;
                         startTimer();
@@ -217,7 +214,7 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                       setState(() {
                         mapaSelect_red=1;
                         form_red_v=true;
-                        resp_red=0;
+                        resp_red=resposta_certa[mapaSelect_red];
                         visible_itensmap=false;
                         startTimer();
                       });
@@ -232,9 +229,11 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                       setState(() {
                         mapaSelect_red=2;
                         form_red_v=true;
+                        resp_red=resposta_certa[mapaSelect_red];
+
                         visible_itensmap=false;
                         startTimer();
-                        resp_red=0;
+
                       });
                     })),
 
@@ -247,7 +246,8 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                     ativo:btn_4,click: (){
                       setState(() {
                         mapaSelect_red=3;
-                        resp_red=0;
+                        resp_red=resposta_certa[mapaSelect_red];
+
                         form_red_v=true;
                         visible_itensmap=false;
                         startTimer();
@@ -262,7 +262,8 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                     ativo:btn_5,click: (){
                       setState(() {
                         mapaSelect_red=4;
-                        resp_red=0;
+                        resp_red=resposta_certa[mapaSelect_red];
+
                         form_red_v=true;
                         visible_itensmap=false;
 
@@ -287,12 +288,26 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                 height:MediaQuery.of(context).size.height,
                 fit: BoxFit.cover),
 
-            Positioned(
-              top: 15,
+          Positioned(
+            top: 15,
+            right: MediaQuery.of(context).size.width*.2,
+            child:  Image.asset('lib/assets/images/elementos/caixa_pergunta.png',
+                width:MediaQuery.of(context).size.width*.5,
+                fit: BoxFit.cover),),
+
+
+          Positioned(
+              top: MediaQuery.of(context).size.height*.03,
               right: MediaQuery.of(context).size.width*.2,
-              child:  Image.asset('lib/assets/images/elementos/caixa_pergunta.png',
-                  width:MediaQuery.of(context).size.width*.5,
-                  fit: BoxFit.cover),),
+              child:
+              Container(
+                padding: EdgeInsets.all(20),
+                width:MediaQuery.of(context).size.width*.5,
+                child:
+                Text(game.perguntas[0][mapaSelect_red],textAlign:
+                TextAlign.center,style: TextStyle(fontFamily: "MochiyPopPOne",color: Colors.black,fontSize:
+                MediaQuery.of(context).size.height*.03),),)),
+
 
             Positioned(
                 bottom: 3,

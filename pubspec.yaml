@@ -31,7 +31,10 @@ dependencies:
   flutter_mobx: ^2.0.2
   mobx: ^2.0.0
   mobx_codegen: ^2.0.0
-  url_launcher: ^6.0.17
+  url_launcher: ^6.0.0-nullsafety.1
+  video_player: ^2.0.0-nullsafety.3
+  youtube_player_flutter: ^8.0.0
+  video_player_platform_interface: ^4.2.0
 
 dev_dependencies:
   flutter_test:

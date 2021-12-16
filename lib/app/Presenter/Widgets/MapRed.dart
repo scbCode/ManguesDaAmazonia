@@ -213,7 +213,6 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                   setState(() {
                     mapaSelect_red=1;
                     resp_red=resposta_certa[mapaSelect_red];
-
                     form_red_v=true;
                     visible_itensmap=false;
                     startTimer();
@@ -291,12 +290,12 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
 
         Positioned(
-            top: MediaQuery.of(context).size.height*.1,
-            left: MediaQuery.of(context).size.width*.35,
+            top: MediaQuery.of(context).size.height*.03,
+            right: MediaQuery.of(context).size.width*.2,
             child:
           Container(
-            margin: EdgeInsets.all(10),
-            width:MediaQuery.of(context).size.width*.4,
+            padding: EdgeInsets.all(20),
+            width:MediaQuery.of(context).size.width*.5,
             child:
             Text(game.perguntas[0][mapaSelect_red],textAlign:
             TextAlign.center,style: TextStyle(fontFamily: "MochiyPopPOne",color: Colors.black,fontSize:
@@ -348,10 +347,8 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                         resp_jogada=0;
                         if (resp_jogada == resp_red){
                           startTimerPop();
-
                           acerto=true;
                           setPerguntaRespondida();
-
                           // _timer.cancel();
                           if(mapaSelect_red==0)
                             btn_1=false;
@@ -460,8 +457,6 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
                           acerto=true;
                               setPerguntaRespondida();
-
-                          btn_3=false;
                           // _timer.cancel();
                           if(mapaSelect_red==0)
                             btn_1=false;

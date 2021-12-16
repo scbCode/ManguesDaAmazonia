@@ -21,14 +21,17 @@ class _TelaAnimacao extends State<TelaAnimacao> with SingleTickerProviderStateMi
   Repository repository = Repository();
   late Jogador jogador;
   bool v_telaInicial=false;
+  // late VideoPlayerController _controller;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
+    // _controller = VideoPlayerController.asset(
+    //     "assets/videos/butterfly.mp4")
+    //   ..setVolume(1.0)
+    //   ..initialize()
+    //   ..play();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +64,14 @@ class _TelaAnimacao extends State<TelaAnimacao> with SingleTickerProviderStateMi
         //   top:0,
         //   right: MediaQuery.of(context).size.width*.05,
         //   child:Image.asset('lib/assets/images/elementos/placa_intro.png',width: MediaQuery.of(context).size.width*.2,)),
-
+        // Center(
+        //   child: _controller.value.isInitialized
+        //       ? AspectRatio(
+        //     aspectRatio: _controller.value.aspectRatio,
+        //     child: VideoPlayer(_controller),
+        //   )
+        //       : Container(),
+        // ),
         Positioned (
             bottom:MediaQuery.of(context).size.height*.05,
             right: MediaQuery.of(context).size.width*.025,

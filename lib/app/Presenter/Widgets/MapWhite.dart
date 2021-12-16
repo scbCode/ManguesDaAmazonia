@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:animated_rotation/animated_rotation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mangues_da_amazonia/app/Engine/Game.dart';
 import 'package:mangues_da_amazonia/app/LocalDB/Repository.dart';
 import 'package:mangues_da_amazonia/app/Presenter/GameMap/GameMap.dart';
 import 'package:mobx/mobx.dart';
@@ -45,6 +46,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
   int totalTime = 30;
   int resp_red = 1;
   int resp_jogada = -1;
+  Game game = Game();
 
   bool btn_1 = true;
   bool btn_2 = true;
@@ -67,17 +69,12 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
       "lib/assets/images/elementos/fundo_mangue_vermelho.jpg",
       fit: BoxFit.cover);
 
-  late List<List<String>> form_red = [
-    ["Resposta Certa --------------\n5648545645","Resposta --------------","Resposta -------------","Resposta----- ---","Resposta"],
-    ["Resposta","Resposta","Resposta","Resposta","Resposta"],
-    ["Resposta","Resposta","Resposta","Resposta","Resposta"],
-    ["Resposta","Resposta","Resposta","Resposta","Resposta"],
-    ["Resposta","Resposta","Resposta","Resposta","Resposta"],
-  ];
+  late List<List<String>> form_red = [];
 
   double w_alt = 0.0;
   Image image_a_normal = Image.asset("lib/assets/images/elementos/a_alternativa_normal.png");
   Image image_a_certa = Image.asset("lib/assets/images/elementos/a_alternativa_certa.png");
+  List<int> resposta_certa=[2,1,1,3,0];
 
   @override
   void initState() {
@@ -88,7 +85,8 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
         duration: const Duration(milliseconds: 1200), vsync: this);
     _controller.repeat(reverse: true);
     startTimerAnim();
-
+    form_red.addAll(game.respostas[2]);
+    mapaSelect_red = resposta_certa[0];
   }
 
   @override
@@ -142,7 +140,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                         .size
                         .width*.28,
                     child:Text(textCarang,style:
-                    TextStyle(color:  Colors.black,fontSize: 14),))
+                    TextStyle(fontFamily: "MochiyPopPOne",color:  Colors.black,fontSize: 14),))
                 )),
 
             Positioned(
@@ -200,7 +198,8 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                     ativo: btn_1,click: (){
                       setState(() {
                         mapaSelect_red=0;
-                        resp_red=0;
+                                                resp_red=resposta_certa[mapaSelect_red];
+
                         form_red_v=true;
                         visible_itensmap=false;
                         startTimer();
@@ -216,7 +215,8 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                       setState(() {
                         mapaSelect_red=1;
                         form_red_v=true;
-                        resp_red=0;
+                                                resp_red=resposta_certa[mapaSelect_red];
+
                         visible_itensmap=false;
                         startTimer();
                       });
@@ -233,7 +233,8 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                         form_red_v=true;
                         visible_itensmap=false;
                         startTimer();
-                        resp_red=0;
+                                                resp_red=resposta_certa[mapaSelect_red];
+
                       });
                     })),
 
@@ -246,7 +247,8 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                     ativo:btn_4,click: (){
                       setState(() {
                         mapaSelect_red=3;
-                        resp_red=0;
+                                                resp_red=resposta_certa[mapaSelect_red];
+
                         form_red_v=true;
                         visible_itensmap=false;
                         startTimer();
@@ -261,7 +263,8 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                     ativo:btn_5,click: (){
                       setState(() {
                         mapaSelect_red=4;
-                        resp_red=0;
+                                                resp_red=resposta_certa[mapaSelect_red];
+
                         form_red_v=true;
                         visible_itensmap=false;
 
@@ -291,7 +294,22 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
               right: MediaQuery.of(context).size.width*.2,
               child:  Image.asset('lib/assets/images/elementos/caixa_pergunta.png',
                   width:MediaQuery.of(context).size.width*.5,
+                  height:MediaQuery.of(context).size.height*.3,
                   fit: BoxFit.cover),),
+
+            Positioned(
+                top: MediaQuery.of(context).size.height*.03,
+                right: MediaQuery.of(context).size.width*.2,
+                child:
+                Container(
+                  padding: EdgeInsets.all(20),
+                  alignment: Alignment.center,
+                  height:MediaQuery.of(context).size.height*.3,
+                  width:MediaQuery.of(context).size.width*.5,
+                  child:
+                  Text(game.perguntas[0][mapaSelect_red],textAlign:
+                  TextAlign.center,style: TextStyle(fontFamily: "MochiyPopPOne",color: Colors.black,fontSize:
+                  MediaQuery.of(context).size.height*.03),),)),
 
             Positioned(
                 bottom: 3,
