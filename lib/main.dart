@@ -54,7 +54,9 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Splash()
+      body: Material(
+        type: MaterialType.transparency,
+        child: Splash())
     );
   }
 }

@@ -131,8 +131,8 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                         .size
                         .width*.34, fit: BoxFit.cover)))),
             Positioned(
-                top: MediaQuery.of(context).size.height*.48,
-                left: MediaQuery.of(context).size.width*.225,
+                top: MediaQuery.of(context).size.height*.455,
+                left: MediaQuery.of(context).size.width*.235,
                 child:
                 Visibility(visible: anim_carangueijo,child:
                 Container(
@@ -140,14 +140,14 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.3,
+                        .width*.28,
                     child:Text(textCarang,style:
                     TextStyle(color:  Colors.black,fontSize: 14),))
                 )),
 
             Positioned(
-                bottom: MediaQuery.of(context).size.height*.08,
-                right: MediaQuery.of(context).size.width*.25,
+                top: MediaQuery.of(context).size.height*.45,
+                right: MediaQuery.of(context).size.width*.23,
                 child:
                 Visibility(visible: anim_carangueijo,child:
                 Container(child:
@@ -155,7 +155,7 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.20, fit: BoxFit.cover)))),
+                        .width*.30, fit: BoxFit.cover)))),
 
 
 
@@ -204,7 +204,6 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                         resp_red=0;
                         form_red_v=true;
                         visible_itensmap=false;
-                        btn_1=false;
                         startTimer();
                       });
                     })),
@@ -220,7 +219,6 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                         form_red_v=true;
                         resp_red=0;
                         visible_itensmap=false;
-                        btn_2=false;
                         startTimer();
                       });
                     })),
@@ -236,7 +234,6 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                         form_red_v=true;
                         visible_itensmap=false;
                         startTimer();
-                        btn_3=false;
                         resp_red=0;
                       });
                     })),
@@ -253,7 +250,6 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                         resp_red=0;
                         form_red_v=true;
                         visible_itensmap=false;
-                        btn_4=false;
                         startTimer();
                       });
                     })),
@@ -269,7 +265,6 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                         resp_red=0;
                         form_red_v=true;
                         visible_itensmap=false;
-                        btn_5=false;
 
                         startTimer();
 
@@ -309,17 +304,17 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.25, fit: BoxFit.cover) :
+                        .width*.3, fit: BoxFit.cover) :
                 acerto ? Image.asset('lib/assets/images/elementos/garca_feliz.png' ,
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.25, fit: BoxFit.cover) :
+                        .width*.3, fit: BoxFit.cover) :
                 Image.asset('lib/assets/images/elementos/garca_questoes.png' ,
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.25, fit: BoxFit.cover)
+                        .width*.3, fit: BoxFit.cover)
                 ))),
 
             Positioned(
@@ -333,7 +328,9 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20)),
                     child:
-
+                    FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child:
                     Column(children: [
 
                       GestureDetector(
@@ -343,12 +340,23 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                               if (resp_jogada == resp_red){
                                 startTimerPop();
                                 acerto=true;
-                                _timer.cancel();
+                                setPerguntaRespondida();
+                                // // _timer.cancel();
+                                if(mapaSelect_red==0)
+                                  btn_1=false;
+                                if(mapaSelect_red==1)
+                                  btn_2=false;
+                                if(mapaSelect_red==2)
+                                  btn_3=false;
+                                if(mapaSelect_red==3)
+                                  btn_4=false;
+                                if(mapaSelect_red==4)
+                                  btn_5=false;
                               }else{
                                 vidas--;
                                 startTimerPop();
                                 erro=true;
-                                _timer.cancel();
+                                // _timer.cancel();
                               }
                             });
                           },
@@ -385,12 +393,23 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                               if (resp_jogada == resp_red){
                                 startTimerPop();
                                 acerto=true;
-                                _timer.cancel();
+                                setPerguntaRespondida();
+                                // // _timer.cancel();
+                                if(mapaSelect_red==0)
+                                  btn_1=false;
+                                if(mapaSelect_red==1)
+                                  btn_2=false;
+                                if(mapaSelect_red==2)
+                                  btn_3=false;
+                                if(mapaSelect_red==3)
+                                  btn_4=false;
+                                if(mapaSelect_red==4)
+                                  btn_5=false;
                               }else{
                                 vidas--;
                                 startTimerPop();
                                 erro=true;
-                                _timer.cancel();
+                                // _timer.cancel();
                               }
                             });
                           },
@@ -427,12 +446,23 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                               if (resp_jogada == resp_red){
                                 startTimerPop();
                                 acerto=true;
-                                _timer.cancel();
+                                setPerguntaRespondida();
+                                // // _timer.cancel();
+                                if(mapaSelect_red==0)
+                                  btn_1=false;
+                                if(mapaSelect_red==1)
+                                  btn_2=false;
+                                if(mapaSelect_red==2)
+                                  btn_3=false;
+                                if(mapaSelect_red==3)
+                                  btn_4=false;
+                                if(mapaSelect_red==4)
+                                  btn_5=false;
                               }else{
                                 vidas--;
                                 startTimerPop();
                                 erro=true;
-                                _timer.cancel();
+                                // _timer.cancel();
                               }
                             });
                           },
@@ -457,8 +487,8 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                                         Image.asset("lib/assets/images/elementos/c_alternativa_normal.png")
                                     ),
 
-                                    Positioned(left:MediaQuery.of(context).size.width*.08,top:20,child:
-                                    Text( form_red[mapaSelect_red][2],style: TextStyle(fontSize: 14,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
+                                    Positioned(left:MediaQuery.of(context).size.width*.09,top:20,child:
+                                    Text( form_red[mapaSelect_red][2],style: TextStyle(fontSize:  MediaQuery.of(context).size.width*.023,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
                                   ]))),
 
                       GestureDetector(
@@ -468,12 +498,23 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                               if (resp_jogada == resp_red){
                                 startTimerPop();
                                 acerto=true;
-                                _timer.cancel();
+                                setPerguntaRespondida();
+                                // // _timer.cancel();
+                                if(mapaSelect_red==0)
+                                  btn_1=false;
+                                if(mapaSelect_red==1)
+                                  btn_2=false;
+                                if(mapaSelect_red==2)
+                                  btn_3=false;
+                                if(mapaSelect_red==3)
+                                  btn_4=false;
+                                if(mapaSelect_red==4)
+                                  btn_5=false;
                               }else{
                                 vidas--;
                                 startTimerPop();
                                 erro=true;
-                                _timer.cancel();
+                                // _timer.cancel();
                               }
                             });
                           },
@@ -498,8 +539,8 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                                         Image.asset("lib/assets/images/elementos/d_alternativa_normal.png")
                                     ),
 
-                                    Positioned(left:MediaQuery.of(context).size.width*.08,top:20,child:
-                                    Text( form_red[mapaSelect_red][3],style: TextStyle(fontSize: 14,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
+                                    Positioned(left:MediaQuery.of(context).size.width*.09,top:20,child:
+                                    Text( form_red[mapaSelect_red][3],style: TextStyle(fontSize:  MediaQuery.of(context).size.width*.023,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
                                   ]))),
 
                       // GestureDetector(
@@ -507,12 +548,12 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                       //         if (resp_jogada == resp_red){
                       //           acerto=true;
                       //           startTimerPop();
-                      //           _timer.cancel();
+                      // //           _timer.cancel();
                       //         }else{
                       //             vidas--;
                       //             erro=true;
                       //             startTimerPop();
-                      //             _timer.cancel();
+                      // //             _timer.cancel();
                       //         }
                       //       });
                       //     },
@@ -529,7 +570,7 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                       //       child: Text( form_red[mapaSelect_red][4],style: TextStyle(color:Colors.brown,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
 
 
-                    ]))
+                    ])))
             )
 
 
@@ -538,22 +579,22 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
   }
 
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
-      oneSec,
-          (Timer timer) {
-        if (_start == 0) {
-          setState(() {
-            timer.cancel();
-            tempo_finalizado=true;
-          });
-        } else {
-          setState(() {
-            _start--;
-          });
-        }
-      },
-    );
+    // const oneSec = const Duration(seconds: 1);
+    // _timer = new Timer.periodic(
+    //   oneSec,
+    //       (Timer timer) {
+    //     if (_start == 0) {
+    //       setState(() {
+    //         timer.cancel();
+    //         tempo_finalizado=true;
+    //       });
+    //     } else {
+    //       setState(() {
+    //         _start--;
+    //       });
+    //     }
+    //   },
+    // );
   }
 
   void startTimerAnim() {
@@ -603,7 +644,6 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
             resp_jogada=-1;
             _start=30;
             visible_itensmap=true;
-            setPerguntaRespondida();
             _timer_pop.cancel();
             acerto=false;
           });
@@ -699,18 +739,27 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                   height:MediaQuery.of(context).size.height*.35,
                   width:MediaQuery.of(context).size.width*.35,), ))),
 
-
-
-
             Positioned(
-                bottom:0,
-                left:15,child:
+                bottom:10,
+                left:-20,child:
+            Container(
+              child:
+              Image.asset(
+                "lib/assets/images/elementos/garca_e_carangueijo.png",
+                height:MediaQuery.of(context).size.height*.6,),)),
+            Positioned(
+                top:MediaQuery.of(context).size.height*.55,
+                left:0,child:
             Container(
               margin: EdgeInsets.all(15),
               child:
+              Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.rotationY(3),
+                child:
               Image.asset(
-                "lib/assets/images/elementos/garca_e_mao_pelada.png",
-                height:MediaQuery.of(context).size.height*.6,),)),
+                "lib/assets/images/elementos/guaxinim_feliz.png",
+                height:MediaQuery.of(context).size.height*.5,),))),
 
             Positioned(
                 top:20,
@@ -724,13 +773,13 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
 
             Positioned(
                 bottom:0,
-                right:MediaQuery.of(context).size.width*.15,child:
+                right:MediaQuery.of(context).size.width*.125,child:
             Container(
               margin: EdgeInsets.all(15),
               child:
               Image.asset(
                 "lib/assets/images/elementos/tralhoto.png",
-                height:MediaQuery.of(context).size.height*.5,),)),
+                height:MediaQuery.of(context).size.height*.7,),)),
 
             Positioned(
                 bottom:0,

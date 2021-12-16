@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:animated_rotation/animated_rotation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mangues_da_amazonia/app/Engine/Game.dart';
 import 'package:mangues_da_amazonia/app/LocalDB/Repository.dart';
 import 'package:mangues_da_amazonia/app/Presenter/GameMap/GameMap.dart';
 import 'package:mobx/mobx.dart';
@@ -18,6 +19,7 @@ class MapRed extends StatefulWidget {
 
   @override
   _MapRed createState() => _MapRed(this.finalizado);
+
 }
 
 class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
@@ -26,6 +28,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
   _MapRed(this.finalizado);
 
+  Game game = Game();
   late AnimationController _controller;
   Tween<double> _tween = Tween(begin: 0.9, end: 1.5);
   bool form_red_v=false;
@@ -41,7 +44,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
   int _start = 30;
 
   late Timer _timer_carang;
-  int _start_carang = 8;
+  int _start_carang = 11;
   int totalTime = 30;
   int resp_red = 1;
   int resp_jogada = -1;
@@ -52,10 +55,13 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
   bool btn_4 = true;
   bool btn_5 = true;
   int vidas = 3;
+  int btn_select = 0;
   String textCarang = "A nossa casa tá uma zona! Mas tu podes "
       "ajudar a gente a colocar ordem no lugar.";
 
   int totalPerguntas_respondidas = 0;
+
+  List<int> resposta_certa=[3,2,0,1,3];
 
   Repository repository = Repository();
 
@@ -67,13 +73,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
       "lib/assets/images/elementos/fundo_mangue_vermelho.jpg",
       fit: BoxFit.cover);
 
-  late List<List<String>> form_red = [
-      ["Resposta Certa","Resposta","Resposta","Resposta","Resposta"],
-      ["Resposta","Resposta","Resposta","Resposta","Resposta"],
-      ["Resposta","Resposta","Resposta","Resposta","Resposta"],
-      ["Resposta","Resposta","Resposta","Resposta","Resposta"],
-      ["Resposta","Resposta","Resposta","Resposta","Resposta"],
-  ];
+  late List<List<String>> form_red = [];
 
    double w_alt = 0.0;
    Image image_a_normal = Image.asset("lib/assets/images/elementos/a_alternativa_normal.png");
@@ -88,8 +88,8 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
         duration: const Duration(milliseconds: 1200), vsync: this);
     _controller.repeat(reverse: true);
     startTimerAnim();
-
-
+    form_red.addAll(game.respostas[0]);
+    mapaSelect_red = resposta_certa[0];
   }
 
   @override
@@ -99,7 +99,6 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
     w_alt = MediaQuery.of(context).size.width*.55;
     precacheImage(image_a_normal.image,context);
     precacheImage(image_a_certa.image,context);
-
   }
 
   @override
@@ -117,7 +116,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                 visible: form_red_v,
                 child:Form_red())),
 
-            Visibility(visible: visible_itensmap,child:
+            Visibility(visible: visible_itensmap && !anim_carangueijo,child:
             mapPerguntas()),
 
             Positioned(
@@ -133,21 +132,21 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                         .width*.34, fit: BoxFit.cover)))),
 
             Positioned(
-                    bottom: MediaQuery.of(context).size.height*.26,
-                    left: MediaQuery.of(context).size.width*.27,
+                    bottom: MediaQuery.of(context).size.height*.29,
+                    left: MediaQuery.of(context).size.width*.275,
                     child:
                     Visibility(visible: anim_carangueijo,child:
               Container(
                   padding: EdgeInsets.all(10),
                   height: MediaQuery.of(context).size.height*.27,
                   width: MediaQuery.of(context).size.width*.25,
-                child:Text(textCarang,textAlign: TextAlign.start,style:
+                child:Text(textCarang, textAlign: TextAlign.start,style:
                   TextStyle(color:  Colors.black,fontSize: MediaQuery.of(context).size.width*.018),))
               )),
 
             Positioned(
-                bottom: MediaQuery.of(context).size.height*.08,
-                right: MediaQuery.of(context).size.width*.25,
+                bottom: MediaQuery.of(context).size.height*.035,
+                right: MediaQuery.of(context).size.width*.2,
               child:
               Visibility(visible: anim_carangueijo,child:
                Container(child:
@@ -155,7 +154,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                     width: MediaQuery
                         .of(context)
                     .size
-                    .width*.20, fit: BoxFit.cover)))),
+                    .width*.30, fit: BoxFit.cover)))),
 
             Visibility(visible: acerto,child:
             popAcerto()),
@@ -197,10 +196,9 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                     ativo: btn_1,click: (){
                     setState(() {
                       mapaSelect_red=0;
-                      resp_red=0;
+                      resp_red=resposta_certa[mapaSelect_red];
                       form_red_v=true;
                       visible_itensmap=false;
-                      btn_1=false;
                       startTimer();
                     });
                 })),
@@ -213,10 +211,10 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                     ativo:btn_2,click: (){
                   setState(() {
                     mapaSelect_red=1;
+                    resp_red=resposta_certa[mapaSelect_red];
+
                     form_red_v=true;
-                    resp_red=0;
                     visible_itensmap=false;
-                    btn_2=false;
                     startTimer();
                   });
                 })),
@@ -229,11 +227,10 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
               ativo:btn_3,click: (){
             setState(() {
               mapaSelect_red=2;
+              resp_red=resposta_certa[mapaSelect_red];
               form_red_v=true;
               visible_itensmap=false;
               startTimer();
-              btn_3=false;
-              resp_red=0;
             });
           })),
 
@@ -246,10 +243,9 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                 ativo:btn_4,click: (){
                   setState(() {
                     mapaSelect_red=3;
-                    resp_red=0;
+                    resp_red=resposta_certa[mapaSelect_red];
                     form_red_v=true;
                     visible_itensmap=false;
-                    btn_4=false;
                     startTimer();
                   });
                 })),
@@ -262,13 +258,10 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                     ativo:btn_5,click: (){
                   setState(() {
                     mapaSelect_red=4;
-                    resp_red=0;
+                    resp_red=resposta_certa[mapaSelect_red];
                     form_red_v=true;
                     visible_itensmap=false;
-                    btn_5=false;
-
                     startTimer();
-
                   });
                 })),
 
@@ -295,6 +288,20 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                   width:MediaQuery.of(context).size.width*.5,
                   fit: BoxFit.cover),),
 
+
+        Positioned(
+            top: 30,
+            left: MediaQuery.of(context).size.width*.35,
+            child:
+          Container(
+            margin: EdgeInsets.all(10),
+            width:MediaQuery.of(context).size.width*.4,
+            child:
+            Text(game.perguntas[0][mapaSelect_red],textAlign:
+            TextAlign.center,style: TextStyle(fontFamily: "MochiyPopPOne",color: Colors.black,fontSize:
+            MediaQuery.of(context).size.width*.016),),)),
+
+
         Positioned(
             bottom: 3,
             right: MediaQuery.of(context).size.width*.02,
@@ -305,17 +312,17 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                 width: MediaQuery
                     .of(context)
                     .size
-                    .width*.25, fit: BoxFit.cover) :
+                    .width*.3, fit: BoxFit.cover) :
            acerto ? Image.asset('lib/assets/images/elementos/garca_feliz.png' ,
                 width: MediaQuery
                     .of(context)
                     .size
-                    .width*.25, fit: BoxFit.cover) :
+                    .width*.3, fit: BoxFit.cover) :
            Image.asset('lib/assets/images/elementos/garca_questoes.png' ,
                width: MediaQuery
                    .of(context)
                    .size
-                   .width*.25, fit: BoxFit.cover)
+                   .width*.3, fit: BoxFit.cover)
             ))),
 
         Positioned(
@@ -329,7 +336,9 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20)),
               child:
-
+              FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child:
               Column(children: [
 
                 GestureDetector(
@@ -338,13 +347,26 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                         resp_jogada=0;
                         if (resp_jogada == resp_red){
                           startTimerPop();
+
                           acerto=true;
-                          _timer.cancel();
+                          setPerguntaRespondida();
+
+                          // _timer.cancel();
+                          if(mapaSelect_red==0)
+                            btn_1=false;
+                          if(mapaSelect_red==1)
+                            btn_2=false;
+                          if(mapaSelect_red==2)
+                            btn_3=false;
+                          if(mapaSelect_red==3)
+                            btn_4=false;
+                          if(mapaSelect_red==4)
+                            btn_5=false;
                         }else{
                           vidas--;
                           startTimerPop();
                           erro=true;
-                          _timer.cancel();
+                          // _timer.cancel();
                         }
                       });
                     },
@@ -370,7 +392,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
                   Positioned(left:MediaQuery.of(context).size.width*.09,
                       top:17,child:
-                     Text( form_red[mapaSelect_red][0],style: TextStyle(fontSize: MediaQuery.of(context).size.width*.023,color: Colors.white,
+                     Text( form_red[mapaSelect_red][0],style: TextStyle(fontSize: MediaQuery.of(context).size.width*.03,color: Colors.white,
                       fontFamily: 'MochiyPopPOne'))),
               ]))),
 
@@ -380,13 +402,26 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                       resp_jogada=1;
                       if (resp_jogada == resp_red){
                         startTimerPop();
+
                         acerto=true;
-                        _timer.cancel();
+                            setPerguntaRespondida();
+
+                        // _timer.cancel();
+                        if(mapaSelect_red==0)
+                          btn_1=false;
+                        if(mapaSelect_red==1)
+                          btn_2=false;
+                        if(mapaSelect_red==2)
+                          btn_3=false;
+                        if(mapaSelect_red==3)
+                          btn_4=false;
+                        if(mapaSelect_red==4)
+                          btn_5=false;
                       }else{
                         vidas--;
                         startTimerPop();
                         erro=true;
-                        _timer.cancel();
+                        // _timer.cancel();
                       }
                     });
                   },
@@ -413,22 +448,37 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
                       Positioned(left:MediaQuery.of(context).size.width*.09,top:20,child:
                       Text( form_red[mapaSelect_red][1],style: TextStyle(fontSize:
-                      MediaQuery.of(context).size.width*.023,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
+                      MediaQuery.of(context).size.width*.03,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
                     ]))),
 
                 GestureDetector(
                     onTap: (){
                       setState(() {
                         resp_jogada=2;
+                        print("");
                         if (resp_jogada == resp_red){
                           startTimerPop();
+
                           acerto=true;
-                          _timer.cancel();
+                              setPerguntaRespondida();
+
+                          btn_3=false;
+                          // _timer.cancel();
+                          if(mapaSelect_red==0)
+                            btn_1=false;
+                          if(mapaSelect_red==1)
+                            btn_2=false;
+                          if(mapaSelect_red==2)
+                            btn_3=false;
+                          if(mapaSelect_red==3)
+                            btn_4=false;
+                          if(mapaSelect_red==4)
+                            btn_5=false;
                         }else{
                           vidas--;
                           startTimerPop();
                           erro=true;
-                          _timer.cancel();
+                          // _timer.cancel();
                         }
                       });
                     },
@@ -453,8 +503,8 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                               Image.asset("lib/assets/images/elementos/c_alternativa_normal.png")
                           ),
 
-                      Positioned(left:MediaQuery.of(context).size.width*.08,top:20,child:
-                      Text( form_red[mapaSelect_red][2],style: TextStyle(fontSize: 14,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
+                      Positioned(left:MediaQuery.of(context).size.width*.09,top:20,child:
+                      Text( form_red[mapaSelect_red][2],style: TextStyle(fontSize:  MediaQuery.of(context).size.width*.03,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
                     ]))),
 
                 GestureDetector(
@@ -463,13 +513,27 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                         resp_jogada=3;
                         if (resp_jogada == resp_red){
                           startTimerPop();
+
+                          btn_4=false;
                           acerto=true;
-                          _timer.cancel();
+                              setPerguntaRespondida();
+
+                          // _timer.cancel();
+                          if(mapaSelect_red==0)
+                            btn_1=false;
+                          if(mapaSelect_red==1)
+                            btn_2=false;
+                          if(mapaSelect_red==2)
+                            btn_3=false;
+                          if(mapaSelect_red==3)
+                            btn_4=false;
+                          if(mapaSelect_red==4)
+                            btn_5=false;
                         }else{
                           vidas--;
                           startTimerPop();
                           erro=true;
-                          _timer.cancel();
+                          // _timer.cancel();
                         }
                       });
                     },
@@ -494,62 +558,31 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                               Image.asset("lib/assets/images/elementos/d_alternativa_normal.png")
                           ),
 
-                      Positioned(left:MediaQuery.of(context).size.width*.08,top:20,child:
-                      Text( form_red[mapaSelect_red][3],style: TextStyle(fontSize: 14,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
+                      Positioned(left:MediaQuery.of(context).size.width*.09,top:20,child:
+                      Text( form_red[mapaSelect_red][3],style: TextStyle(fontSize:  MediaQuery.of(context).size.width*.03,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
                     ]))),
 
-                // GestureDetector(
-                //     onTap: (){setState(() {resp_jogada=4;
-                //         if (resp_jogada == resp_red){
-                //           acerto=true;
-                //           startTimerPop();
-                //           _timer.cancel();
-                //         }else{
-                //             vidas--;
-                //             erro=true;
-                //             startTimerPop();
-                //             _timer.cancel();
-                //         }
-                //       });
-                //     },
-                //     child:
-                //     Container(
-                //       padding: EdgeInsets.all(8),
-                //       margin: EdgeInsets.all(4),
-                //       width: MediaQuery.of(context).size.width*.7,
-                //       decoration: BoxDecoration(color:resp_jogada==0 ?
-                //       Colors.white : Colors.amberAccent,
-                //           boxShadow: [BoxShadow(color:Colors.black54)],
-                //           border:  Border.all(color: Colors.brown,width: 4),
-                //           borderRadius: BorderRadius.circular(10)),
-                //       child: Text( form_red[mapaSelect_red][4],style: TextStyle(color:Colors.brown,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
-
-
-              ]))
-          )
-
-
-      ]))
-    ;
+              ]))))
+      ]));
   }
 
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
-      oneSec,
-          (Timer timer) {
-        if (_start == 0) {
-          setState(() {
-            timer.cancel();
-            tempo_finalizado=true;
-          });
-        } else {
-          setState(() {
-            _start--;
-          });
-        }
-      },
-    );
+    // const oneSec = const Duration(seconds: 1);
+    // _timer = new Timer.periodic(
+    //   oneSec,
+    //       (Timer timer) {
+    //     if (_start == 0) {
+    //       setState(() {
+    //         timer.cancel();
+    //         tempo_finalizado=true;
+    //       });
+    //     } else {
+    //       setState(() {
+    //         _start--;
+    //       });
+    //     }
+    //   },
+    // );
   }
 
   void startTimerAnim() {
@@ -567,10 +600,10 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
             _start_carang--;
 
-            if (_start_carang == 6)
+            if (_start_carang == 8)
               textCarang = 'Basta tu tocar em um dos lixos que uma caixa de pergunta vai se abrir.';
 
-            if (_start_carang == 4)
+            if (_start_carang == 5)
               textCarang = 'Basta escolher a pergunta certa e PUFF! Magicamente o lixo vai sumir.';
 
             if (_start_carang == 2)
@@ -583,7 +616,6 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
   }
 
   void startTimerPop() {
-
     int _start_time  = 3;
     const oneSec = const Duration(seconds: 1);
     late Timer _timer_pop;
@@ -592,18 +624,16 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
           (Timer timer) {
         if (_start_time == 0) {
           setState((){
-                          form_red_v=false;
-                          acerto=false;
-                          erro=false;
-                          mapaSelect_red=0;
-                          resp_jogada=-1;
-                          _start=30;
-                          visible_itensmap=true;
-                          setPerguntaRespondida();
-                          _timer_pop.cancel();
-                          acerto=false;
+              form_red_v=false;
+              acerto=false;
+              erro=false;
+              mapaSelect_red=0;
+              resp_jogada=-1;
+              _start=30;
+              visible_itensmap=true;
+              _timer_pop.cancel();
+              acerto=false;
           });
-
         } else {
           setState(() {
             _start_time--;
@@ -614,6 +644,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
   }
 
   Widget popAcerto(){
+
     return
         Container(
           color: Colors.white.withAlpha(150),
@@ -683,7 +714,7 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
                 "lib/assets/images/elementos/cenario_tralhoto.jpg",
                 fit: BoxFit.cover,  height:MediaQuery.of(context).size.height,
               width:MediaQuery.of(context).size.width,),
-            Positioned(top:MediaQuery.of(context).size.height*.01,right:5,child:
+            Positioned(top:MediaQuery.of(context).size.height*.01,right:-30,child:
             Container(
                 margin: EdgeInsets.all(15),
                 child:
@@ -712,17 +743,25 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
             Positioned(
                 bottom:0,
-                left:15,child:
+                left:-20,child:
             Container(
-              margin: EdgeInsets.all(15),
               child:
               Image.asset(
                 "lib/assets/images/elementos/garca_e_carangueijo.png",
                 height:MediaQuery.of(context).size.height*.6,),)),
+            Positioned(
+                bottom:-10,
+                left:40,child:
+            Container(
+              margin: EdgeInsets.all(15),
+              child:
+              Image.asset(
+                "lib/assets/images/elementos/carangueijo_conversando.png",
+                height:MediaQuery.of(context).size.height*.4,),)),
 
             Positioned(
                 top:20,
-                right:MediaQuery.of(context).size.width*.35,child:
+                right:MediaQuery.of(context).size.width*.3,child:
             Container(
               margin: EdgeInsets.all(15),
               child:
@@ -732,13 +771,13 @@ class _MapRed extends State<MapRed> with SingleTickerProviderStateMixin {
 
             Positioned(
                 bottom:0,
-                right:MediaQuery.of(context).size.width*.15,child:
+                right:MediaQuery.of(context).size.width*.1,child:
               Container(
                   margin: EdgeInsets.all(15),
                   child:
                 Image.asset(
                  "lib/assets/images/elementos/tralhoto.png",
-                 height:MediaQuery.of(context).size.height*.5,),)),
+                 height:MediaQuery.of(context).size.height*.6,),)),
 
           ],)
       );

@@ -30,7 +30,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   bool form_red_v=false;
   bool load = true;
 
-  bool limpou_mangue_vermelho =false;
+  bool limpou_mangue_vermelho =true;
   bool limpou_mangue_preto =false;
   bool limpou_mangue_branco =false;
   late List<List<String>> form_red;
@@ -50,6 +50,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   List<bool> acertos_red = [false,false,false,false,false];
 
   late Image mapa_completo;
+  late Image mapa_vermelho_preto;
   late Image fundo_mangue_preto;
   late Image fundo_mangue_vermelho;
   late Image mapa_vermelho;
@@ -61,6 +62,16 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
+    mapa_vermelho_preto = new Image.asset('lib/assets/images/elementos/mangue_semi_desbloqueado.jpg',
+        height: MediaQuery
+            .of(context)
+            .size
+            .height,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width, fit: BoxFit.cover);
+
     fundo_mangue_preto = new Image.asset('lib/assets/images/elementos/fundo_mangue_preto.jpg',
         height: MediaQuery
             .of(context)
@@ -70,6 +81,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
             .of(context)
             .size
             .width, fit: BoxFit.cover);
+
     mapa_completo = new Image.asset('lib/assets/images/elementos/mapa_completo.png',
       width: MediaQuery
           .of(context)
@@ -145,11 +157,14 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   @override
   Widget build(BuildContext context) {
     return
+      Material(
+          type: MaterialType.transparency,
+          child:
       Container(
         alignment: Alignment.topCenter,
         child:
          intro(),
-      );
+      ));
   }
 
   Widget intro(){
@@ -538,7 +553,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
         if (map_red_finalizado && !map_black_finalizado){
           return
             width_black != 3 ?
-            mapa_completo
+            mapa_vermelho_preto
             : fundo_mangue_preto;
       }else {
 
