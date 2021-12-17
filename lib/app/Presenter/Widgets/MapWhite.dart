@@ -74,7 +74,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
   double w_alt = 0.0;
   Image image_a_normal = Image.asset("lib/assets/images/elementos/a_alternativa_normal.png");
   Image image_a_certa = Image.asset("lib/assets/images/elementos/a_alternativa_certa.png");
-  List<int> resposta_certa=[2,1,1,3,0];
+  List<int> resposta_certa=[1,1,3,1,0];
 
   @override
   void initState() {
@@ -233,7 +233,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                         form_red_v=true;
                         visible_itensmap=false;
                         startTimer();
-                                                resp_red=resposta_certa[mapaSelect_red];
+                        resp_red=resposta_certa[mapaSelect_red];
 
                       });
                     })),
@@ -247,8 +247,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                     ativo:btn_4,click: (){
                       setState(() {
                         mapaSelect_red=3;
-                                                resp_red=resposta_certa[mapaSelect_red];
-
+                        resp_red=resposta_certa[mapaSelect_red];
                         form_red_v=true;
                         visible_itensmap=false;
                         startTimer();
@@ -284,7 +283,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
           child:
           Stack(children:[
 
-            Image.asset('lib/assets/images/elementos/fundo_mangue_preto.jpg',
+            Image.asset('lib/assets/images/elementos/fundo_mangue_branco.jpg',
                 width:MediaQuery.of(context).size.width,
                 height:MediaQuery.of(context).size.height,
                 fit: BoxFit.cover),
@@ -307,7 +306,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                   height:MediaQuery.of(context).size.height*.3,
                   width:MediaQuery.of(context).size.width*.5,
                   child:
-                  Text(game.perguntas[0][mapaSelect_red],textAlign:
+                  Text(game.perguntas[2][mapaSelect_red],textAlign:
                   TextAlign.center,style: TextStyle(fontFamily: "MochiyPopPOne",color: Colors.black,fontSize:
                   MediaQuery.of(context).size.height*.03),),)),
 

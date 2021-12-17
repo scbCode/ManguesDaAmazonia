@@ -62,19 +62,11 @@ class Game {
         ]
       ],
       [
-        ["Flor","Folha","Propágulo","Galho"],
-        ["Uma cobra","Um carangueijo","Um peixe-boi","Uma garça"],
-        ["No rio","Nas árvores","Na praia","No campo"],
-        ["Camarão","Turu","Peixe","Folha"],
-        ["Um molusco","Um peixe","Um amfíbio","Um réptil"],
-      ],
-      [
         ["1","2","3","4"],
         ["Carangueijo","Frango","Ostra","Peixe"],
         ["Curral","Casa","Barco","Carroça"],
         ["Corte de árvores","Maré cheia","Queimadas","Muito lixo"],
         ["Jogar lixo na maré","Plantar árvores de mangue","Tirar menos madeira de mangue","Dar importância ao manguezal"],
-
       ]
     ];
 

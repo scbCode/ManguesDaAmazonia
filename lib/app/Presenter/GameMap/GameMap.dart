@@ -44,8 +44,8 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   int resp_red = 1;
   int resp_jogada = -1;
   bool acerto = false;
-  bool map_red_finalizado= true;
-  bool map_black_finalizado= true;
+  bool map_red_finalizado= false;
+  bool map_black_finalizado= false;
   bool map_white_finalizado= false;
   List<bool> acertos_red = [false,false,false,false,false];
 
@@ -470,6 +470,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                 .size
                 .width,child:
               Image.asset('lib/assets/images/elementos/limpou_preto.png',
+                  fit: BoxFit.cover,
                   height: MediaQuery
                       .of(context)
                       .size
@@ -494,6 +495,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                   .size
                   .width,child:
               Image.asset('lib/assets/images/elementos/limpou_branco.png',
+                  fit: BoxFit.cover,
                   height: MediaQuery
                       .of(context)
                       .size

@@ -113,7 +113,7 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                     visible: form_red_v,
                     child:Form_red())),
 
-            Visibility(visible: visible_itensmap,child:
+            Visibility(visible: visible_itensmap && !anim_carangueijo,child:
             mapPerguntas()),
 
             Positioned(
@@ -304,7 +304,7 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                 padding: EdgeInsets.all(20),
                 width:MediaQuery.of(context).size.width*.5,
                 child:
-                Text(game.perguntas[0][mapaSelect_red],textAlign:
+                Text(game.perguntas[1][mapaSelect_red],textAlign:
                 TextAlign.center,style: TextStyle(fontFamily: "MochiyPopPOne",color: Colors.black,fontSize:
                 MediaQuery.of(context).size.height*.03),),)),
 
