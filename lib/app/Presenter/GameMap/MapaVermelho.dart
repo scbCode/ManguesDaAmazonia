@@ -305,7 +305,13 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                         fit: BoxFit.scaleDown,
                       ),
                     ),
-                    child:
+                    child:ConstrainedBox(
+                        constraints:BoxConstraints(
+                          minWidth:  MediaQuery.of(context).size.width*.1,
+                          maxWidth:  MediaQuery.of(context).size.width*.5,
+                          maxHeight: MediaQuery.of(context).size.height*.3,
+                        ),
+                        child:
                   Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.fromLTRB(25,25,25,25),
@@ -313,7 +319,7 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                     child:
                     Text(game.perguntas[0][mapaSelect_red],textAlign:
                     TextAlign.center,style: TextStyle(fontFamily: "MochiyPopPOne",color: Colors.black,fontSize:
-                    MediaQuery.of(context).size.width*.016),),))),
+                    MediaQuery.of(context).size.width*.016),),)))),
 
 
             Positioned(
