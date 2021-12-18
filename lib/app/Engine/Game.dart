@@ -9,11 +9,11 @@ class Game {
         "Muitas aves bonitas e coloridas fazem seu ninho nas árvores de mangue. O guará é uma dessas aves. Qual a cor do guará?",
       ],
       [
-        "Na maioria das árvores a semente brota no chão, enquanto as sementes de árvores de mangue brotam ainda grudadas à planta mãe. Qual é o nome dessa semente que brota na árvore de mangue?",
-        "Da semente nasce uma planta, do ovo nasce uma galinha... e de uma larva nasce o quê?",
-        "A maioria dos caranguejos do manguezal vive na lama. Os aratus são caranguejos diferentes, onde é que eles passam a maior parte do tempo?",
-        "O caranguejo-uçá leva o alimento para comer dentro da sua toca. Qual o principal alimento desse caranguejo?",
-        "Os turus são animais que se alimentam da madeira morta caída no chão das florestas de mangue. Que tipo de animal é o turu?",
+        "Na maioria das árvores a semente brota no chão,\nenquanto as sementes de árvores de mangue brotam ainda\ngrudadas à planta mãe.\nQual é o nome dessa semente que brota na árvore de mangue?",
+        "Da semente nasce uma planta,\ndo ovo nasce uma galinha...\ne de uma larva nasce o quê?",
+        "A maioria dos caranguejos do manguezal vive na lama.\nOs aratus são caranguejos diferentes, onde é que\neles passam a maior parte do tempo?",
+        "O caranguejo-uçá leva o alimento para\ncomer dentro da sua toca.\nQual o principal alimento desse caranguejo?",
+        "Os turus são animais que se alimentam da\nmadeira morta caída no chão das florestas de mangue.\nQue tipo de animal é o turu?",
       ],
       [
 

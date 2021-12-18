@@ -1,6 +1,7 @@
 
 import 'package:animated_rotation/animated_rotation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mangues_da_amazonia/app/LocalDB/Repository.dart';
 import 'package:mangues_da_amazonia/app/Models/Jogador.dart';
@@ -29,6 +30,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
   void initState() {
     // TODO: implement initState
     super.initState();
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
 
 
   }
@@ -83,7 +85,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
                       onTap: (){
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => GameMap()),
+                          MaterialPageRoute(builder: (context) => GameMap(0)),
                         );
                       },
                    child:

@@ -4,21 +4,28 @@ import 'dart:ui';
 
 import 'package:animated_rotation/animated_rotation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mangues_da_amazonia/app/Presenter/Widgets/MapBlack.dart';
 import 'package:mangues_da_amazonia/app/Presenter/Widgets/MapRed.dart';
 import 'package:mangues_da_amazonia/app/Presenter/Widgets/MapWhite.dart';
 import 'package:mangues_da_amazonia/app/Presenter/home/Home.dart';
 
+import 'MapaPreto.dart';
+import 'MapaVermelho.dart';
+
 class GameMap extends StatefulWidget {
 
-  GameMap();
+  int level=0;
+  GameMap(this.level);
 
   @override
-  _GameMap createState() => _GameMap();
+  _GameMap createState() => _GameMap(level);
 }
 
 class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
 
+  int level=0;
+  _GameMap(this.level);
   late AnimationController _controller_red;
   late AnimationController _controller_black;
   late AnimationController _controller_white;
@@ -133,11 +140,29 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     _controller_red = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
     _controller_black = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
     _controller_white = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
 
+    if(level==1){
+      map_red_finalizado=true;
+      limpou_mangue_vermelho=true;
+      mapaSelect_red=1;
+    }
+    if(level==2){
+      map_red_finalizado=true;
+      map_black_finalizado=true;
+      limpou_mangue_preto=true;
+      mapaSelect_red=2;
+    }
+    if(level==3){
+      map_red_finalizado=true;
+      map_black_finalizado=true;
+      map_white_finalizado=true;
+      limpou_mangue_branco=true;
+      mapaSelect_red=3;
+    }
     form_black = [
       ["A) A","B) B","C) C","D) D","E) E"],
       ["A) 2","B) 3","C) 4","5) D","E) 6"],
@@ -173,7 +198,9 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
         alignment: Alignment.topCenter,
         children: [
 
+
           bg_map(),
+
 
           Visibility(visible: (width_red==1) && (width_black==1) && (width_white==1),child:
           Positioned(
@@ -328,9 +355,13 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                  GestureDetector(
                      onTap:(){setState(() {
                        print("MAPA VERMELHO");
-                       width_red=3;
-                       width_black=0.0;
-                       width_white=0.0;
+                       // width_red=3;
+                       // width_black=0.0;
+                       // width_white=0.0;
+                       Navigator.push(
+                         context,
+                         MaterialPageRoute(builder: (context) => MapaVermelho()),
+                       );
                      });},
                      child:
                      AnimatedSize(
@@ -371,9 +402,15 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                         print(map_red_finalizado);
                         if (!map_black_finalizado && map_red_finalizado)
                           setState(() {
-                            width_red=0;
-                            width_black=3;
-                            width_white=0;
+                            // width_red=0;
+                            // width_black=3;
+                            // width_white=0;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => MapaPreto((){
+
+                              })),
+                            );
                           });
                         },
                       child:
@@ -537,6 +574,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                   width: MediaQuery.of(context).size.width,
                   )
           )),
+
 
 
         ]);

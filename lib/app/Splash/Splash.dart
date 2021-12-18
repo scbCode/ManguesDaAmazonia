@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:animated_rotation/animated_rotation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mangues_da_amazonia/app/Presenter/TelaAnimacao/TelaAnimacao.dart';
 import 'package:mangues_da_amazonia/app/Presenter/home/Home.dart';
 
@@ -21,6 +22,8 @@ class _Splash extends State<Splash> with SingleTickerProviderStateMixin  {
   void initState() {
     // TODO: implement initState
     super.initState();
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+
     startTimer();
   }
 

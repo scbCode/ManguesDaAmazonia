@@ -4,30 +4,33 @@ import 'dart:ui';
 
 import 'package:animated_rotation/animated_rotation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mangues_da_amazonia/app/Engine/Game.dart';
 import 'package:mangues_da_amazonia/app/LocalDB/Repository.dart';
 import 'package:mangues_da_amazonia/app/Presenter/GameMap/GameMap.dart';
-import 'package:mangues_da_amazonia/app/Presenter/Widgets/final_branco.dart';
+import 'package:mangues_da_amazonia/app/Presenter/Widgets/Pergunta.dart';
+import 'package:mangues_da_amazonia/app/Presenter/Widgets/SeisOlhos/SeisOlhos.dart';
+import 'package:mangues_da_amazonia/app/Presenter/Widgets/final_vermelho.dart';
 import 'package:mobx/mobx.dart';
 
-import 'Pergunta.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MapWhite extends StatefulWidget {
-  Function finalizado;
-  MapWhite(this.finalizado);
+class MapaVermelho extends StatefulWidget {
+
+  MapaVermelho();
 
   @override
-  _MapWhite createState() => _MapWhite(this.finalizado);
+  _MapaVermelho createState() => _MapaVermelho();
+
 }
 
-class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
+class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMixin {
 
-  Function finalizado;
 
-  _MapWhite(this.finalizado);
 
+
+  Game game = Game();
   late AnimationController _controller;
   Tween<double> _tween = Tween(begin: 0.9, end: 1.5);
   bool form_red_v=false;
@@ -43,11 +46,10 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
   int _start = 30;
 
   late Timer _timer_carang;
-  int _start_carang = 10;
+  int _start_carang = 13;
   int totalTime = 30;
   int resp_red = 1;
   int resp_jogada = -1;
-  Game game = Game();
 
   bool btn_1 = true;
   bool btn_2 = true;
@@ -55,9 +57,13 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
   bool btn_4 = true;
   bool btn_5 = true;
   int vidas = 3;
-  String textCarang = "Gostaria de poder te receber melhor, garça. Mas minhas raízes estão fracas demais desde que esse lixo todo tomou conta daqui.";
+  int btn_select = 0;
+  String textCarang = "\nA nossa casa tá\numa zona! Mas tu podes\n"
+      "ajudar a gente acolocar\nordem no lugar.\n";
 
   int totalPerguntas_respondidas = 0;
+
+  List<int> resposta_certa=[3,2,0,1,3];
 
   Repository repository = Repository();
 
@@ -74,18 +80,16 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
   double w_alt = 0.0;
   Image image_a_normal = Image.asset("lib/assets/images/elementos/a_alternativa_normal.png");
   Image image_a_certa = Image.asset("lib/assets/images/elementos/a_alternativa_certa.png");
-  List<int> resposta_certa=[1,1,3,1,0];
 
   @override
   void initState() {
     super.initState();
 
     // TODO: implement initState
-    _controller = AnimationController(
-        duration: const Duration(milliseconds: 1200), vsync: this);
+    _controller = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
     _controller.repeat(reverse: true);
     startTimerAnim();
-    form_red.addAll(game.respostas[2]);
+    form_red.addAll(game.respostas[0]);
     mapaSelect_red = resposta_certa[0];
   }
 
@@ -108,52 +112,73 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
             Container(
                 height: MediaQuery.of(context).size.height,
                 width:MediaQuery.of(context).size.width,
+                child:Image.asset('lib/assets/images/elementos/fundo_mangue_vermelho.jpg',
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width, fit: BoxFit.cover)),
+
+            Container(
+                height: MediaQuery.of(context).size.height,
+                width:MediaQuery.of(context).size.width,
                 child:
                 Visibility(
                     visible: form_red_v,
                     child:Form_red())),
 
+            Positioned(
+                top: 0,
+                right: MediaQuery.of(context).size.width*.4,
+                child:
+                Visibility(visible: !form_red_v && !finalizado_ ,child:
+                Container(child:
+                Image.asset('lib/assets/images/elementos/placa_mangue_vermelho_map.png',
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.25, fit: BoxFit.cover)))),
+
             Visibility(visible: visible_itensmap && !anim_carangueijo,child:
-             mapPerguntas()),
+              mapPerguntas()),
 
             Positioned(
-                bottom: MediaQuery.of(context).size.height*.25,
+                bottom: MediaQuery.of(context).size.height*.3,
                 right: MediaQuery.of(context).size.width*.4325,
-                child:
-                Visibility(visible: anim_carangueijo,child:
-                Container(child:
-                Image.asset('lib/assets/images/elementos/caixa_dialogo.png',
-                    height: MediaQuery.of(context).size.height*.4,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width*.34, fit: BoxFit.contain)))),
-
-            Positioned(
-                right: MediaQuery.of(context).size.width*.425,
-                bottom: MediaQuery.of(context).size.height*.25,
-                child:
-                Visibility(visible: anim_carangueijo,child:
+                child:Visibility(visible: anim_carangueijo,child:
                 Container(
-                    height: MediaQuery.of(context).size.height*.27,
-                    width: MediaQuery.of(context).size.width*.3,
-                    padding: EdgeInsets.fromLTRB(0, 0, 35, 0),
-                    child:Text(textCarang, textAlign: TextAlign.start,style:
-                    TextStyle(fontFamily: "MochiyPopPOne",color:  Colors.black,fontSize: MediaQuery.of(context).size.width*.016),))
-                )),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("lib/assets/images/elementos/caixa_dialogo.png",),
+                        fit: BoxFit.scaleDown,
+                      ),
+                    ),
+                    child:
+                    Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.fromLTRB(20,35,30,30),
+                        padding: EdgeInsets.all(20),
+                        child: ConstrainedBox(
+                          constraints:BoxConstraints(
+                            minWidth:  MediaQuery.of(context).size.width*.1,
+                            maxWidth:  MediaQuery.of(context).size.width*.35,
+                            maxHeight: MediaQuery.of(context).size.height*.3,
+                          ),
+                          child:
+                          Text(textCarang, textAlign: TextAlign.start,style:
+                          TextStyle(fontFamily: "MochiyPopPOne",color:  Colors.black,fontSize: MediaQuery.of(context).size.width*.017)),))))),
 
             Positioned(
-                top: MediaQuery.of(context).size.height*.45,
-                right: MediaQuery.of(context).size.width*.23,
+                bottom: MediaQuery.of(context).size.height*.035,
+                right: MediaQuery.of(context).size.width*.2,
                 child:
                 Visibility(visible: anim_carangueijo,child:
                 Container(child:
-                Image.asset('lib/assets/images/elementos/arvore_falando.png',
+                Image.asset('lib/assets/images/elementos/carangueijo.png',
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.250, fit: BoxFit.cover)))),
-
+                        .width*.30, fit: BoxFit.cover)))),
 
             Visibility(visible: acerto,child:
             popAcerto()),
@@ -167,21 +192,11 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
             Visibility(visible: finalizado_,child:
             popFinalMap()),
 
-            Positioned(
-                top: 0,
-                right: MediaQuery.of(context).size.width*.4,
-                child:
-                Visibility(visible: !form_red_v && !finalizado_ ,child:
-                Container(child:
-                Image.asset('lib/assets/images/elementos/placa_mangue_branco_map.png',
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width*.25, fit: BoxFit.cover)))),
+           Visibility(visible: form_red_v,child:
+            Garca())
 
 
           ]);
-
   }
 
   Widget mapPerguntas(){
@@ -197,8 +212,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                     ativo: btn_1,click: (){
                       setState(() {
                         mapaSelect_red=0;
-                                                resp_red=resposta_certa[mapaSelect_red];
-
+                        resp_red=resposta_certa[mapaSelect_red];
                         form_red_v=true;
                         visible_itensmap=false;
                         startTimer();
@@ -213,9 +227,8 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                     ativo:btn_2,click: (){
                       setState(() {
                         mapaSelect_red=1;
+                        resp_red=resposta_certa[mapaSelect_red];
                         form_red_v=true;
-                                                resp_red=resposta_certa[mapaSelect_red];
-
                         visible_itensmap=false;
                         startTimer();
                       });
@@ -229,11 +242,10 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                     ativo:btn_3,click: (){
                       setState(() {
                         mapaSelect_red=2;
+                        resp_red=resposta_certa[mapaSelect_red];
                         form_red_v=true;
                         visible_itensmap=false;
                         startTimer();
-                        resp_red=resposta_certa[mapaSelect_red];
-
                       });
                     })),
 
@@ -261,13 +273,10 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                     ativo:btn_5,click: (){
                       setState(() {
                         mapaSelect_red=4;
-                                                resp_red=resposta_certa[mapaSelect_red];
-
+                        resp_red=resposta_certa[mapaSelect_red];
                         form_red_v=true;
                         visible_itensmap=false;
-
                         startTimer();
-
                       });
                     })),
 
@@ -282,33 +291,40 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
           child:
           Stack(children:[
 
-            Image.asset('lib/assets/images/elementos/fundo_mangue_branco.jpg',
-                width:MediaQuery.of(context).size.width,
-                height:MediaQuery.of(context).size.height,
-                fit: BoxFit.cover),
-
             Positioned(
-              top: 15,
-              right: MediaQuery.of(context).size.width*.2,
-              child:  Image.asset('lib/assets/images/elementos/caixa_pergunta.png',
-                  width:MediaQuery.of(context).size.width*.5,
-                  fit: BoxFit.cover),),
-
-            Positioned(
-                top: MediaQuery.of(context).size.height*.03,
-                right: MediaQuery.of(context).size.width*.2,
+                top:0,
+                left:MediaQuery.of(context).size.width*.25,
                 child:
-                Container(
-                  padding: EdgeInsets.all(20),
-                  width:MediaQuery.of(context).size.width*.5,
-                  child:
-                  Text(game.perguntas[2][mapaSelect_red],textAlign:
-                  TextAlign.center,style: TextStyle(fontFamily: "MochiyPopPOne",color: Colors.black,fontSize:
-                  MediaQuery.of(context).size.height*.025),),)),
+              Stack(
+                 fit: StackFit.passthrough,
+                 alignment: Alignment.center,
+                 children:[
 
+                  // Image.asset('lib/assets/images/elementos/caixa_pergunta.png',
+                  //   width:MediaQuery.of(context).size.width*.5,
+                  //   fit: BoxFit.cover),
+                Container(
+                    margin: EdgeInsets.all(15),
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("lib/assets/images/elementos/caixa_pergunta.png"),
+                        fit: BoxFit.scaleDown,
+                      ),
+                    ),
+                    child:
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.fromLTRB(25,0,25,0),
+                    width:MediaQuery.of(context).size.width*.45,
+                    child:
+                    Text(game.perguntas[0][mapaSelect_red],textAlign:
+                    TextAlign.center,style: TextStyle(fontFamily: "MochiyPopPOne",color: Colors.black,fontSize:
+                    MediaQuery.of(context).size.width*.016),),)),
+              ])),
 
             Positioned(
-                bottom:30,
+                bottom:10,
                 left: 50,
                 child:
                 Container(
@@ -331,7 +347,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                                     startTimerPop();
                                     acerto=true;
                                     setPerguntaRespondida();
-                                    // // _timer.cancel();
+                                    // _timer.cancel();
                                     if(mapaSelect_red==0)
                                       btn_1=false;
                                     if(mapaSelect_red==1)
@@ -372,7 +388,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
 
                                         Positioned(left:MediaQuery.of(context).size.width*.09,
                                             top:17,child:
-                                            Text( form_red[mapaSelect_red][0],style: TextStyle(fontSize: MediaQuery.of(context).size.width*.023,color: Colors.white,
+                                            Text( form_red[mapaSelect_red][0],style: TextStyle(fontSize: MediaQuery.of(context).size.width*.03,color: Colors.white,
                                                 fontFamily: 'MochiyPopPOne'))),
                                       ]))),
 
@@ -384,7 +400,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                                     startTimerPop();
                                     acerto=true;
                                     setPerguntaRespondida();
-                                    // // _timer.cancel();
+                                    // _timer.cancel();
                                     if(mapaSelect_red==0)
                                       btn_1=false;
                                     if(mapaSelect_red==1)
@@ -426,18 +442,20 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
 
                                         Positioned(left:MediaQuery.of(context).size.width*.09,top:20,child:
                                         Text( form_red[mapaSelect_red][1],style: TextStyle(fontSize:
-                                        MediaQuery.of(context).size.width*.023,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
+                                        MediaQuery.of(context).size.width*.03,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
                                       ]))),
 
                           GestureDetector(
                               onTap: (){
                                 setState(() {
                                   resp_jogada=2;
+                                  print("");
                                   if (resp_jogada == resp_red){
                                     startTimerPop();
+
                                     acerto=true;
                                     setPerguntaRespondida();
-                                    // // _timer.cancel();
+                                    // _timer.cancel();
                                     if(mapaSelect_red==0)
                                       btn_1=false;
                                     if(mapaSelect_red==1)
@@ -478,7 +496,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                                         ),
 
                                         Positioned(left:MediaQuery.of(context).size.width*.09,top:20,child:
-                                        Text( form_red[mapaSelect_red][2],style: TextStyle(fontSize:  MediaQuery.of(context).size.width*.023,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
+                                        Text( form_red[mapaSelect_red][2],style: TextStyle(fontSize:  MediaQuery.of(context).size.width*.03,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
                                       ]))),
 
                           GestureDetector(
@@ -489,7 +507,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                                     startTimerPop();
                                     acerto=true;
                                     setPerguntaRespondida();
-                                    // // _timer.cancel();
+                                    // _timer.cancel();
                                     if(mapaSelect_red==0)
                                       btn_1=false;
                                     if(mapaSelect_red==1)
@@ -530,64 +548,40 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                                         ),
 
                                         Positioned(left:MediaQuery.of(context).size.width*.09,top:20,child:
-                                        Text( form_red[mapaSelect_red][3],style: TextStyle(fontSize:  MediaQuery.of(context).size.width*.023,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
+                                        Text( form_red[mapaSelect_red][3],style: TextStyle(fontSize:  MediaQuery.of(context).size.width*.03,color: Colors.white,fontFamily: 'MochiyPopPOne'))),
                                       ]))),
 
-                          // GestureDetector(
-                          //     onTap: (){setState(() {resp_jogada=4;
-                          //         if (resp_jogada == resp_red){
-                          //           acerto=true;
-                          //           startTimerPop();
-                          // //           _timer.cancel();
-                          //         }else{
-                          //             vidas--;
-                          //             erro=true;
-                          //             startTimerPop();
-                          // //             _timer.cancel();
-                          //         }
-                          //       });
-                          //     },
-                          //     child:
-                          //     Container(
-                          //       padding: EdgeInsets.all(8),
-                          //       margin: EdgeInsets.all(4),
-                          //       width: MediaQuery.of(context).size.width*.7,
-                          //       decoration: BoxDecoration(color:resp_jogada==0 ?
-                          //       Colors.white : Colors.amberAccent,
-                          //           boxShadow: [BoxShadow(color:Colors.black54)],
-                          //           border:  Border.all(color: Colors.brown,width: 4),
-                          //           borderRadius: BorderRadius.circular(10)),
-                          //       child: Text( form_red[mapaSelect_red][4],style: TextStyle(color:Colors.brown,fontSize: 16,fontFamily: 'MochiyPopPOne'),),)),
+                        ])))),
 
 
-                        ])))
-            ),
 
-            Positioned(
-                bottom: 3,
-                right: MediaQuery.of(context).size.width*.02,
-                child:
-                Visibility(child:
-                Container(child:
-                erro ? Image.asset('lib/assets/images/elementos/garca_triste.png' ,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width*.3, fit: BoxFit.cover) :
-                acerto ? Image.asset('lib/assets/images/elementos/garca_feliz.png' ,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width*.3, fit: BoxFit.cover) :
-                Image.asset('lib/assets/images/elementos/garca_questoes.png' ,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width*.3, fit: BoxFit.cover)
-                ))),
 
-          ]))
-    ;
+          ]));
+  }
+
+  Widget Garca(){
+    return  Positioned(
+        bottom: 3,
+        right: MediaQuery.of(context).size.width*.02,
+        child:
+        Visibility(child:
+        Container(child:
+        erro ? Image.asset('lib/assets/images/elementos/garca_triste.png' ,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width*.3, fit: BoxFit.cover) :
+        acerto ? Image.asset('lib/assets/images/elementos/garca_feliz.png' ,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width*.3, fit: BoxFit.cover) :
+        Image.asset('lib/assets/images/elementos/garca_questoes.png' ,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width*.3, fit: BoxFit.cover)
+        )));
   }
 
   void startTimer() {
@@ -624,12 +618,14 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
 
             _start_carang--;
 
-            if (_start_carang == 6)
-              textCarang = 'Pedi pros animais do mangue saírem e pedirem ajuda para alguém.';
+            if (_start_carang == 8)
+              textCarang = '\nBasta tu tocar em\num dos lixos que uma\ncaixa de pergunta vai\nse abrir.\n';
 
-            if (_start_carang == 3)
-              textCarang = 'Mas aí trouxeram você. Fazer o que, né? Boa sorte!';
+            if (_start_carang == 5)
+              textCarang = '\nBasta escolher a\npergunta certa e PUFF!\nMagicamente o lixo\nvai sumir.\n';
 
+            if (_start_carang == 2)
+              textCarang = '\nBoa sorte!  \n';
 
           });
         }
@@ -638,7 +634,6 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
   }
 
   void startTimerPop() {
-
     int _start_time  = 3;
     const oneSec = const Duration(seconds: 1);
     late Timer _timer_pop;
@@ -657,7 +652,6 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
             _timer_pop.cancel();
             acerto=false;
           });
-
         } else {
           setState(() {
             _start_time--;
@@ -668,14 +662,15 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
   }
 
   Widget popAcerto(){
+
     return
       Container(
           color: Colors.white.withAlpha(150),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Image.asset("lib/assets/images/elementos/pop_acerto.png",
-              width: MediaQuery.of(context).size.width*.4,
-              height: MediaQuery.of(context).size.height*.4));
+            width: MediaQuery.of(context).size.width*.4,
+            height: MediaQuery.of(context).size.height*.4,));
 
   }
 
@@ -699,7 +694,7 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
                 child:
                 OutlinedButton(onPressed: (){
                   setState((){
-                    finalizado(false);
+                    // finalizado(false);
 
                   });
                 }, child: Text("Continuar",style: TextStyle(color:Colors.black,fontSize: 16,fontFamily: 'MochiyPopPOne'),)))
@@ -724,7 +719,12 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
 
   Widget popFinalMap(){
     return
-      FinalBranco((){finalizado(true);});
+      FinalVermelho((){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => GameMap(1)),
+        );
+      });
 
   }
 
@@ -741,6 +741,26 @@ class _MapWhite extends State<MapWhite> with SingleTickerProviderStateMixin {
 
   setPontos(){
     repository.setPontos(2);
+  }
+
+  void startTimerLoad() {
+    int _start_time  = 3;
+    const oneSec = const Duration(seconds: 1);
+    late Timer _timer_pop;
+    _timer_pop = new Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        if (_start_time == 0) {
+          setState((){
+            _timer_pop.cancel();
+          });
+        } else {
+          setState(() {
+            _start_time--;
+          });
+        }
+      },
+    );
   }
 
 }

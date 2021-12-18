@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:mangues_da_amazonia/app/Aguarde/AguardePage.dart';
 import 'package:mangues_da_amazonia/app/Presenter/TelaAnimacao/TelaAnimacao.dart';
 
+import 'app/Presenter/360video/360video.dart';
 import 'app/Presenter/GameMap/GameMap.dart';
 import 'app/Presenter/home/Home.dart';
 import 'app/Splash/Splash.dart';
@@ -56,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     return Scaffold(
       body: Material(
         type: MaterialType.transparency,
-        child: Splash())
+        child: GameMap(0))
     );
   }
 }

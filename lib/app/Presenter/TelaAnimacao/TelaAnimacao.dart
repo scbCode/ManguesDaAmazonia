@@ -1,6 +1,7 @@
 
 import 'package:animated_rotation/animated_rotation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mangues_da_amazonia/app/LocalDB/Repository.dart';
 import 'package:mangues_da_amazonia/app/Models/Jogador.dart';
@@ -29,6 +30,7 @@ class _TelaAnimacao extends State<TelaAnimacao> with SingleTickerProviderStateMi
   @override
   void initState() {
     super.initState();
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     _controller = VideoPlayerController.asset(
         "lib/assets/videos/intro_.mp4")
       ..setVolume(1.0)

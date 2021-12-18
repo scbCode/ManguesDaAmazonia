@@ -13,6 +13,8 @@ import 'package:mobx/mobx.dart';
 import 'Pergunta.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'final_preto.dart';
+
 class MapBlack extends StatefulWidget {
   Function finalizado;
   MapBlack(this.finalizado);
@@ -42,7 +44,7 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
   int _start = 30;
 
   late Timer _timer_carang;
-  int _start_carang = 8;
+  int _start_carang = 14;
   int totalTime = 30;
   int resp_red = 1;
   int resp_jogada = -1;
@@ -54,8 +56,7 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
   bool btn_4 = true;
   bool btn_5 = true;
   int vidas = 3;
-  String textCarang = "A nossa casa tá uma zona! Mas tu podes "
-      "ajudar a gente a colocar ordem no lugar.";
+  String textCarang = "Estou com um baita bloqueio criativo! Não consigo desenhar nada.";
 
   int totalPerguntas_respondidas = 0;
 
@@ -131,7 +132,7 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
 
             Positioned(
                 right: MediaQuery.of(context).size.width*.425,
-                bottom: MediaQuery.of(context).size.height*.25,
+                bottom: MediaQuery.of(context).size.height*.26,
                 child:
                 Visibility(visible: anim_carangueijo,child:
                 Container(
@@ -306,31 +307,9 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
                 child:
                 Text(game.perguntas[1][mapaSelect_red],textAlign:
                 TextAlign.center,style: TextStyle(fontFamily: "MochiyPopPOne",color: Colors.black,fontSize:
-                MediaQuery.of(context).size.height*.03),),)),
+                MediaQuery.of(context).size.height*.025),),)),
 
 
-            Positioned(
-                bottom: 3,
-                right: MediaQuery.of(context).size.width*.02,
-                child:
-                Visibility(child:
-                Container(child:
-                erro ? Image.asset('lib/assets/images/elementos/garca_triste.png' ,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width*.3, fit: BoxFit.cover) :
-                acerto ? Image.asset('lib/assets/images/elementos/garca_feliz.png' ,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width*.3, fit: BoxFit.cover) :
-                Image.asset('lib/assets/images/elementos/garca_questoes.png' ,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width*.3, fit: BoxFit.cover)
-                ))),
 
             Positioned(
                 bottom:30,
@@ -586,8 +565,30 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
 
 
                     ])))
-            )
+            ),
 
+            Positioned(
+                bottom: 3,
+                right: MediaQuery.of(context).size.width*.02,
+                child:
+                Visibility(child:
+                Container(child:
+                erro ? Image.asset('lib/assets/images/elementos/garca_triste.png' ,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.3, fit: BoxFit.cover) :
+                acerto ? Image.asset('lib/assets/images/elementos/garca_feliz.png' ,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.3, fit: BoxFit.cover) :
+                Image.asset('lib/assets/images/elementos/garca_questoes.png' ,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.3, fit: BoxFit.cover)
+                ))),
 
           ]))
     ;
@@ -627,14 +628,13 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
 
             _start_carang--;
 
-            if (_start_carang == 6)
-              textCarang = 'Basta tu tocar em um dos lixos que uma caixa de pergunta vai se abrir.';
 
-            if (_start_carang == 4)
-              textCarang = 'Basta escolher a pergunta certa e PUFF! Magicamente o lixo vai sumir.';
-
-            if (_start_carang == 2)
-              textCarang = 'Boa sorte!';
+            if (_start_carang == 11)
+              textCarang = 'Todo esse lixo afastou meus amigos e minha família daqui. Agora quem vai elogiar o meu trabalho?!';
+            if (_start_carang == 7)
+              textCarang = 'Por favor, limpe esta área para que eu possa receber alguns aplausos pelos meus desenhos novamente.';
+            if (_start_carang == 3)
+              textCarang = 'Conto com você!';
 
           });
         }
@@ -728,89 +728,89 @@ class _MapBlack extends State<MapBlack> with SingleTickerProviderStateMixin {
   }
 
   Widget popFinalMap(){
-    return
-      Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(color: Colors.white,
-              boxShadow: [BoxShadow(color:Colors.black26,blurRadius: 3,spreadRadius: 3)]),
-          child:
-          Stack(children: [
-
-            // img_bg_form,
-            Image.asset(
-              "lib/assets/images/elementos/cenario_tralhoto.jpg",
-              fit: BoxFit.cover,  height:MediaQuery.of(context).size.height,
-              width:MediaQuery.of(context).size.width,),
-            Positioned(top:MediaQuery.of(context).size.height*.01,right:0,child:
-            Container(
-                margin: EdgeInsets.all(15),
-                child:
-                GestureDetector(onTap:(){
-                  launch("https://youtu.be/qOODbkMOjKQ?t=1");
-                },child:
-                Image.asset(
-                  "lib/assets/images/elementos/link_360.png",
-                  height:MediaQuery.of(context).size.height*.35,
-                  width:MediaQuery.of(context).size.width*.35,), ))),
-
-            Positioned(
-                bottom:10,
-                left:-20,child:
-            Container(
-              child:
-              Image.asset(
-                "lib/assets/images/elementos/garca_e_carangueijo.png",
-                height:MediaQuery.of(context).size.height*.6,),)),
-            Positioned(
-                top:MediaQuery.of(context).size.height*.55,
-                left:0,child:
-            Container(
-              margin: EdgeInsets.all(15),
-              child:
-              Transform(
-                alignment: Alignment.center,
-                transform: Matrix4.rotationY(3),
-                child:
-              Image.asset(
-                "lib/assets/images/elementos/guaxinim_feliz.png",
-                height:MediaQuery.of(context).size.height*.5,),))),
-
-            Positioned(
-                top:20,
-                right:MediaQuery.of(context).size.width*.35,child:
-            Container(
-              margin: EdgeInsets.all(15),
-              child:
-              Image.asset(
-                "lib/assets/images/elementos/caixa_dialogo.png",
-                height:MediaQuery.of(context).size.height*.4,),)),
-
-            Positioned(
-                bottom:0,
-                right:MediaQuery.of(context).size.width*.125,child:
-            Container(
-              margin: EdgeInsets.all(15),
-              child:
-              Image.asset(
-                "lib/assets/images/elementos/tralhoto.png",
-                height:MediaQuery.of(context).size.height*.7,),)),
-
-            Positioned(
-                bottom:0,
-                right:MediaQuery.of(context).size.width*.35,child:
-              GestureDetector(onTap:(){
-                setState((){finalizado(true);});
-              },child:
-              Container(
-                margin: EdgeInsets.all(15),
-                child:
-                Image.asset("lib/assets/images/elementos/seta_2.png",
-                height:MediaQuery.of(context).size.height*.25,
-                width:MediaQuery.of(context).size.width*.25,),))),
-
-          ],)
-      );
+    return FinalPreto((){finalizado(true);});
+      // Container(
+      //     width: MediaQuery.of(context).size.width,
+      //     height: MediaQuery.of(context).size.height,
+      //     decoration: BoxDecoration(color: Colors.white,
+      //         boxShadow: [BoxShadow(color:Colors.black26,blurRadius: 3,spreadRadius: 3)]),
+      //     child:
+      //     Stack(children: [
+      //
+      //       // img_bg_form,
+      //       Image.asset(
+      //         "lib/assets/images/elementos/cenario_tralhoto.jpg",
+      //         fit: BoxFit.cover,  height:MediaQuery.of(context).size.height,
+      //         width:MediaQuery.of(context).size.width,),
+      //       Positioned(top:MediaQuery.of(context).size.height*.01,right:0,child:
+      //       Container(
+      //           margin: EdgeInsets.all(15),
+      //           child:
+      //           GestureDetector(onTap:(){
+      //             launch("https://youtu.be/qOODbkMOjKQ?t=1");
+      //           },child:
+      //           Image.asset(
+      //             "lib/assets/images/elementos/link_360.png",
+      //             height:MediaQuery.of(context).size.height*.35,
+      //             width:MediaQuery.of(context).size.width*.35,), ))),
+      //
+      //       Positioned(
+      //           bottom:10,
+      //           left:-20,child:
+      //       Container(
+      //         child:
+      //         Image.asset(
+      //           "lib/assets/images/elementos/garca_e_carangueijo.png",
+      //           height:MediaQuery.of(context).size.height*.6,),)),
+      //       Positioned(
+      //           top:MediaQuery.of(context).size.height*.55,
+      //           left:0,child:
+      //       Container(
+      //         margin: EdgeInsets.all(15),
+      //         child:
+      //         Transform(
+      //           alignment: Alignment.center,
+      //           transform: Matrix4.rotationY(3),
+      //           child:
+      //         Image.asset(
+      //           "lib/assets/images/elementos/guaxinim_feliz.png",
+      //           height:MediaQuery.of(context).size.height*.5,),))),
+      //
+      //       Positioned(
+      //           top:20,
+      //           right:MediaQuery.of(context).size.width*.35,child:
+      //       Container(
+      //         margin: EdgeInsets.all(15),
+      //         child:
+      //         Image.asset(
+      //           "lib/assets/images/elementos/caixa_dialogo.png",
+      //           height:MediaQuery.of(context).size.height*.4,),)),
+      //
+      //       Positioned(
+      //           bottom:0,
+      //           right:MediaQuery.of(context).size.width*.125,child:
+      //       Container(
+      //         margin: EdgeInsets.all(15),
+      //         child:
+      //         Image.asset(
+      //           "lib/assets/images/elementos/tralhoto.png",
+      //           height:MediaQuery.of(context).size.height*.7,),)),
+      //
+      //       Positioned(
+      //           bottom:0,
+      //           right:MediaQuery.of(context).size.width*.35,child:
+      //         GestureDetector(onTap:(){
+      //           setState((){finalizado(true);});
+      //         },child:
+      //         Container(
+      //           margin: EdgeInsets.all(15),
+      //           child:
+      //           Image.asset("lib/assets/images/elementos/seta_2.png",
+      //           height:MediaQuery.of(context).size.height*.25,
+      //           width:MediaQuery.of(context).size.width*.25,),))),
+      //
+      //     ],)
+      // );
 
   }
 

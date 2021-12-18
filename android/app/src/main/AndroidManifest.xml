@@ -1,8 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.muirak.mangues_da_amazonia">
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-   <application
+    <application
         android:label="mangues_da_amazonia"
         android:icon="@mipmap/ic_launcher">
         <activity
