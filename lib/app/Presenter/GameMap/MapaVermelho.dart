@@ -161,7 +161,7 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                         child: ConstrainedBox(
                           constraints:BoxConstraints(
                             minWidth:  MediaQuery.of(context).size.width*.1,
-                            maxWidth:  MediaQuery.of(context).size.width*.35,
+                            maxWidth:  MediaQuery.of(context).size.width*.7,
                             maxHeight: MediaQuery.of(context).size.height*.3,
                           ),
                           child:
@@ -295,14 +295,7 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                 top:0,
                 left:MediaQuery.of(context).size.width*.25,
                 child:
-              Stack(
-                 fit: StackFit.passthrough,
-                 alignment: Alignment.center,
-                 children:[
 
-                  // Image.asset('lib/assets/images/elementos/caixa_pergunta.png',
-                  //   width:MediaQuery.of(context).size.width*.5,
-                  //   fit: BoxFit.cover),
                 Container(
                     margin: EdgeInsets.all(15),
                     padding: EdgeInsets.all(15),
@@ -315,13 +308,13 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                     child:
                   Container(
                     alignment: Alignment.center,
-                    padding: EdgeInsets.fromLTRB(25,0,25,0),
+                    padding: EdgeInsets.fromLTRB(25,25,25,25),
                     width:MediaQuery.of(context).size.width*.45,
                     child:
                     Text(game.perguntas[0][mapaSelect_red],textAlign:
                     TextAlign.center,style: TextStyle(fontFamily: "MochiyPopPOne",color: Colors.black,fontSize:
-                    MediaQuery.of(context).size.width*.016),),)),
-              ])),
+                    MediaQuery.of(context).size.width*.016),),))),
+
 
             Positioned(
                 bottom:10,

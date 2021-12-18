@@ -124,7 +124,7 @@ class _MapaPreto extends State<MapaPreto> with SingleTickerProviderStateMixin {
                     visible: form_red_v,
                     child:Form_red())),
 
-            Visibility(visible:true || visible_itensmap && !anim_carangueijo,child:
+            Visibility(visible: visible_itensmap && !anim_carangueijo,child:
             mapPerguntas()),
             Positioned(
                 bottom: MediaQuery.of(context).size.height*.3,
