@@ -1,24 +1,21 @@
 
 class Jogador {
   int id;
-  int pontos;
-  String faseAtual;
+  String fase_atual;
   String nome;
 
-  Jogador({required this.id,required this.nome, required this.pontos, required this.faseAtual});
+  Jogador({required this.id,required this.nome,  required this.fase_atual});
 
   factory Jogador.fromMap(Map<String, dynamic> json) => new Jogador(
     id: json["id"],
     nome: json["nome"],
-    pontos: json["pontos"],
-    faseAtual: json["faseAtual"],
+    fase_atual: json["fase_atual"],
   );
 
   Map<String, dynamic> toMap() => {
     "id": id,
     "nome": nome,
-    "pontos": pontos,
-    "faseAtual": faseAtual,
+    "fase_atual": fase_atual,
   };
 
 }

@@ -20,6 +20,38 @@ class _FinalPreto extends State<FinalPreto> with SingleTickerProviderStateMixin 
 
   Function finalizado;
   _FinalPreto(this.finalizado);
+  late  Image bg_image;
+  late  Image garca_e_carangueijo;
+  late  Image guaxinim_feliz;
+  bool load= false;
+
+  @override
+  void didChangeDependencies()  {
+    super.didChangeDependencies();
+    bg_image = Image.asset(
+      "lib/assets/images/elementos/cenario_tralhoto.jpg",
+      fit: BoxFit.cover,  height:MediaQuery.of(context).size.height,
+      width:MediaQuery.of(context).size.width,);
+
+    garca_e_carangueijo =
+        Image.asset(
+          "lib/assets/images/elementos/garca_e_carangueijo.png",
+          height:MediaQuery.of(context).size.height*.6,);
+
+    guaxinim_feliz = Image.asset(
+      "lib/assets/images/elementos/guaxinim_feliz.png",
+      height:MediaQuery.of(context).size.height*.4,);
+
+
+    precacheImage(garca_e_carangueijo.image,context).then((value) =>
+        precacheImage(bg_image.image,context).then((value) =>
+            setState(() {
+              load=true;
+            })
+        ));
+
+  }
+
 
   @override
   void initState() {
@@ -29,6 +61,12 @@ class _FinalPreto extends State<FinalPreto> with SingleTickerProviderStateMixin 
   @override
   Widget build(BuildContext context) {
     return
+      !load ? Container(alignment: Alignment.center,color: Colors.white,
+        child:
+        Column(crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,children:[
+              CircularProgressIndicator(color: Color(0xFF0E434B),)
+            ])) :
       Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
@@ -36,13 +74,8 @@ class _FinalPreto extends State<FinalPreto> with SingleTickerProviderStateMixin 
               boxShadow: [BoxShadow(color:Colors.black26,blurRadius: 3,spreadRadius: 3)]),
           child:
           Stack(children: [
-
-
-            Image.asset(
-              "lib/assets/images/elementos/cenario_tralhoto.jpg",
-              fit: BoxFit.cover,  height:MediaQuery.of(context).size.height,
-              width:MediaQuery.of(context).size.width,),
-            Positioned(top:MediaQuery.of(context).size.height*.01,right:-30,child:
+            bg_image,
+            Positioned(top:MediaQuery.of(context).size.height*.07,right:-30,child:
             Container(
                 margin: EdgeInsets.all(15),
                 child:
@@ -81,28 +114,14 @@ class _FinalPreto extends State<FinalPreto> with SingleTickerProviderStateMixin 
                 left:40,child:
             Container(
               margin: EdgeInsets.all(15),
-              child:
-              Image.asset(
-                "lib/assets/images/elementos/guaxinim_feliz.png",
-                height:MediaQuery.of(context).size.height*.4,),)),
+              child:guaxinim_feliz
+              )),
 
             Positioned(
-                top:20,
-                right:MediaQuery.of(context).size.width*.3,child:
-            Container(
-              margin: EdgeInsets.all(15),
-              child:
-              Image.asset(
-                "lib/assets/images/elementos/caixa_dialogo.png",
-                height:MediaQuery.of(context).size.height*.45,),)),
+                top:MediaQuery.of(context).size.height*.06,
+                right:MediaQuery.of(context).size.width*.28,child:
 
-            Positioned(
-                top:MediaQuery.of(context).size.height*.23,
-                left:MediaQuery.of(context).size.width*.3,child:
             Container(
-              height: MediaQuery.of(context).size.height*.3,
-              width: MediaQuery.of(context).size.width*.4,
-              padding: EdgeInsets.fromLTRB(0, 0, 35, 0),
               child:SeisOlhos(1),)),
 
             Positioned(

@@ -31,8 +31,8 @@ class _AguardePage extends State<AguardePage> with SingleTickerProviderStateMixi
             Container(
               margin: EdgeInsets.fromLTRB(0,15,0,0),
               child:
-              Text("Game Mangues da Amazônia",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,fontFamily: 'MochiyPopPOne'),),),
-            Text("Em construção...",style: TextStyle(color:Colors.black54,fontSize: 16,fontWeight: FontWeight.bold,fontFamily: 'MochiyPopPOne'),)
+              Text("Game Mangues da Amazônia",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,fontFamily: 'Ubuntu'),),),
+            Text("Em construção...",style: TextStyle(color:Colors.black54,fontSize: 16,fontWeight: FontWeight.bold,fontFamily: 'Ubuntu'),)
           ],),)
     );
   }

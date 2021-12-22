@@ -7,34 +7,38 @@ import 'dart:ui';
 import 'package:animated_rotation/animated_rotation.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mangues_da_amazonia/app/Engine/Game.dart';
 import 'package:mangues_da_amazonia/app/LocalDB/Repository.dart';
 import 'package:mangues_da_amazonia/app/Presenter/GameMap/GameMap.dart';
 import 'package:mangues_da_amazonia/app/Presenter/Widgets/Pergunta.dart';
-import 'package:mangues_da_amazonia/app/Presenter/Widgets/SeisOlhos/SeisOlhos.dart';
-import 'package:mangues_da_amazonia/app/Presenter/Widgets/final_vermelho.dart';
+import 'package:mangues_da_amazonia/app/Presenter/Widgets/final_branco.dart';
+import 'package:mangues_da_amazonia/app/Presenter/Widgets/final_preto.dart';
 import 'package:mobx/mobx.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:url_launcher/url_launcher.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class MapaVermelho extends StatefulWidget {
+
+class MapaBranco extends StatefulWidget {
+  Function finalizado;
   Repository repository = Repository();
-
-  MapaVermelho(this.repository);
+  MapaBranco(this.finalizado,this.repository);
 
   @override
-  _MapaVermelho createState() => _MapaVermelho(repository);
-
+  _MapaBranco createState() => _MapaBranco(this.finalizado,this.repository);
 }
 
-class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMixin {
+class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin {
 
-  _MapaVermelho(this.repository);
-  Game game = Game();
+  Function finalizado;
+  Repository repository = Repository();
+
+  _MapaBranco(this.finalizado,this.repository);
+
+  AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
   late AnimationController _controller;
   Tween<double> _tween = Tween(begin: 0.9, end: 1.5);
   bool form_red_v=false;
@@ -50,10 +54,11 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
   int _start = 30;
 
   late Timer _timer_carang;
-  int _start_carang = 13;
+  int _start_carang = 23;
   int totalTime = 30;
   int resp_red = 1;
   int resp_jogada = -1;
+  Game game = Game();
 
   bool btn_1 = true;
   bool btn_2 = true;
@@ -61,50 +66,58 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
   bool btn_4 = true;
   bool btn_5 = true;
   int vidas = 3;
-  int btn_select = 0;
-  String textCarang = "\nA nossa casa tá\numa zona! Mas tu podes\n"
-      "ajudar a gente acolocar\nordem no lugar.\n";
+  String textCarang = "\nGostaria de poder te receber\nmelhor, garça. Mas minhas raízes estão fracas demais desde que esse lixo todo tomou conta daqui.\n";
 
   int totalPerguntas_respondidas = 0;
 
-  List<int> resposta_certa=[3,2,0,1,3];
-
-  Repository repository = Repository();
 
   dynamic form;
 
   late Image img_bg;
+
+
+
+  List<int> resposta_certa=[1,1,3,1,0];
 
   late List<List<String>> form_red = [];
 
   double w_alt = 0.0;
   Image image_a_normal = Image.asset("lib/assets/images/elementos/a_alternativa_normal.png");
   Image image_a_certa = Image.asset("lib/assets/images/elementos/a_alternativa_certa.png");
+
   late AssetImage image_caixa_pergunta;
   late AssetImage image_caixa_dialogo;
   late  Image garca_feliz;
   late  Image garca_triste;
   late  Image garca_pergunta;
-  late  Image fundo_mangue_vermelho;
-  AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
-
-  bool load=true;
+  late  Image fundo_mangue_branco;
+  late  Image arvore_falando;
+  bool load=false;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
+
+    // TODO: implement initState
+    _controller = AnimationController(
+        duration: const Duration(milliseconds: 1200), vsync: this);
     _controller.repeat(reverse: true);
-    form_red.addAll(game.respostas[0]);
+    form_red.addAll(game.respostas[2]);
     mapaSelect_red = resposta_certa[0];
+
   }
+
+  @override
+  void dispose(){
+    super.dispose();
+    _timer.cancel();
+  }
+
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     w_alt = MediaQuery.of(context).size.width*.55;
-
-
     image_caixa_pergunta = AssetImage("lib/assets/images/elementos/caixa_pergunta.png");
     image_caixa_dialogo =  AssetImage("lib/assets/images/elementos/caixa_dialogo.png",);
     garca_feliz = Image.asset('lib/assets/images/elementos/garca_feliz.png' ,
@@ -122,25 +135,28 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
             .of(context)
             .size
             .width*.3, fit: BoxFit.cover);
-    fundo_mangue_vermelho = Image.asset('lib/assets/images/elementos/fundo_mangue_vermelho.png',
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery
-            .of(context)
-            .size
-            .width, fit: BoxFit.cover);
+    fundo_mangue_branco = Image.asset('lib/assets/images/elementos/fundo_mangue_branco.jpg',
+        width:MediaQuery.of(context).size.width,
+        height:MediaQuery.of(context).size.height,
+        fit: BoxFit.cover);
+    arvore_falando = Image.asset('lib/assets/images/elementos/arvore_falando.png',
+            width: MediaQuery
+                .of(context)
+                .size
+                .width*.250, fit: BoxFit.cover);
 
     precacheImage(image_a_normal.image,context);
     precacheImage(image_a_certa.image,context);
     precacheImage(garca_triste.image,context);
     precacheImage(garca_pergunta.image,context);
     precacheImage(garca_feliz.image,context);
-
     precacheImage(image_caixa_dialogo,context).then((value) =>
-        precacheImage(image_caixa_pergunta,context).then((value) =>
-        precacheImage(fundo_mangue_vermelho.image,context).then((value) => setState((){
-          load=false;
+        precacheImage(fundo_mangue_branco.image,context).then((value) =>
+        setState(() {
           startTimerAnim();
-        }))));
+          load=true;
+        })));
+    precacheImage(image_caixa_pergunta,context);
 
   }
 
@@ -148,77 +164,65 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
   Widget build(BuildContext context) {
     return
       Material(
-         type: MaterialType.transparency,
-         child:
+        type: MaterialType.transparency,
+        child:
+        !load ? Container(alignment: Alignment.center,color: Colors.white,
+          child:
+          Column(crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,children:[
+                CircularProgressIndicator(color: Color(0xFF0E434B),)
+              ]),) :
         Stack(
           alignment: Alignment.center,
           children:[
-
-            Container (
-                height: MediaQuery.of(context).size.height,
-                width:MediaQuery.of(context).size.width,
-                child:fundo_mangue_vermelho),
-
-            Container(
+            fundo_mangue_branco,
+            Positioned(
+                top: 0,
+                child:Container(
                 height: MediaQuery.of(context).size.height,
                 width:MediaQuery.of(context).size.width,
                 child:
                 Visibility(
                     visible: form_red_v,
-                    child:Form_red())),
-
-            Positioned(
-                top: 0,
-                right: MediaQuery.of(context).size.width*.4,
-                child:
-                Visibility(visible: !form_red_v && !finalizado_ ,child:
-                Container(child:
-                Image.asset('lib/assets/images/elementos/placa_mangue_vermelho_map.png',
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width*.25, fit: BoxFit.cover)))),
+                    child:Form_red()))),
 
             Visibility(visible: visible_itensmap && !anim_carangueijo,child:
-              mapPerguntas()),
+            mapPerguntas()),
 
+            Visibility(visible: anim_carangueijo,child:
             Positioned(
                 bottom: MediaQuery.of(context).size.height*.3,
                 right: MediaQuery.of(context).size.width*.4325,
-                child:Visibility(visible: anim_carangueijo,child:
+                child:
                 Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image:image_caixa_dialogo,
+                        image: image_caixa_dialogo,
                         fit: BoxFit.scaleDown,
                       ),
                     ),
                     child:
                     Container(
                         alignment: Alignment.center,
-                        margin: EdgeInsets.fromLTRB(20,35,30,30),
-                        padding: EdgeInsets.all(20),
+                        margin: EdgeInsets.fromLTRB(25,35,30,30),
+                        padding: EdgeInsets.all(15),
                         child: ConstrainedBox(
                           constraints:BoxConstraints(
-                            minWidth:  MediaQuery.of(context).size.width*.1,
-                            maxWidth:  MediaQuery.of(context).size.width*.7,
-                            maxHeight: MediaQuery.of(context).size.height*.3,
+                            minWidth:  MediaQuery.of(context).size.width*.2,
+                            maxWidth:  MediaQuery.of(context).size.width*.36,
+                            maxHeight: MediaQuery.of(context).size.height*.5,
                           ),
                           child:
                           Text(textCarang, textAlign: TextAlign.start,style:
-                          TextStyle(fontFamily: "Ubuntu", fontWeight: FontWeight.bold,color:  Colors.black,fontSize: MediaQuery.of(context).size.width*.017)),))))),
+                          TextStyle(fontWeight: FontWeight.bold,fontFamily: 'Ubuntu',color:  Colors.black
+                              ,fontSize: MediaQuery.of(context).size.width*.017)),))))),
 
             Positioned(
-                bottom: MediaQuery.of(context).size.height*.035,
-                right: MediaQuery.of(context).size.width*.2,
+                top: MediaQuery.of(context).size.height*.45,
+                right: MediaQuery.of(context).size.width*.23,
                 child:
                 Visibility(visible: anim_carangueijo,child:
-                Container(child:
-                Image.asset('lib/assets/images/elementos/carangueijo.png',
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width*.30, fit: BoxFit.cover)))),
+                Container(child:arvore_falando))),
 
             Visibility(visible: acerto,child:
             popAcerto()),
@@ -229,8 +233,20 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
             Visibility(visible: vidas==0,child:
             GameOver()),
 
+            Positioned(
+                top: 0,
+                right: MediaQuery.of(context).size.width*.4,
+                child:
+                Visibility(visible: !form_red_v && !finalizado_ ,child:
+                Container(child:
+                Image.asset('lib/assets/images/elementos/placa_mangue_branco_map.png',
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.25, fit: BoxFit.cover)))),
+
             Visibility(visible: finalizado_,child:
-            popFinalMap()),
+             popFinalMap()),
 
             Visibility(visible: form_red_v && !finalizado_,child:
              Garca()),
@@ -244,30 +260,10 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.15, fit: BoxFit.cover))),
-
-            Visibility(visible: load,child:
-            Positioned(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height,
-                top:0,
-                left: 0,
-                child:
-                Container(alignment: Alignment.center,color: Colors.white,
-                    child:
-                    Column(crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,children:[
-                          CircularProgressIndicator(color: Color(0xFF0E434B),)
-                        ]))
-            )),
+                        .width*.15, fit: BoxFit.cover)))
 
           ]));
+
   }
 
   Widget mapPerguntas(){
@@ -284,6 +280,7 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                       setState(() {
                         mapaSelect_red=0;
                         resp_red=resposta_certa[mapaSelect_red];
+
                         form_red_v=true;
                         visible_itensmap=false;
                         startTimer();
@@ -298,8 +295,9 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                     ativo:btn_2,click: (){
                       setState(() {
                         mapaSelect_red=1;
-                        resp_red=resposta_certa[mapaSelect_red];
                         form_red_v=true;
+                        resp_red=resposta_certa[mapaSelect_red];
+
                         visible_itensmap=false;
                         startTimer();
                       });
@@ -313,10 +311,11 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                     ativo:btn_3,click: (){
                       setState(() {
                         mapaSelect_red=2;
-                        resp_red=resposta_certa[mapaSelect_red];
                         form_red_v=true;
                         visible_itensmap=false;
                         startTimer();
+                        resp_red=resposta_certa[mapaSelect_red];
+
                       });
                     })),
 
@@ -345,9 +344,12 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                       setState(() {
                         mapaSelect_red=4;
                         resp_red=resposta_certa[mapaSelect_red];
+
                         form_red_v=true;
                         visible_itensmap=false;
+
                         startTimer();
+
                       });
                     })),
 
@@ -362,38 +364,38 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
           child:
           Stack(children:[
 
+            Image.asset('lib/assets/images/elementos/fundo_mangue_branco.jpg',
+                width:MediaQuery.of(context).size.width,
+                height:MediaQuery.of(context).size.height,
+                fit: BoxFit.cover),
             Positioned(
-                top:0,
-                left:MediaQuery.of(context).size.width*.25,
-                child:
-
-                Container(
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: image_caixa_pergunta,
-                        fit: BoxFit.scaleDown,
-                      ),
-                    ),
-                    child:ConstrainedBox(
-                        constraints:BoxConstraints(
-                          minWidth:  MediaQuery.of(context).size.width*.1,
-                          maxWidth:  MediaQuery.of(context).size.width*.55,
-                          maxHeight: MediaQuery.of(context).size.height*.35,
-                        ),
-                        child:
+            top:-30,
+            left:MediaQuery.of(context).size.width*.25,
+            child:
+            Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image:image_caixa_pergunta,
+                    fit: BoxFit.scaleDown,
+                  ),
+                ),
+                child:ConstrainedBox(
+                  constraints:BoxConstraints(
+                    minWidth:  MediaQuery.of(context).size.width*.1,
+                    maxWidth:  MediaQuery.of(context).size.width*.5,
+                    maxHeight: MediaQuery.of(context).size.height*.55,
+                  ),
+                  child:
                   Container(
                     alignment: Alignment.center,
-                    padding: EdgeInsets.fromLTRB(25,10,25,10),
+                    padding: EdgeInsets.fromLTRB(25,25,25,25),
                     child:
-                    Text(game.perguntas[0][mapaSelect_red],textAlign:
-                    TextAlign.center,style: TextStyle(fontFamily: "Ubuntu",fontWeight:
-                        FontWeight.bold,color: Colors.black,fontSize:
-                    MediaQuery.of(context).size.width*.018),),)))),
-
-
+                        Text(game.perguntas[2][mapaSelect_red],textAlign:
+                        TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'Ubuntu',color: Colors.black,fontSize:
+                        MediaQuery.of(context).size.width*.016),),),)),
+),
             Positioned(
-                bottom:10,
+                bottom:0,
                 left: 50,
                 child:
                 Container(
@@ -415,9 +417,9 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                                   if (resp_jogada == resp_red){
                                     startTimerPop();
                                     acerto=true;
-
                                     playAcertoSound();
-                                    // _timer.cancel();
+
+                                    // // _timer.cancel();
                                     if(mapaSelect_red==0)
                                       btn_1=false;
                                     if(mapaSelect_red==1)
@@ -431,8 +433,7 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                                   }else{
                                     vidas--;
                                     startTimerPop();
-                                    erro=true;
-                                     playErroSound();
+                                    erro=true;playErroSound();
                                     // _timer.cancel();
                                   }
                                 });
@@ -458,11 +459,9 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                                         ),
 
                                         Positioned(left:MediaQuery.of(context).size.width*.09,
-                                            top:17,child:
-                                            Text( form_red[mapaSelect_red][0],style:
-                                            TextStyle(fontSize: MediaQuery.of(context).size.width*.03,color: Colors.white,
-                                                fontFamily: 'Ubuntu',fontWeight: FontWeight.bold,
-                                            ))),
+                                            top:MediaQuery.of(context).size.height*.07,child:
+                                            Text( form_red[mapaSelect_red][0],style: TextStyle(fontSize: MediaQuery.of(context).size.width*.027,color: Colors.white,
+                                                fontWeight: FontWeight.bold,fontFamily: 'Ubuntu'))),
                                       ]))),
 
                           GestureDetector(
@@ -472,9 +471,9 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                                   if (resp_jogada == resp_red){
                                     startTimerPop();
                                     acerto=true;
-
                                     playAcertoSound();
-                                    // _timer.cancel();
+
+                                    // // _timer.cancel();
                                     if(mapaSelect_red==0)
                                       btn_1=false;
                                     if(mapaSelect_red==1)
@@ -488,8 +487,7 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                                   }else{
                                     vidas--;
                                     startTimerPop();
-                                    erro=true;
-                                     playErroSound();
+                                    erro=true;playErroSound();
                                     // _timer.cancel();
                                   }
                                 });
@@ -503,7 +501,6 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
 
                                         Container(
                                             margin: EdgeInsets.all(4),
-
                                             width: w_alt,
                                             child : resp_jogada == -1 ?
                                             Image.asset("lib/assets/images/elementos/b_alternativa_normal.png") :
@@ -515,23 +512,21 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                                             Image.asset("lib/assets/images/elementos/b_alternativa_normal.png")
                                         ),
 
-                                        Positioned(left:MediaQuery.of(context).size.width*.09,top:20,child:
+                                        Positioned(left:MediaQuery.of(context).size.width*.09,top:MediaQuery.of(context).size.height*.07,child:
                                         Text( form_red[mapaSelect_red][1],style: TextStyle(fontSize:
-                                        MediaQuery.of(context).size.width*.03,color: Colors.white,fontFamily: 'Ubuntu',fontWeight: FontWeight.bold))),
+                                        MediaQuery.of(context).size.width*.027,color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'Ubuntu'))),
                                       ]))),
 
                           GestureDetector(
                               onTap: (){
                                 setState(() {
                                   resp_jogada=2;
-                                  print("");
                                   if (resp_jogada == resp_red){
                                     startTimerPop();
-
                                     acerto=true;
-
                                     playAcertoSound();
-                                    // _timer.cancel();
+
+                                    // // _timer.cancel();
                                     if(mapaSelect_red==0)
                                       btn_1=false;
                                     if(mapaSelect_red==1)
@@ -545,8 +540,7 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                                   }else{
                                     vidas--;
                                     startTimerPop();
-                                    erro=true;
-                                     playErroSound();
+                                    erro=true;playErroSound();
                                     // _timer.cancel();
                                   }
                                 });
@@ -560,7 +554,6 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
 
                                         Container(
                                             margin: EdgeInsets.all(4),
-
                                             width: w_alt,
                                             child : resp_jogada == -1 ?
                                             Image.asset("lib/assets/images/elementos/c_alternativa_normal.png") :
@@ -572,9 +565,8 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                                             Image.asset("lib/assets/images/elementos/c_alternativa_normal.png")
                                         ),
 
-                                        Positioned(left:MediaQuery.of(context).size.width*.09,top:20,child:
-                                        Text( form_red[mapaSelect_red][2],style: TextStyle(fontSize:  MediaQuery.of(context).size.width*.03,color: Colors.white,fontWeight:
-                                        FontWeight.bold,fontFamily: 'Ubuntu',))),
+                                        Positioned(left:MediaQuery.of(context).size.width*.09,top:MediaQuery.of(context).size.height*.07,child:
+                                        Text( form_red[mapaSelect_red][2],style: TextStyle(fontSize:  MediaQuery.of(context).size.width*.027,color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'Ubuntu'))),
                                       ]))),
 
                           GestureDetector(
@@ -584,9 +576,9 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                                   if (resp_jogada == resp_red){
                                     startTimerPop();
                                     acerto=true;
-
                                     playAcertoSound();
-                                    // _timer.cancel();
+
+                                    // // _timer.cancel();
                                     if(mapaSelect_red==0)
                                       btn_1=false;
                                     if(mapaSelect_red==1)
@@ -600,8 +592,7 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                                   }else{
                                     vidas--;
                                     startTimerPop();
-                                    erro=true;
-                                     playErroSound();
+                                    erro=true;playErroSound();
                                     // _timer.cancel();
                                   }
                                 });
@@ -615,7 +606,6 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
 
                                         Container(
                                             margin: EdgeInsets.all(4),
-
                                             width: w_alt,
                                             child : resp_jogada == -1 ?
                                             Image.asset("lib/assets/images/elementos/d_alternativa_normal.png") :
@@ -627,34 +617,27 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                                             Image.asset("lib/assets/images/elementos/d_alternativa_normal.png")
                                         ),
 
-                                        Positioned(left:MediaQuery.of(context).size.width*.09,top:20,child:
-                                        Text( form_red[mapaSelect_red][3],style: TextStyle(fontSize:  MediaQuery.of(context).size.width*.03,fontWeight:
-                                        FontWeight.bold,color: Colors.white,fontFamily: 'Ubuntu',))),
+                                        Positioned(left:MediaQuery.of(context).size.width*.09,top:MediaQuery.of(context).size.height*.07,child:
+                                        Text( form_red[mapaSelect_red][3],style: TextStyle(fontSize:  MediaQuery.of(context).size.width*.027,color: Colors.white,fontWeight: FontWeight.bold,fontFamily: 'Ubuntu'))),
                                       ]))),
 
-                        ])))),
 
+                        ])))
+            ),
 
+            Positioned(
+                bottom: 3,
+                right: MediaQuery.of(context).size.width*.02,
+                child:
+                Visibility(child:
+                Container(child:
+                erro ? garca_triste :
+                acerto ? garca_feliz:
+                garca_pergunta
+                ))),
 
-
-          ]));
-  }
-
-  Widget Garca(){
-    return Positioned(
-        bottom: 3,
-        right: MediaQuery.of(context).size.width*.02,
-        child:
-        Visibility(child:
-          Container(child:
-          erro ? Image.asset('lib/assets/images/elementos/garca_triste.png' ,
-            width: MediaQuery
-                .of(context)
-                .size
-                .width*.3, fit: BoxFit.cover) :
-        acerto ? garca_feliz :
-               garca_pergunta
-        )));
+          ]))
+    ;
   }
 
   void startTimer() {
@@ -691,14 +674,12 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
 
             _start_carang--;
 
-            if (_start_carang == 8)
-              textCarang = '\nBasta tu tocar em\num dos lixos que uma\ncaixa de pergunta vai\nse abrir.\n';
+            if (_start_carang == 14)
+              textCarang = 'Pedi pros animais do\nmangue saírem e pedirem\najuda para alguém.';
 
-            if (_start_carang == 5)
-              textCarang = '\nBasta escolher a\npergunta certa e PUFF!\nMagicamente o lixo\nvai sumir.\n';
+            if (_start_carang == 6)
+              textCarang = 'Mas aí trouxeram você.\nFazer o que, né?\nBoa sorte!';
 
-            if (_start_carang == 2)
-              textCarang = '\nBoa sorte!  \n';
 
           });
         }
@@ -707,15 +688,17 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
   }
 
   void startTimerPop() {
+
     int _start_time  = 3;
     const oneSec = const Duration(seconds: 1);
     late Timer _timer_pop;
     _timer_pop = new Timer.periodic(
-      oneSec, (Timer timer) {
+      oneSec,
+          (Timer timer) {
         if (_start_time == 0) {
           setState((){
 
-            if(acerto)
+            if (acerto)
               setPerguntaRespondida();
 
             form_red_v=false;
@@ -726,8 +709,9 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
             _start=30;
             visible_itensmap=true;
             _timer_pop.cancel();
-
+            acerto=false;
           });
+
         } else {
           setState(() {
             _start_time--;
@@ -738,15 +722,14 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
   }
 
   Widget popAcerto(){
-
     return
       Container(
           color: Colors.white.withAlpha(150),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Image.asset("lib/assets/images/elementos/pop_acerto.png",
-            width: MediaQuery.of(context).size.width*.4,
-            height: MediaQuery.of(context).size.height*.4,));
+              width: MediaQuery.of(context).size.width*.4,
+              height: MediaQuery.of(context).size.height*.4));
 
   }
 
@@ -763,24 +746,23 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
             Container(
                 margin: EdgeInsets.all(15),
                 child:
-                Text("Suas vidas acabaram",style: TextStyle(color:Colors.black,fontSize: 16,fontFamily: 'Ubuntu',fontWeight: FontWeight.bold),)),
+                Text("Suas vidas acabaram",style: TextStyle(color:Colors.black,fontSize: 16,fontWeight: FontWeight.bold,fontFamily: 'Ubuntu'),)),
 
             Container(
                 margin: EdgeInsets.all(15),
                 child:
                 OutlinedButton(onPressed: (){
                   setState((){
-                    // finalizado(false);
+                    finalizado(false);
 
                   });
-                }, child: Text("Continuar",style: TextStyle(color:Colors.black,fontSize: 16,fontFamily: 'Ubuntu',fontWeight: FontWeight.bold),)))
+                }, child: Text("Continuar",style: TextStyle(color:Colors.black,fontSize: 16,fontWeight: FontWeight.bold,fontFamily: 'Ubuntu'),)))
           ],)
       );
 
   }
 
   Widget popErro(){
-
     return
       Container(
           color: Colors.white.withAlpha(150),
@@ -796,14 +778,12 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
 
   Widget popFinalMap(){
     return
-      FinalVermelho((){
-        repository.updateJogador("1");
+      FinalBranco((){
+        repository.updateJogador("3");
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => GameMap("1",true,repository)),
-        );
-      });
-
+        context,
+        MaterialPageRoute(builder: (context) => GameMap("3",true,repository)),
+      );});
   }
 
   setPerguntaRespondida(){
@@ -817,27 +797,32 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
     }
   }
 
-  void startTimerLoad() {
-    int _start_time  = 3;
-    const oneSec = const Duration(seconds: 1);
-    late Timer _timer_pop;
-    _timer_pop = new Timer.periodic(
-      oneSec,
-          (Timer timer) {
-        if (_start_time == 0) {
-          setState((){
-            _timer_pop.cancel();
-          });
-        } else {
-          setState(() {
-            _start_time--;
-          });
-        }
-      });
+  Widget Garca(){
+    return  Positioned(
+        bottom: 3,
+        right: MediaQuery.of(context).size.width*.02,
+        child:
+        Visibility(child:
+        Container(child:
+        erro ? Image.asset('lib/assets/images/elementos/garca_triste.png' ,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width*.3, fit: BoxFit.cover) :
+        acerto ? Image.asset('lib/assets/images/elementos/garca_feliz.png' ,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width*.3, fit: BoxFit.cover) :
+        Image.asset('lib/assets/images/elementos/garca_questoes.png' ,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width*.3, fit: BoxFit.cover)
+        )));
   }
 
   playErroSound() async {
-    // print(result);
     final file = new File('${(await getTemporaryDirectory()).path}/erro.mp3');
     await file.writeAsBytes((await loadAsset('lib/assets/sons/som_error.mp3')).buffer.asUint8List());
     final result = await audioPlayer.play(file.path, isLocal: true,volume: 0.1);

@@ -5,27 +5,31 @@ import 'dart:ui';
 import 'package:animated_rotation/animated_rotation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mangues_da_amazonia/app/Presenter/Widgets/MapBlack.dart';
-import 'package:mangues_da_amazonia/app/Presenter/Widgets/MapRed.dart';
-import 'package:mangues_da_amazonia/app/Presenter/Widgets/MapWhite.dart';
+import 'package:mangues_da_amazonia/app/LocalDB/Repository.dart';
 import 'package:mangues_da_amazonia/app/Presenter/home/Home.dart';
 
+import 'MapaBranco.dart';
 import 'MapaPreto.dart';
 import 'MapaVermelho.dart';
 
 class GameMap extends StatefulWidget {
 
-  int level=0;
-  GameMap(this.level);
+  String level="";
+  Repository repository = Repository();
+  bool finalizado=false;
+  GameMap(this.level,this.finalizado,this.repository);
 
   @override
-  _GameMap createState() => _GameMap(level);
+  _GameMap createState() => _GameMap(level,finalizado,repository);
 }
 
 class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
 
-  int level=0;
-  _GameMap(this.level);
+  String level="";
+  bool finalizado=false;
+
+  Repository repository = Repository();
+  _GameMap(this.level,this.finalizado,this.repository);
   late AnimationController _controller_red;
   late AnimationController _controller_black;
   late AnimationController _controller_white;
@@ -40,6 +44,10 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   bool limpou_mangue_vermelho =false;
   bool limpou_mangue_preto =false;
   bool limpou_mangue_branco =false;
+
+  late Image mangue_vermelho_limpo;
+  late Image mangue_preto_limpo;
+  late Image mangue_branco_limpo;
   late List<List<String>> form_red;
   late List<List<String>> form_black;
   late List<List<String>> form_white;
@@ -62,12 +70,35 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   late Image fundo_mangue_vermelho;
   late Image mapa_vermelho;
   late Image arvore_1;
+  late Image arvore_2;
+  late Image arvore_3;
+  late Image arvore_4;
   late Image lixo_sombrinha;
   late Image lixo_cadeira;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    mangue_vermelho_limpo  = Image.asset('lib/assets/images/elementos/limpou_vermelho.png',
+        fit: BoxFit.cover,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height*.03);
+    mangue_preto_limpo  = Image.asset('lib/assets/images/elementos/limpou_preto.png',
+        fit: BoxFit.cover,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height*.03);
+    mangue_branco_limpo  = Image.asset('lib/assets/images/elementos/limpou_branco.png',
+        fit: BoxFit.cover,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height*.03);
+
 
     mapa_vermelho_preto = new Image.asset('lib/assets/images/elementos/mangue_semi_desbloqueado.jpg',
         height: MediaQuery
@@ -88,6 +119,15 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
             .of(context)
             .size
             .width, fit: BoxFit.cover);
+    fundo_mangue_vermelho = new Image.asset('lib/assets/images/elementos/fundo_mangue_vermelho.png',
+        height: MediaQuery
+            .of(context)
+            .size
+            .height,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width, fit: BoxFit.cover);
 
     mapa_completo = new Image.asset('lib/assets/images/elementos/mapa_completo.png',
       width: MediaQuery
@@ -99,15 +139,21 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
             .of(context)
             .size
             .width*.5, fit: BoxFit.cover);
-    fundo_mangue_vermelho =  new Image.asset('lib/assets/images/elementos/fundo_mangue_vermelho.jpg',
-        height: MediaQuery
-            .of(context)
-            .size
-            .height,
+    arvore_2 = Image.asset('lib/assets/images/elementos/arvore_2.png',
         width: MediaQuery
             .of(context)
             .size
-            .width, fit: BoxFit.cover);
+            .width*.5, fit: BoxFit.cover) ;
+    arvore_3 = Image.asset('lib/assets/images/elementos/arvore_3.png',
+        width: MediaQuery
+            .of(context)
+            .size
+            .width*.5, fit: BoxFit.cover) ;
+    arvore_4 = Image.asset('lib/assets/images/elementos/arvore_4.png',
+        width: MediaQuery
+            .of(context)
+            .size
+            .width*.5, fit: BoxFit.cover) ;
     mapa_vermelho =   new Image.asset('lib/assets/images/elementos/mapa_vermelho.png',
       width: MediaQuery
           .of(context)
@@ -124,17 +170,20 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
             .size
             .width*.05, fit: BoxFit.cover);
 
-    precacheImage(fundo_mangue_vermelho.image,context);
-    precacheImage(arvore_1.image,context);
-    precacheImage(mapa_vermelho.image,context);
-    precacheImage(mapa_completo.image,context).then((value) =>
-      setState(() {
-        load=false;
-    }));
-    precacheImage(fundo_mangue_preto.image,context);
+    precacheImage(arvore_1.image,context).then((value) =>
+    precacheImage(arvore_2.image,context).then((value) =>
+    precacheImage(arvore_3.image,context).then((value) =>
+    precacheImage(arvore_4.image,context).then((value) =>
+    precacheImage(mapa_vermelho_preto.image,context).then((value) =>
+    precacheImage(fundo_mangue_vermelho.image,context).then((value) =>
+        precacheImage(mapa_vermelho.image,context).then((value) =>
+          precacheImage(fundo_mangue_preto.image,context).then((value) =>
+            precacheImage(mapa_completo.image,context).then((value) =>
+                setState(() {
+                  load=false;
+                }))))))))));
 
   }
-
 
   @override
   void initState() {
@@ -145,22 +194,27 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
     _controller_black = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
     _controller_white = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
 
-    if(level==1){
+    print("level");
+    print(level);
+    if(level=="1"){
       map_red_finalizado=true;
-      limpou_mangue_vermelho=true;
+      if (finalizado)
+         limpou_mangue_vermelho=true;
       mapaSelect_red=1;
     }
-    if(level==2){
+    if(level=="2"){
       map_red_finalizado=true;
       map_black_finalizado=true;
-      limpou_mangue_preto=true;
+      if (finalizado)
+        limpou_mangue_preto=true;
       mapaSelect_red=2;
     }
-    if(level==3){
+    if(level=="3"){
       map_red_finalizado=true;
       map_black_finalizado=true;
       map_white_finalizado=true;
-      limpou_mangue_branco=true;
+      if (finalizado)
+        limpou_mangue_branco=true;
       mapaSelect_red=3;
     }
     form_black = [
@@ -185,10 +239,10 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
       Material(
           type: MaterialType.transparency,
           child:
-      Container(
-        alignment: Alignment.topCenter,
-        child:
-         intro(),
+        Container(
+          alignment: Alignment.topCenter,
+          child:
+           intro(),
       ));
   }
 
@@ -198,9 +252,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
         alignment: Alignment.topCenter,
         children: [
 
-
           bg_map(),
-
 
           Visibility(visible: (width_red==1) && (width_black==1) && (width_white==1),child:
           Positioned(
@@ -209,28 +261,15 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                  !map_red_finalizado ?
                   arvore_1 :
                  !map_black_finalizado && map_red_finalizado?
-                  Image.asset('lib/assets/images/elementos/arvore_2.png',
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width*.5, fit: BoxFit.cover) :
+                 arvore_2 :
                  !map_white_finalizado && map_black_finalizado && map_red_finalizado?
-                 Image.asset('lib/assets/images/elementos/arvore_3.png',
-                     width: MediaQuery
-                         .of(context)
-                         .size
-                         .width*.5, fit: BoxFit.cover) :
-                 Image.asset('lib/assets/images/elementos/arvore_4.png',
-                     width: MediaQuery
-                         .of(context)
-                         .size
-                         .width*.5, fit: BoxFit.cover),
+                 arvore_3:
+                 arvore_4,
               )),
 
           Visibility(visible: !map_red_finalizado && (width_red==1) && (width_black==1) && (width_white==1),child:
           lixos_map_vermelho()),
 
-          //cad vermelho
           Visibility(visible:  (width_red==1) && (width_black==1) && (width_white==1),child:
             Positioned(
             bottom: 15,
@@ -354,47 +393,40 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
 
                  GestureDetector(
                      onTap:(){setState(() {
-                       print("MAPA VERMELHO");
-                       // width_red=3;
-                       // width_black=0.0;
-                       // width_white=0.0;
+
                        Navigator.push(
                          context,
-                         MaterialPageRoute(builder: (context) => MapaVermelho()),
+                         MaterialPageRoute(builder: (context) => MapaVermelho(repository)),
                        );
                      });},
                      child:
-                     AnimatedSize(
-                         curve: Curves.easeInOut,
-                         duration: const Duration(milliseconds: 500),
-                         child:
                      Container(
                     width: width_red==3 ? (MediaQuery.of(context).size.width) :
                     width_black==3 || width_white== 3 ? 0.0 :  MediaQuery.of(context).size.width*.3,
                          height: MediaQuery.of(context).size.height,
                          alignment: Alignment.center,
                          decoration: BoxDecoration(color:Colors.transparent),
-                         child:
-                         Visibility(child: MapRed((value){
-
-                           if (!value)
-                             setState(() {
-                               width_red=1;
-                               width_black=1.0;
-                               width_white=1.0;
-                               map_red_finalizado=false;
-                          });
-                             else
-                           setState(() {
-                             print("MAPA Finalizado");
-                             width_red=1;
-                             width_black=1.0;
-                             width_white=1.0;
-                             map_red_finalizado=true;
-                             limpou_mangue_vermelho=true;
-                           });
-                         }),visible: width_red==3)
-                       ,))),
+                         // child:
+                         // Visibility(child: MapRed((value){
+                         //
+                         //   if (!value)
+                         //     setState(() {
+                         //       width_red=1;
+                         //       width_black=1.0;
+                         //       width_white=1.0;
+                         //       map_red_finalizado=false;
+                         //  });
+                         //     else
+                         //   setState(() {
+                         //     print("MAPA Finalizado");
+                         //     width_red=1;
+                         //     width_black=1.0;
+                         //     width_white=1.0;
+                         //     map_red_finalizado=true;
+                         //     limpou_mangue_vermelho=true;
+                         //   });
+                         // }),visible: width_red==3)
+                        )),
 
                  GestureDetector(
                       onTap:(){
@@ -402,14 +434,12 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                         print(map_red_finalizado);
                         if (!map_black_finalizado && map_red_finalizado)
                           setState(() {
-                            // width_red=0;
-                            // width_black=3;
-                            // width_white=0;
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => MapaPreto((){
 
-                              })),
+                              },repository)),
                             );
                           });
                         },
@@ -425,33 +455,36 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                               MediaQuery.of(context).size.width*.3,
                              alignment: Alignment.center,
                              decoration: BoxDecoration(color:Colors.transparent),
-                             child:  Visibility(child:
-                            MapBlack((value){
-                                        if (!value)
-                                          setState(() {
-                                            width_red=1;
-                                            width_black=1.0;
-                                            width_white=1.0;
-                                            map_black_finalizado=false;
-                                          });
-                                 else
-                                        setState(() {
-                                          width_red=1;
-                                          width_black=1.0;
-                                          width_white=1.0;
-                                            map_black_finalizado=true;
-                                          limpou_mangue_preto=true;
-                                        });
-                                        }),visible: width_black==3)
+                            //  child:  Visibility(child:
+                            // MapBlack((value){
+                            //             if (!value)
+                            //               setState(() {
+                            //                 width_red=1;
+                            //                 width_black=1.0;
+                            //                 width_white=1.0;
+                            //                 map_black_finalizado=false;
+                            //               });
+                            //      else
+                            //             setState(() {
+                            //               width_red=1;
+                            //               width_black=1.0;
+                            //               width_white=1.0;
+                            //                 map_black_finalizado=true;
+                            //               limpou_mangue_preto=true;
+                            //             });
+                            //             }),visible: width_black==3)
                          ))),
 
                  GestureDetector(
                       onTap:(){
                         if (!map_white_finalizado && map_red_finalizado && map_black_finalizado)
                             setState(() {
-                              width_red=0;
-                              width_black=0;
-                              width_white=3;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => MapaBranco((){
+
+                              },repository)));
+
                             });
                         },
                       child:
@@ -467,26 +500,27 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                               MediaQuery.of(context).size.width*.3,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(color:Colors.transparent),
-                         child:
-                       Visibility(child: MapWhite((value){
-                         if (!value)
-                           setState(() {
-                             width_red=1;
-                             width_black=1.0;
-                             width_white=1.0;
-                             map_white_finalizado=false;
-                           });
-                         else
-                           setState(() {
-                             print("finaliza map white");
-                             width_red=1;
-                             width_black=1.0;
-                             width_white=1.0;
-                             map_white_finalizado=true;
-                             limpou_mangue_branco=true;
-                           });
-                       }),visible:
-                       width_white==3),))),
+                       //   child:
+                       // Visibility(child: MapWhite((value){
+                       //   if (!value)
+                       //     setState(() {
+                       //       width_red=1;
+                       //       width_black=1.0;
+                       //       width_white=1.0;
+                       //       map_white_finalizado=false;
+                       //     });
+                       //   else
+                       //     setState(() {
+                       //       print("finaliza map white");
+                       //       width_red=1;
+                       //       width_black=1.0;
+                       //       width_white=1.0;
+                       //       map_white_finalizado=true;
+                       //       limpou_mangue_branco=true;
+                       //     });
+                       // }),visible:
+                       // width_white==3),
+                       ))),
 
                ],)
             )
@@ -505,38 +539,26 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                   .height,  width: MediaQuery
                 .of(context)
                 .size
-                .width,child:
-              Image.asset('lib/assets/images/elementos/limpou_preto.png',
-                  fit: BoxFit.cover,
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height*.03) )
+                .width,child:mangue_preto_limpo)
           )),
 
           Visibility(visible: limpou_mangue_branco,child:
-          GestureDetector(
-              onTap:(){
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Home(true)),
-                  );
-                });
-              },child:
+            GestureDetector(
+                onTap:(){
+                  setState(() {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Home(true)),
+                    );
+                  });
+                },child:
               Container( color:Colors.white.withAlpha(200),height: MediaQuery
                   .of(context)
                   .size
                   .height,  width: MediaQuery
                   .of(context)
                   .size
-                  .width,child:
-              Image.asset('lib/assets/images/elementos/limpou_branco.png',
-                  fit: BoxFit.cover,
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height*.03) )
+                  .width,child:mangue_branco_limpo)
           )),
 
           Visibility(visible: limpou_mangue_vermelho,child:
@@ -552,30 +574,41 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                   .height, width: MediaQuery
                   .of(context)
                   .size
-                  .width,child:
-              Image.asset('lib/assets/images/elementos/limpou_vermelho.png', fit: BoxFit.cover,height: MediaQuery
-                  .of(context)
-                  .size
-                  .height, width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,) )
+                  .width,child:mangue_vermelho_limpo )
           )),
 
+
+          Positioned(
+            top:4,
+            right: 10,
+            child:
+            Container(child:
+            Image.asset('lib/assets/images/elementos/logo_horizontal_preferencial.png',
+                width: MediaQuery
+                  .of(context)
+                  .size
+                  .width*.15, fit: BoxFit.cover))),
 
           Visibility(visible: load,child:
           Positioned(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
               top:0,
               left: 0,
               child:
-              Container(
-                  color: Colors.white,
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  )
+              Container(alignment: Alignment.center,color: Colors.white,
+                  child:
+                  Column(crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,children:[
+                        CircularProgressIndicator(color: Color(0xFF0E434B),)
+                      ]))
           )),
-
-
 
         ]);
   }
