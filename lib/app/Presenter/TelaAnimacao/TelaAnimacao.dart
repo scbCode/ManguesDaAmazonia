@@ -90,7 +90,7 @@ class _TelaAnimacao extends State<TelaAnimacao> with SingleTickerProviderStateMi
         ),
         Positioned (
             bottom:MediaQuery.of(context).size.height*.05,
-            right: MediaQuery.of(context).size.width*.025,
+            left: 0,
             child:
             GestureDetector(
                 onTap: (){

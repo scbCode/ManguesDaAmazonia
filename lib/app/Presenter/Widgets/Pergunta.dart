@@ -48,7 +48,7 @@ class _BotaoPergunta extends State<BotaoPergunta> with SingleTickerProviderState
               width: MediaQuery
                   .of(context)
                   .size
-                  .width*.125, fit: BoxFit.cover))
+                  .width*.2, fit: BoxFit.cover))
               :
               Container(width: 0,height: 0,color: Colors.white.withAlpha(150)
               ));

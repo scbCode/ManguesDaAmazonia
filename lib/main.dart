@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Mangues da Amazonia',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -56,8 +57,8 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       body: Material(
-        type: MaterialType.transparency,
-        child: Home(true))
+           type: MaterialType.transparency,
+          child: Splash())
     );
   }
 }

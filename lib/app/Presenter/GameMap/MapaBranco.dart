@@ -24,21 +24,24 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MapaBranco extends StatefulWidget {
   Function finalizado;
+  bool som=false;
   Repository repository = Repository();
-  MapaBranco(this.finalizado,this.repository);
+  MapaBranco(this.finalizado,this.repository,this.som);
 
   @override
-  _MapaBranco createState() => _MapaBranco(this.finalizado,this.repository);
+  _MapaBranco createState() => _MapaBranco(this.finalizado,this.repository,this.som);
 }
 
 class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin {
 
   Function finalizado;
   Repository repository = Repository();
+  bool som=false;
 
-  _MapaBranco(this.finalizado,this.repository);
+  _MapaBranco(this.finalizado,this.repository,this.som);
 
   AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
+  AudioPlayer audioPlayermusic = AudioPlayer();
   late AnimationController _controller;
   Tween<double> _tween = Tween(begin: 0.9, end: 1.5);
   bool form_red_v=false;
@@ -54,6 +57,7 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
   int _start = 30;
 
   late Timer _timer_carang;
+  late Timer _timer_pop;
   int _start_carang = 23;
   int totalTime = 30;
   int resp_red = 1;
@@ -108,11 +112,14 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
   }
 
   @override
-  void dispose(){
-    super.dispose();
-    _timer.cancel();
+  void dispose()  {
+    super.dispose(); //change here
+     audioPlayermusic.stop();
+    _timer_carang.cancel();
+    _timer_pop.cancel();
+    audioPlayermusic.dispose();
+    audioPlayer.dispose();
   }
-
 
   @override
   void didChangeDependencies() {
@@ -135,7 +142,7 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
             .of(context)
             .size
             .width*.3, fit: BoxFit.cover);
-    fundo_mangue_branco = Image.asset('lib/assets/images/elementos/fundo_mangue_branco.jpg',
+    fundo_mangue_branco = Image.asset('lib/assets/images/elementos/fundo_mangue_branco.jpeg',
         width:MediaQuery.of(context).size.width,
         height:MediaQuery.of(context).size.height,
         fit: BoxFit.cover);
@@ -163,6 +170,12 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
   @override
   Widget build(BuildContext context) {
     return
+      WillPopScope(
+          onWillPop: () {
+            audioPlayermusic.stop();
+            return new Future.value(true);
+          },
+          child:
       Material(
         type: MaterialType.transparency,
         child:
@@ -224,14 +237,34 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
                 Visibility(visible: anim_carangueijo,child:
                 Container(child:arvore_falando))),
 
+            Positioned(
+                bottom: 30,
+                right: 30,
+                child:
+                GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        anim_carangueijo=false;
+                        _timer_carang.cancel();
+                      });
+                    },child:Visibility(visible: anim_carangueijo,child:
+                Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.all(5),
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(color: Color(0xFF0E434B),
+                        borderRadius: BorderRadius.circular(20)),
+                    child:
+                    Text("Pular",style: TextStyle(color:Colors.white,fontSize: 16,fontFamily: "Ubuntu"),))))),
+
+
             Visibility(visible: acerto,child:
             popAcerto()),
 
             Visibility(visible: erro,child:
             popErro()),
 
-            Visibility(visible: vidas==0,child:
-            GameOver()),
+
 
             Positioned(
                 top: 0,
@@ -251,6 +284,20 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
             Visibility(visible: form_red_v && !finalizado_,child:
              Garca()),
 
+
+            Visibility(visible: !anim_carangueijo && !finalizado_,child:
+            Positioned(
+                top:MediaQuery
+                    .of(context)
+                    .size
+                    .height*.25,
+                right: 0,
+                child:Vidas()
+            )),
+
+            Visibility(visible: vidas==0 && !form_red_v && !finalizado_,child:
+            GameOver()),
+
             Positioned(
                 top:4,
                 right: 10,
@@ -260,9 +307,9 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.15, fit: BoxFit.cover)))
+                        .width*.15, fit: BoxFit.cover))),
 
-          ]));
+          ])));
 
   }
 
@@ -272,10 +319,10 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
           children:[
 
             Positioned(
-                bottom: MediaQuery.of(context).size.height*.1,
+                top: MediaQuery.of(context).size.height*.1,
                 left: MediaQuery.of(context).size.width*.05,
                 child:
-                BotaoPergunta(url: 'lib/assets/images/elementos/lixo_sombrinha.png',
+                BotaoPergunta(url: 'lib/assets/images/elementos/mochila.png',
                     ativo: btn_1,click: (){
                       setState(() {
                         mapaSelect_red=0;
@@ -288,10 +335,10 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
                     })),
 
             Positioned(
-                top: MediaQuery.of(context).size.height*.1,
+                top: MediaQuery.of(context).size.height*.4,
                 left: MediaQuery.of(context).size.width*.25,
                 child:
-                BotaoPergunta(url:'lib/assets/images/elementos/lixo_cadeira.png',
+                BotaoPergunta(url:'lib/assets/images/elementos/motor.png',
                     ativo:btn_2,click: (){
                       setState(() {
                         mapaSelect_red=1;
@@ -307,7 +354,7 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
                 top: MediaQuery.of(context).size.height*.1,
                 right: MediaQuery.of(context).size.width*.35,
                 child:
-                BotaoPergunta(url:'lib/assets/images/elementos/lixo_garrafa.png',
+                BotaoPergunta(url:'lib/assets/images/elementos/nave.png',
                     ativo:btn_3,click: (){
                       setState(() {
                         mapaSelect_red=2;
@@ -323,8 +370,11 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
             Positioned(
                 bottom: MediaQuery.of(context).size.height*.05,
                 right: MediaQuery.of(context).size.width*.15,
-                child:
-                BotaoPergunta(url:'lib/assets/images/elementos/lixo_pneu.png',
+                child:Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.rotationZ(2),
+                  child:
+                BotaoPergunta(url:'lib/assets/images/elementos/pet.png',
                     ativo:btn_4,click: (){
                       setState(() {
                         mapaSelect_red=3;
@@ -333,13 +383,13 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
                         visible_itensmap=false;
                         startTimer();
                       });
-                    })),
+                    }))),
 
             Positioned(
                 top: MediaQuery.of(context).size.height*.23,
                 right: MediaQuery.of(context).size.width*.14,
                 child:
-                BotaoPergunta(url:'lib/assets/images/elementos/lixo_caixa.png',
+                BotaoPergunta(url:'lib/assets/images/elementos/satelite.png',
                     ativo:btn_5,click: (){
                       setState(() {
                         mapaSelect_red=4;
@@ -364,7 +414,7 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
           child:
           Stack(children:[
 
-            Image.asset('lib/assets/images/elementos/fundo_mangue_branco.jpg',
+            Image.asset('lib/assets/images/elementos/fundo_mangue_branco.jpeg',
                 width:MediaQuery.of(context).size.width,
                 height:MediaQuery.of(context).size.height,
                 fit: BoxFit.cover),
@@ -431,9 +481,15 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
                                     if(mapaSelect_red==4)
                                       btn_5=false;
                                   }else{
-                                    vidas--;
+                                    setState(() {
+                                        vidas--;
+                                      });
                                     startTimerPop();
-                                    erro=true;playErroSound();
+                                    erro=true;
+                                    if (vidas==0){
+                                      audioPlayermusic.stop();
+                                    }
+                                    playErroSound();
                                     // _timer.cancel();
                                   }
                                 });
@@ -485,9 +541,15 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
                                     if(mapaSelect_red==4)
                                       btn_5=false;
                                   }else{
-                                    vidas--;
+                                    setState(() {
+                                        vidas--;
+                                      });
                                     startTimerPop();
-                                    erro=true;playErroSound();
+                                    erro=true;
+                                    if (vidas==0){
+                                      audioPlayermusic.stop();
+                                    }
+                                    playErroSound();
                                     // _timer.cancel();
                                   }
                                 });
@@ -538,9 +600,15 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
                                     if(mapaSelect_red==4)
                                       btn_5=false;
                                   }else{
-                                    vidas--;
+                                    setState(() {
+                                        vidas--;
+                                      });
                                     startTimerPop();
-                                    erro=true;playErroSound();
+                                    erro=true;
+                                    if (vidas==0){
+                                      audioPlayermusic.stop();
+                                    }
+                                    playErroSound();
                                     // _timer.cancel();
                                   }
                                 });
@@ -590,9 +658,15 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
                                     if(mapaSelect_red==4)
                                       btn_5=false;
                                   }else{
-                                    vidas--;
+                                    setState(() {
+                                        vidas--;
+                                      });
                                     startTimerPop();
-                                    erro=true;playErroSound();
+                                    erro=true;
+                                    if (vidas==0){
+                                      audioPlayermusic.stop();
+                                    }
+                                    playErroSound();
                                     // _timer.cancel();
                                   }
                                 });
@@ -666,7 +740,7 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
           (Timer timer) {
         if (_start_carang == 0) {
           setState(() {
-            timer.cancel();
+            _timer_carang.cancel();
             anim_carangueijo=false;
           });
         } else {
@@ -691,7 +765,6 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
 
     int _start_time  = 3;
     const oneSec = const Duration(seconds: 1);
-    late Timer _timer_pop;
     _timer_pop = new Timer.periodic(
       oneSec,
           (Timer timer) {
@@ -736,28 +809,34 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
   Widget GameOver(){
     return
       Container(
-          width: 260,
-          height: 230,
-          padding: EdgeInsets.all(15),
+          height: MediaQuery
+              .of(context)
+              .size
+              .height,
           decoration: BoxDecoration(color: Colors.white,
               boxShadow: [BoxShadow(color:Colors.black26,blurRadius: 3,spreadRadius: 3)]),
           child:
-          Column(children: [
-            Container(
-                margin: EdgeInsets.all(15),
-                child:
-                Text("Suas vidas acabaram",style: TextStyle(color:Colors.black,fontSize: 16,fontWeight: FontWeight.bold,fontFamily: 'Ubuntu'),)),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
 
-            Container(
-                margin: EdgeInsets.all(15),
-                child:
-                OutlinedButton(onPressed: (){
-                  setState((){
-                    finalizado(false);
+                Container(
+                    margin: EdgeInsets.all(15),
+                    child:
+                    Text("Suas vidas acabaram",style: TextStyle(color:Colors.black,fontSize: 24,
+                        fontFamily: 'Ubuntu',fontWeight: FontWeight.bold),)),
 
-                  });
-                }, child: Text("Continuar",style: TextStyle(color:Colors.black,fontSize: 16,fontWeight: FontWeight.bold,fontFamily: 'Ubuntu'),)))
-          ],)
+                garca_triste,
+
+                GestureDetector(
+                    onTap: (){Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => GameMap("2",som,false,repository)),
+                    ); },
+                    child:
+                    Image.asset("lib/assets/images/elementos/seta_2.png",width: 100,))
+
+              ])
       );
 
   }
@@ -782,7 +861,7 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
         repository.updateJogador("3");
         Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => GameMap("3",true,repository)),
+        MaterialPageRoute(builder: (context) => GameMap("3",som,true,repository)),
       );});
   }
 
@@ -791,6 +870,7 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
     if (totalPerguntas_respondidas==5){
       setState(() {
         if (vidas>0){
+          audioPlayermusic.stop();
           finalizado_=true;
         }
       });
@@ -823,19 +903,75 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
   }
 
   playErroSound() async {
-    final file = new File('${(await getTemporaryDirectory()).path}/erro.mp3');
-    await file.writeAsBytes((await loadAsset('lib/assets/sons/som_error.mp3')).buffer.asUint8List());
-    final result = await audioPlayer.play(file.path, isLocal: true,volume: 0.1);
+    // print(result);
+
+    if (som){
+      final file = new File('${(await getTemporaryDirectory()).path}/erro.mp3');
+      await file.writeAsBytes((await loadAsset('lib/assets/sons/som_error.mp3')).buffer.asUint8List());
+      final result = await audioPlayer.play(file.path, isLocal: true,volume: 0.1);
+    }
   }
 
   playAcertoSound() async {
-    final file = new File('${(await getTemporaryDirectory()).path}/acerto.mp3');
-    await file.writeAsBytes((await loadAsset('lib/assets/sons/som_acerto.mp3')).buffer.asUint8List());
-    final result = await audioPlayer.play(file.path, isLocal: true,volume: 0.4);
+    if (som) {
+      final file = new File(
+          '${(await getTemporaryDirectory()).path}/acerto.mp3');
+      await file.writeAsBytes(
+          (await loadAsset('lib/assets/sons/som_acerto.mp3')).buffer
+              .asUint8List());
+      final result = await audioPlayer.play(
+          file.path, isLocal: true, volume: 0.4);
+    }
   }
 
   Future<ByteData> loadAsset(String path) async {
     return await rootBundle.load(path);
   }
+
+  Widget Vidas(){
+    return
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment:
+          MainAxisAlignment.end,
+          children: [
+        Visibility(visible: vidas >= 1,child:
+        Container(
+          decoration: BoxDecoration(color:
+              Colors.white,
+              borderRadius: BorderRadius.circular(50)),
+          margin:
+        EdgeInsets.all(10), padding:
+        EdgeInsets.all(5),
+          child: Image.asset("lib/assets/images/elementos/ic_mangues.png",width: 40,),)),
+        Visibility(visible: vidas >= 2,child:
+        Container(
+          decoration: BoxDecoration(color:
+          Colors.white,
+              borderRadius: BorderRadius.circular(50)),
+          margin:
+          EdgeInsets.all(10), padding:
+        EdgeInsets.all(5),
+          child: Image.asset("lib/assets/images/elementos/ic_mangues.png",width: 40),)),
+        Visibility(visible: vidas == 3,child:
+        Container( decoration: BoxDecoration(color:
+        Colors.white,
+            borderRadius: BorderRadius.circular(50)),
+          margin:
+          EdgeInsets.all(10), padding:
+          EdgeInsets.all(5),
+          child: Image.asset("lib/assets/images/elementos/ic_mangues.png",width: 40),)),
+      ]);
+  }
+
+  playMusic() async {
+    // print(result);
+    if (som){
+      final file = new File('${(await getTemporaryDirectory()).path}/musicafase.mp3');
+      await file.writeAsBytes((await loadAsset('lib/assets/sons/fase3.mp3')).buffer.asUint8List());
+      final result = await audioPlayermusic.play(file.path, isLocal: true,volume: 0.1);
+    }
+  }
+
 
 }

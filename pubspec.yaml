@@ -62,9 +62,49 @@ flutter:
   assets:
     - som_error.mp3
     - som_acerto.mp3
+    - fase1.mp3
+    - fase2.mp3
+    - fase3.mp3
+    - boia.png
+    - bola.png
+    - bota.png
+    - capacete.png
+    - carrinhobb.png
+    - escudo.png
+    - guardachuva.png
+    - jeans.png
+    - manopla.png
+    - martelo.png
+    - mochila.png
+    - motor.png
+    - nave.png
+    - pet.png
+    - satelite.png
+    - boia-p_b.png
+    - bola-p_b.png
+    - bota-p_b.png
+    - capacete-p_b.png
+    - carrinhobb-p_b.png
+    - escudo-p_b.png
+    - guardachuva-p_b.png
+    - jeans-p_b.png
+    - manopla-p_b.png
+    - martelo-p_b.png
+    - mochila-p_b.png
+    - motor-p_b.png
+    - nave-p_b.png
+    - pet-p_b.png
+    - satelite-p_b.png
+    - layout_certificado.png
+    - ic_mangues.png
+    - fundo_mangue_vermelho.jpeg
+    - fundo_mangue_preto.jpeg
+    - gameover.mp3
     - intro_.mp4
-    - heart.png
+    - botao_audio_ativo.png
+    - ic_mangues.png
     - logo_petrobras.png
+    - logo_preferencial.png
     - logo_horizontal_preferencial.png
     - img_app.jpg
     - botao_opcao.png
@@ -85,7 +125,6 @@ flutter:
     - lixo_somb_bloqueado.png
     - lixo_cadeira_bloqueada.png
     - carangueijo.png
-    - fundo_mangue_vermelho.png
     - garca_questoes.png
     - logo_mangue.jpeg
     - pop_acerto.png
@@ -103,8 +142,6 @@ flutter:
     - cadeado_fechado.png
     - arvore_4.png
     - arvore_falando.png
-    - fundo_mangue_branco.jpg
-    - fundo_mangue_preto.jpg
     - placa_mangue_vermelho.png
     - placa_mangue_preto.png
     - placa_mangue_branco.png
@@ -137,6 +174,7 @@ flutter:
     - carangueijo_conversando.png
     - guaxinim_feliz.png
     - logo_mangues.svg
+    - fundo_mangue_branco.jpeg
   # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

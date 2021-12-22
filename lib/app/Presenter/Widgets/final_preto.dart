@@ -40,7 +40,7 @@ class _FinalPreto extends State<FinalPreto> with SingleTickerProviderStateMixin 
 
     guaxinim_feliz = Image.asset(
       "lib/assets/images/elementos/guaxinim_feliz.png",
-      height:MediaQuery.of(context).size.height*.4,);
+      height:MediaQuery.of(context).size.height*.5,);
 
 
     precacheImage(garca_e_carangueijo.image,context).then((value) =>
@@ -102,19 +102,26 @@ class _FinalPreto extends State<FinalPreto> with SingleTickerProviderStateMixin 
                 width:MediaQuery.of(context).size.width*.25,),))),
 
             Positioned(
-                bottom:0,
+                bottom:MediaQuery.of(context).size.height*.06,
                 left:-20,child:
             Container(
               child:
+
               Image.asset(
                 "lib/assets/images/elementos/garca_e_carangueijo.png",
                 height:MediaQuery.of(context).size.height*.6,),)),
-            Positioned(
-                bottom:-10,
+
+
+           Positioned(
+                bottom:MediaQuery.of(context).size.height*-.1,
                 left:40,child:
             Container(
               margin: EdgeInsets.all(15),
-              child:guaxinim_feliz
+              child:
+              Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.rotationY(3.14),
+                    child: guaxinim_feliz)
               )),
 
             Positioned(

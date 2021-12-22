@@ -8,24 +8,21 @@ import 'package:path/path.dart';
 
 class AppDatabase   {
 
-  Database? _database;
-  Jogador jogador = Jogador(nome: "-",fase_atual: "0", id: 1);
+  static Database? _database;
+  Jogador jogador = Jogador(nome: "-",fase_atual: "0", id: 1, som:1);
 
-  initDB() async {
+  Future initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "jogador_mangue_.db");
-    return await openDatabase(path, version: 7, onOpen: (db) {
+    return await openDatabase(path, version: 8, onOpen: (db) {
       print("onOpen database");
-      // db.rawInsert(
-      // "INSERT Into Jogador (id,nome,fase_atual,pontos)"+
-      // " VALUES (${jogador.id},${jogador.nome},${jogador.fase_atual.toString()},${jogador.pontos.toString()})",
-      //     [jogador.id,jogador.nome,jogador.fase_atual,jogador.pontos]);
       _database = db;
       }, onCreate: (Database db, int version) async {
       print("create database");
       await db.execute("CREATE TABLE Jogador ("
           "id INTEGER PRIMARY KEY,"
           "nome TEXT,"
+          "som INTEGER,"
           "fase_atual TEXT"
           ")");
     });
@@ -44,7 +41,11 @@ class AppDatabase   {
 
   getJogador(int id) async {
      final db = await _database;
+     if (db==null)
+       await initDB();
+     print(db);
      var res = await db?.query("Jogador", where: "id = ?", whereArgs: [id]);
+     print(res);
      return res!.isNotEmpty ? Jogador.fromMap(res.first) : null ;
   }
 
@@ -54,5 +55,10 @@ class AppDatabase   {
         where: "id = ?", whereArgs: [jogador.id]);
     return res;
   }
-
+  updateSom(Jogador jogador) async {
+    final db = await _database;
+    var res = await db?.update("Jogador", jogador.toMap(),
+        where: "id = ?", whereArgs: [jogador.id]);
+    return res;
+  }
 }

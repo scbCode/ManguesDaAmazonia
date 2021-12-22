@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:animated_rotation/animated_rotation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mangues_da_amazonia/app/Presenter/TelaAnimacao/TelaAnimacao.dart';
 import 'package:mangues_da_amazonia/app/Presenter/home/Home.dart';
 
@@ -17,7 +18,7 @@ class Splash extends StatefulWidget {
 
 class _Splash extends State<Splash> with SingleTickerProviderStateMixin  {
   late Timer _timer;
-  int _start = 5;
+  int _start = 4;
   @override
   void initState() {
     // TODO: implement initState
@@ -30,14 +31,34 @@ class _Splash extends State<Splash> with SingleTickerProviderStateMixin  {
   @override
   Widget build(BuildContext context) {
     return
-      Container(
-          alignment:Alignment.center,
-          height:MediaQuery.of(context).size.height,
-          width:MediaQuery.of(context).size.width,
-          child: new Image.asset('lib/assets/images/logo_mangue.jpeg',
-            height:MediaQuery.of(context).size.height,
-            width:MediaQuery.of(context).size.width,fit: BoxFit.fill,),
-      );
+      WillPopScope(
+          onWillPop: () async => false,
+          child:
+      Stack(children: [
+
+        Positioned(
+            top: MediaQuery.of(context).size.height*.15,
+            left: MediaQuery.of(context).size.width *.37,
+            child:
+            Container(
+                padding: EdgeInsets.all(10),
+                alignment: Alignment.center,
+                child:Image.asset("lib/assets/images/elementos/logo_preferencial.png",
+                    width: MediaQuery.of(context).size.width*.27))),
+
+        Positioned(
+            bottom: 15,
+            left: MediaQuery.of(context).size.width *.25,
+            child:
+            Container(
+                padding: EdgeInsets.all(10),
+                alignment: Alignment.center,
+                child:
+                Image.asset("lib/assets/images/elementos/logo_petrobras.png",
+                    width: MediaQuery.of(context).size.width*.45))),
+
+
+      ],));
   }
 
   void startTimer() {

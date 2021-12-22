@@ -17,23 +17,22 @@ class GameMap extends StatefulWidget {
   String level="";
   Repository repository = Repository();
   bool finalizado=false;
-  GameMap(this.level,this.finalizado,this.repository);
+  bool som=false;
+  GameMap(this.level,this.som,this.finalizado,this.repository);
 
   @override
-  _GameMap createState() => _GameMap(level,finalizado,repository);
+  _GameMap createState() => _GameMap(level,som,finalizado,repository);
 }
 
 class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
 
   String level="";
   bool finalizado=false;
+  bool som=true;
 
   Repository repository = Repository();
-  _GameMap(this.level,this.finalizado,this.repository);
-  late AnimationController _controller_red;
-  late AnimationController _controller_black;
-  late AnimationController _controller_white;
-  Tween<double> _tween = Tween(begin: 1, end: 3);
+  _GameMap(this.level,this.som,this.finalizado,this.repository);
+
   double width_red=1;
   double width_black=1;
   double width_white=1;
@@ -159,16 +158,16 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
           .of(context)
           .size
           .width, fit: BoxFit.cover,);
-    lixo_sombrinha = Image.asset('lib/assets/images/elementos/lixo_sombrinha.png',
+    lixo_sombrinha = Image.asset('lib/assets/images/elementos/boia.png',
         width: MediaQuery
             .of(context)
             .size
-            .width*.09, fit: BoxFit.cover);
-    lixo_cadeira = Image.asset('lib/assets/images/elementos/lixo_cadeira.png',
+            .width*.1, fit: BoxFit.cover);
+    lixo_cadeira = Image.asset('lib/assets/images/elementos/bola.png',
         width: MediaQuery
             .of(context)
             .size
-            .width*.05, fit: BoxFit.cover);
+            .width*.1, fit: BoxFit.cover);
 
     precacheImage(arvore_1.image,context).then((value) =>
     precacheImage(arvore_2.image,context).then((value) =>
@@ -190,9 +189,6 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
     // TODO: implement initState
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    _controller_red = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
-    _controller_black = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
-    _controller_white = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
 
     print("level");
     print(level);
@@ -247,7 +243,9 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   }
 
   Widget intro(){
-    return
+    return   WillPopScope(
+        onWillPop: () async => false,
+        child:
     Stack(
         alignment: Alignment.topCenter,
         children: [
@@ -396,7 +394,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
 
                        Navigator.push(
                          context,
-                         MaterialPageRoute(builder: (context) => MapaVermelho(repository)),
+                         MaterialPageRoute(builder: (context) => MapaVermelho(repository,som)),
                        );
                      });},
                      child:
@@ -439,7 +437,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                               context,
                               MaterialPageRoute(builder: (context) => MapaPreto((){
 
-                              },repository)),
+                              },repository,som)),
                             );
                           });
                         },
@@ -483,7 +481,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                                   context,
                                   MaterialPageRoute(builder: (context) => MapaBranco((){
 
-                              },repository)));
+                              },repository,som)));
 
                             });
                         },
@@ -577,7 +575,6 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                   .width,child:mangue_vermelho_limpo )
           )),
 
-
           Positioned(
             top:4,
             right: 10,
@@ -588,6 +585,37 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                   .of(context)
                   .size
                   .width*.15, fit: BoxFit.cover))),
+
+
+          Positioned(
+              top:20,
+              left: 20,
+              child:
+              GestureDetector(
+                  onTap:(){
+                    Future(() {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Home(false)));
+                    });
+                    // Navigator.of(
+                    //   context).push(
+                    //   MaterialPageRoute(builder: (context) => Home(false)),
+                    // );
+                  },
+                  child:
+              Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    boxShadow: [BoxShadow(color: Colors.white,blurRadius:
+                    15,spreadRadius: 5)],
+                  ),
+                  child:
+              Image.asset('lib/assets/images/elementos/seta.png',
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width*.075
+                  , fit: BoxFit.cover)))),
+
 
           Visibility(visible: load,child:
           Positioned(
@@ -610,7 +638,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                       ]))
           )),
 
-        ]);
+        ]));
   }
 
   Widget bg_map(){
@@ -669,7 +697,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                 .height*.2,
             left: MediaQuery
                 .of(context)
-                .size.width*.125,
+                .size.width*.0,
             child:
             Container(child: lixo_cadeira)
             ),
@@ -680,30 +708,30 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                 .height*.28,
             left: MediaQuery
                 .of(context)
-                .size.width*.22,
+                .size.width*.15,
             child:
             Container(child:
-            Image.asset('lib/assets/images/elementos/lixo_garrafa.png',
+            Image.asset('lib/assets/images/elementos/bota.png',
                 width: MediaQuery
                     .of(context)
                     .size
-                    .width*.0425, fit: BoxFit.cover))
+                    .width*.1, fit: BoxFit.cover))
             ,),
           Positioned(
             top: MediaQuery
                 .of(context)
                 .size
-                .height*.47,
+                .height*.17,
             left: MediaQuery
                 .of(context)
-                .size.width*.15,
+                .size.width*.21,
             child:
             Container(child:
-            Image.asset('lib/assets/images/elementos/lixo_pneu.png',
+            Image.asset('lib/assets/images/elementos/capacete.png',
                 width: MediaQuery
                     .of(context)
                     .size
-                    .width*.081, fit: BoxFit.cover))
+                    .width*.1, fit: BoxFit.cover))
             ,),
           Positioned(
             top: MediaQuery
@@ -712,14 +740,14 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                 .height*.432,
             left: MediaQuery
                 .of(context)
-                .size.width*.27,
+                .size.width*.2,
             child:
             Container(child:
-            Image.asset('lib/assets/images/elementos/lixo_caixa.png',
+            Image.asset('lib/assets/images/elementos/carrinhobb.png',
                 width: MediaQuery
                     .of(context)
                     .size
-                    .width*.09, fit: BoxFit.cover))
+                    .width*.15, fit: BoxFit.cover))
             ,),
 
 
@@ -735,18 +763,17 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
             left: MediaQuery
                 .of(context)
                 .size
-                .width*.45,
+                .width*.35,
             bottom: MediaQuery
                 .of(context)
                 .size
-                .height*.15,
+                .height*.4,
             child:
-            Container(child:
-            Image.asset('lib/assets/images/elementos/lixo_somb_bloqueado.png',
+            Container(child:Image.asset('lib/assets/images/elementos/escudo-p_b.png',
                 width: MediaQuery
                     .of(context)
                     .size
-                    .width*.09, fit: BoxFit.cover))
+                    .width*.1, fit: BoxFit.cover))
         ),
 
         Positioned(
@@ -759,11 +786,11 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                 .size.width*.58,
             child:
             Container(child:
-            Image.asset('lib/assets/images/elementos/lixo_cadeira_bloqueada.png',
+            Image.asset('lib/assets/images/elementos/guardachuva-p_b.png',
                 width: MediaQuery
                     .of(context)
                     .size
-                    .width*.06, fit: BoxFit.cover))
+                    .width*.1, fit: BoxFit.cover))
         ),
 
         Positioned(
@@ -776,11 +803,11 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
               .size.width*.58,
           child:
           Container(child:
-          Image.asset('lib/assets/images/elementos/lixo_garrafa_bloqueada.png',
+          Image.asset('lib/assets/images/elementos/jeans-p_b.png',
               width: MediaQuery
                   .of(context)
                   .size
-                  .width*.0425, fit: BoxFit.cover))
+                  .width*.1, fit: BoxFit.cover))
           ,),
 
         Positioned(
@@ -793,46 +820,37 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
               .size.width*.37,
           child:
           Container(child:
-          Image.asset('lib/assets/images/elementos/lixo_pneu_bloqueada.png',
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width*.081, fit: BoxFit.cover))
-          ,),
-
-        Positioned(
-          bottom: MediaQuery
-              .of(context)
-              .size
-              .height*.35,
-          left: MediaQuery
-              .of(context)
-              .size.width*.34,
-          child:
-          Container(child:
-          Image.asset('lib/assets/images/elementos/lixo_caixa_bloqueada.png',
+          Image.asset('lib/assets/images/elementos/manopla-p_b.png',
               width: MediaQuery
                   .of(context)
                   .size
                   .width*.1, fit: BoxFit.cover))
           ,),
 
-
         Positioned(
-          bottom: 15,
+          bottom: MediaQuery
+              .of(context)
+              .size
+              .height*.175,
           left: MediaQuery
               .of(context)
-              .size.width*.45,
+              .size.width*.3,
           child:
-          Container(child:
-            Image.asset('lib/assets/images/elementos/cadeado_fechado.png',
-            width: MediaQuery
-                .of(context)
-                .size
-                .width*.09, fit: BoxFit.cover) )
-          ),
+          Container(child:Transform(
+              alignment: Alignment.center,
+              transform: Matrix4.rotationZ(2),
+              child:
+              Image.asset('lib/assets/images/elementos/martelo-p_b.png',
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width*.15, fit: BoxFit.cover))
+            ,),)
+
+
       ],),
     );
+
 
   }
 
@@ -845,13 +863,17 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
             left: MediaQuery
                 .of(context)
                 .size
-                .width*.45,
+                .width*.345,
             bottom: MediaQuery
                 .of(context)
                 .size
-                .height*.15,
+                .height*.4,
             child:
-            Container(child:lixo_sombrinha)
+            Container(child:Image.asset('lib/assets/images/elementos/escudo.png',
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width*.1, fit: BoxFit.cover))
         ),
 
         Positioned(
@@ -864,11 +886,11 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                 .size.width*.58,
             child:
             Container(child:
-            Image.asset('lib/assets/images/elementos/lixo_cadeira.png',
+            Image.asset('lib/assets/images/elementos/guardachuva.png',
                 width: MediaQuery
                     .of(context)
                     .size
-                    .width*.06, fit: BoxFit.cover))
+                    .width*.1, fit: BoxFit.cover))
         ),
 
         Positioned(
@@ -881,11 +903,11 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
               .size.width*.58,
           child:
           Container(child:
-          Image.asset('lib/assets/images/elementos/lixo_garrafa.png',
+          Image.asset('lib/assets/images/elementos/jeans.png',
               width: MediaQuery
                   .of(context)
                   .size
-                  .width*.0425, fit: BoxFit.cover))
+                  .width*.1, fit: BoxFit.cover))
           ,),
 
         Positioned(
@@ -898,29 +920,32 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
               .size.width*.37,
           child:
           Container(child:
-          Image.asset('lib/assets/images/elementos/lixo_pneu.png',
+          Image.asset('lib/assets/images/elementos/manopla.png',
               width: MediaQuery
                   .of(context)
                   .size
-                  .width*.081, fit: BoxFit.cover))
+                  .width*.1, fit: BoxFit.cover))
           ,),
 
         Positioned(
           bottom: MediaQuery
               .of(context)
               .size
-              .height*.35,
+              .height*.175,
           left: MediaQuery
               .of(context)
-              .size.width*.34,
+              .size.width*.3,
           child:
-          Container(child:
-          Image.asset('lib/assets/images/elementos/lixo_caixa.png',
+          Container(child:Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.rotationZ(2),
+              child:
+         Image.asset('lib/assets/images/elementos/martelo.png',
               width: MediaQuery
                   .of(context)
                   .size
-                  .width*.1, fit: BoxFit.cover))
-          ,),
+                  .width*.15, fit: BoxFit.cover))
+          ,),)
 
 
       ],),
@@ -929,107 +954,97 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
   }
 
   Widget lixos_map_branco_desativado(){
-    return
-      Container(
+   return  Container(
+        alignment: Alignment.topCenter,
+        child:
+        Stack(
           alignment: Alignment.topCenter,
-          child:
-          Stack(
-            alignment: Alignment.topCenter,
-            children: [
+          children: [
 
-              Positioned(
-                  right: 5,
-                  top: MediaQuery
+            Positioned(
+                right: 5,
+                top: MediaQuery
+                    .of(context)
+                    .size
+                    .height*.3,
+                child:
+                Container(child:
+                Image.asset('lib/assets/images/elementos/mochila-p_b.png',
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.1, fit: BoxFit.cover))
+            ),
+            Positioned(
+                top: MediaQuery
+                    .of(context)
+                    .size
+                    .height*.2,
+                right: MediaQuery
+                    .of(context)
+                    .size.width*.125,
+                child:
+                Container(child:
+                Image.asset('lib/assets/images/elementos/motor-p_b.png',
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width*.1, fit: BoxFit.cover))
+            ),
+            Positioned(
+              top: MediaQuery
+                  .of(context)
+                  .size
+                  .height*.325,
+              right: MediaQuery
+                  .of(context)
+                  .size.width*.18,
+              child:
+              Container(child:
+              Image.asset('lib/assets/images/elementos/nave-p_b.png',
+                  width: MediaQuery
                       .of(context)
                       .size
-                      .height*.3,
+                      .width*.1, fit: BoxFit.cover))
+              ,),
+            Positioned(
+              top: MediaQuery
+                  .of(context)
+                  .size
+                  .height*.47,
+              right: MediaQuery
+                  .of(context)
+                  .size.width*.25,
+              child:
+              Container(child:Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.rotationZ(2),
                   child:
-                  Container(child:
-                  Image.asset('lib/assets/images/elementos/lixo_somb_bloqueado.png',
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width*.09, fit: BoxFit.cover))
-              ),
-              Positioned(
-                  top: MediaQuery
+              Image.asset('lib/assets/images/elementos/pet-p_b.png',
+                  width: MediaQuery
                       .of(context)
                       .size
-                      .height*.2,
-                  right: MediaQuery
+                      .width*.1, fit: BoxFit.cover)))
+              ,),
+            Positioned(
+              top: MediaQuery
+                  .of(context)
+                  .size
+                  .height*.32,
+              right: MediaQuery
+                  .of(context)
+                  .size.width*.27,
+              child:
+              Container(child:
+              Image.asset('lib/assets/images/elementos/satelite-p_b.png',
+                  width: MediaQuery
                       .of(context)
-                      .size.width*.125,
-                  child:
-                  Container(child:
-                  Image.asset('lib/assets/images/elementos/lixo_cadeira_bloqueada.png',
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width*.05, fit: BoxFit.cover))
-              ),
-              Positioned(
-                top: MediaQuery
-                    .of(context)
-                    .size
-                    .height*.325,
-                right: MediaQuery
-                    .of(context)
-                    .size.width*.18,
-                child:
-                Container(child:
-                Image.asset('lib/assets/images/elementos/lixo_garrafa_bloqueada.png',
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width*.0425, fit: BoxFit.cover))
-                ,),
-              Positioned(
-                top: MediaQuery
-                    .of(context)
-                    .size
-                    .height*.47,
-                right: MediaQuery
-                    .of(context)
-                    .size.width*.25,
-                child:
-                Container(child:
-                Image.asset('lib/assets/images/elementos/lixo_pneu_bloqueada.png',
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width*.09, fit: BoxFit.cover))
-                ,),
-              Positioned(
-                top: MediaQuery
-                    .of(context)
-                    .size
-                    .height*.32,
-                right: MediaQuery
-                    .of(context)
-                    .size.width*.27,
-                child:
-                Container(child:
-                Image.asset('lib/assets/images/elementos/lixo_caixa_bloqueada.png',
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width*.09, fit: BoxFit.cover))
-                ,),
-              Positioned(
-                  bottom: 15,
-                  right: MediaQuery
-                      .of(context)
-                      .size.width*.125,
-                  child:
-                  Container(child:
-                  Image.asset('lib/assets/images/elementos/cadeado_fechado.png',
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width*.09, fit: BoxFit.cover) )
-              ),
+                      .size
+                      .width*.1, fit: BoxFit.cover))
+              ,),
 
-            ],));
+          ],));
+
   }
 
   Widget lixos_map_branco_ativado(){
@@ -1048,7 +1063,12 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                       .size
                       .height*.3,
                   child:
-                  Container(child:lixo_sombrinha)
+                  Container(child:
+                  Image.asset('lib/assets/images/elementos/mochila.png',
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width*.1, fit: BoxFit.cover))
               ),
               Positioned(
                   top: MediaQuery
@@ -1060,11 +1080,11 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                       .size.width*.125,
                   child:
                   Container(child:
-                  Image.asset('lib/assets/images/elementos/lixo_cadeira.png',
+                  Image.asset('lib/assets/images/elementos/motor.png',
                       width: MediaQuery
                           .of(context)
                           .size
-                          .width*.05, fit: BoxFit.cover))
+                          .width*.1, fit: BoxFit.cover))
               ),
               Positioned(
                 top: MediaQuery
@@ -1076,27 +1096,30 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                     .size.width*.18,
                 child:
                 Container(child:
-                Image.asset('lib/assets/images/elementos/lixo_garrafa.png',
+                Image.asset('lib/assets/images/elementos/nave.png',
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.0425, fit: BoxFit.cover))
+                        .width*.1, fit: BoxFit.cover))
                 ,),
               Positioned(
                 top: MediaQuery
                     .of(context)
                     .size
-                    .height*.47,
+                    .height*.6,
                 right: MediaQuery
                     .of(context)
-                    .size.width*.25,
+                    .size.width*.2,
                 child:
-                Container(child:
-                Image.asset('lib/assets/images/elementos/lixo_pneu.png',
+                Container(child:Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.rotationZ(2),
+                    child:
+                Image.asset('lib/assets/images/elementos/pet.png',
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.09, fit: BoxFit.cover))
+                        .width*.1, fit: BoxFit.cover)))
                 ,),
               Positioned(
                 top: MediaQuery
@@ -1105,14 +1128,14 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                     .height*.32,
                 right: MediaQuery
                     .of(context)
-                    .size.width*.27,
+                    .size.width*.17,
                 child:
                 Container(child:
-                Image.asset('lib/assets/images/elementos/lixo_caixa.png',
+                Image.asset('lib/assets/images/elementos/satelite.png',
                     width: MediaQuery
                         .of(context)
                         .size
-                        .width*.09, fit: BoxFit.cover))
+                        .width*.1, fit: BoxFit.cover))
                 ,),
 
             ],));

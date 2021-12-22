@@ -7,21 +7,27 @@ class Repository {
 
   late AppDatabase dataBase = AppDatabase();
   late Database _database;
-  static Jogador jogador = Jogador(nome: "-",fase_atual: "0", id: 1);
+  static Jogador jogador = Jogador(nome: "-",fase_atual: "0", id: 1,som: 1);
 
   Repository();
 
   initBD() async{
-    await  dataBase. initDB();
+  return  await dataBase. initDB();
   }
 
   setJogador(String nome) async{
     jogador.nome=nome;
    return await dataBase.setJogador(jogador);
   }
+
   updateJogador(String fase) async{
     jogador.fase_atual=fase.toString();
     await dataBase.updateJogador(jogador);
+  }
+
+  updateSom(bool som) async{
+    jogador.som = som ? 0 : 1;
+    await dataBase.updateSom(jogador);
   }
 
   Future<dynamic> getJogador(int id) async {

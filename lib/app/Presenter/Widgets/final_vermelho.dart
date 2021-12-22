@@ -46,6 +46,9 @@ class _FinalVermelho extends State<FinalVermelho> with SingleTickerProviderState
   @override
   Widget build(BuildContext context) {
     return
+      WillPopScope(
+          onWillPop: () async => false,
+          child:
       load ? Container(alignment: Alignment.center,color: Colors.white,
           child:
           Column(crossAxisAlignment: CrossAxisAlignment.center,
@@ -124,7 +127,7 @@ class _FinalVermelho extends State<FinalVermelho> with SingleTickerProviderState
                 height:MediaQuery.of(context).size.height*.6,),)),
 
           ],)
-      );
+      ));
 
   }
 

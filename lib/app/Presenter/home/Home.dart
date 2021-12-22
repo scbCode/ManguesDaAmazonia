@@ -33,6 +33,8 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
   static Jogador? jogador;
   bool v_telaInicial=false;
   bool selo=false;
+  bool som=true;
+  bool open=true;
   bool pop_nome_jogador=false;
   GlobalKey _globalKey = new GlobalKey();
   String fase ="0";
@@ -48,33 +50,35 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
     // TODO: implement initState
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    getJogador_();
     _controller_anim_selo = AnimationController(duration: const Duration(milliseconds: 600), vsync: this);
     _controller_anim_selo.repeat(reverse: true);
+    getJogador_();
+
   }
 
   getJogador_() async {
-     await repository.initBD();
-     jogador = await repository.getJogador(1);
+    await repository.initBD();
+    jogador = await repository.getJogador(1);
+    open=false;
      if (jogador==null){
        setState(() {
            selo=false;
        });
      }else {
          fase=jogador!.fase_atual;
-         fase="1";
+         fase="0";
+         som = jogador!.som == 0 ? false : true;
          setState(() {
            if (fase=="3")
                  selo=true;
                else
                  selo=false;
-           });
+         });
      }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return
       Material(
         type: MaterialType.transparency,
@@ -92,12 +96,23 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
                     top: 5,
                     right: MediaQuery.of(context).size.width*.025,
                     child:
+                    GestureDetector(
+                        onTap:(){
+                          setState(() {
+                            open=false;
+                            som=!som;
+                            updateSom();
+                          });
+                        },
+                        child:
                     Container(
                         padding: EdgeInsets.all(15),
                         alignment:Alignment.center,
-                        child: Image.asset('lib/assets/images/elementos/botao_audio.png',
+                        child: !som ? Image.asset('lib/assets/images/elementos/botao_audio.png',
+                          width:MediaQuery.of(context).size.width*.04,fit: BoxFit.cover,) :
+                        Image.asset('lib/assets/images/elementos/botao_audio_ativo.png',
                           width:MediaQuery.of(context).size.width*.04,fit: BoxFit.cover,)
-                    )),
+                    ))),
 
                 Positioned(
                     bottom: 0,
@@ -111,11 +126,11 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
                               pop_nome_jogador=true;
                             });
                             else
-                          if (jogador!.nome!="-")
+                          if (jogador!.nome!="-"){
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => GameMap(fase,false,repository)),
-                            );
+                              MaterialPageRoute(builder: (context) => GameMap(fase,som,false,repository)),
+                            );}
                           },
                      child:
                 Container(
@@ -155,13 +170,13 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
                         padding: EdgeInsets.all(10),
                         alignment: Alignment.center,
                         child:
-                        SvgPicture.asset("lib/assets/images/elementos/logo_mangues.svg",
+                        Image.asset("lib/assets/images/elementos/logo_preferencial.png",
                             width: MediaQuery.of(context).size.height*.55))),
 
-              Positioned(
-                  bottom: 15,
-                  left: MediaQuery.of(context).size.width*.05,
-                  child:
+                Positioned(
+                    bottom: 15,
+                    left: MediaQuery.of(context).size.width*.05,
+                    child:
                   Container(
                       padding: EdgeInsets.all(10),
                       alignment: Alignment.center,
@@ -225,6 +240,9 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
 
   }
 
+  updateSom() async {
+      repository.updateSom(som);
+  }
 
 
 }

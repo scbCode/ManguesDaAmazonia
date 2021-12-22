@@ -55,64 +55,56 @@ class _CompartilharCertificado extends State<CompartilharCertificado> with Singl
                 Stack(
                     children:[
 
-                      Column(children: [
+                      Stack(children: [
 
                         Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.all(15),
-                          child:
-                            Text("Parabéns, $nome", textAlign: TextAlign.start,style:
-                            TextStyle(fontFamily: "MochiyPopPOne",color:  Colors.black,
-                                fontSize: MediaQuery.of(context).size.width*.016))),
-
-                        Container( height: MediaQuery.of(context).size.height*.7,
-                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height*.8,
+                            width: MediaQuery.of(context).size.width*.5,
+                            color: Colors.white,
                             alignment: Alignment.center,
                             child:
                           Screenshot(
                               controller: screenshotController,
                               child:
                               Container(
-                                  height: MediaQuery.of(context).size.height*.7,
-                                  width: MediaQuery.of(context).size.width*.7,
-                                  decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
+                                  color: Colors.white,
                                   alignment: Alignment.center,
                                   child:
                             Stack(
                               fit: StackFit.passthrough,
                                 children: [
 
-                             // Positioned(
-                             //          top: MediaQuery.of(context).size.height*.125,
-                             //          left: MediaQuery.of(context).size.width*.225,
-                             //          child:
-                             //  Image.asset('lib/assets/images/elementos/selo.png',
-                             //    width: MediaQuery.of(context).size.width*.25)),
-                             //
+                             Positioned(
+                                      top: MediaQuery.of(context).size.height*.0,
+                                      left: MediaQuery.of(context).size.width*.225,
+                                      child:
+                              Image.asset('lib/assets/images/elementos/layout_certificado.png',
+                                width: MediaQuery.of(context).size.width*.5)),
+
 
                              Positioned(
-                                    bottom: 0,
-                                    left: MediaQuery.of(context).size.width*.1,
+                                    bottom:  MediaQuery.of(context).size.height*.22,
+                                    left: MediaQuery.of(context).size.width*.45,
                                     child:
                                Container(
                                     padding: EdgeInsets.all(10),
                                     alignment: Alignment.center,
                                     child:
-                                  Text("Certificado de protetor do mangue para\n$nome",
+                                  Text("$nome",
                                         textAlign: TextAlign.center,style:
-                                        TextStyle(fontFamily: "MochiyPopPOne",color:  Colors.black,
+                                        TextStyle(fontFamily: "MochiyPopPOne",color:  Colors.white,
                                         fontSize: MediaQuery.of(context).size.width*.020)))),
-
-                                  Positioned(
-                                      top: MediaQuery.of(context).size.height*.05,
-                                      left: MediaQuery.of(context).size.width*.221,
-                                      child:
-                                      Container(
-                                          padding: EdgeInsets.all(10),
-                                          alignment: Alignment.center,
-                                          child:
-                                      SvgPicture.asset("lib/assets/images/elementos/logo_mangues.svg",
-                                          width: MediaQuery.of(context).size.width*.225))),
+                                  //
+                                  // Positioned(
+                                  //     top: MediaQuery.of(context).size.height*.05,
+                                  //     left: MediaQuery.of(context).size.width*.221,
+                                  //     child:
+                                  //     Container(
+                                  //         padding: EdgeInsets.all(10),
+                                  //         alignment: Alignment.center,
+                                  //         child:
+                                  //     SvgPicture.asset("lib/assets/images/elementos/logo_mangues.svg",
+                                  //         width: MediaQuery.of(context).size.width*.225))),
 
                     ])))),
 
