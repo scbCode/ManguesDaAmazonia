@@ -22,7 +22,8 @@ class Repository {
 
   updateJogador(String fase) async{
     jogador.fase_atual=fase.toString();
-    await dataBase.updateJogador(jogador);
+     await dataBase.updateJogador(jogador);
+
   }
 
   updateSom(bool som) async{

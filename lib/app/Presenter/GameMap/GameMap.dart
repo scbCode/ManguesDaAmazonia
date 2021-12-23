@@ -99,7 +99,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
             .height*.03);
 
 
-    mapa_vermelho_preto = new Image.asset('lib/assets/images/elementos/mangue_semi_desbloqueado.jpg',
+    mapa_vermelho_preto = new Image.asset('lib/assets/images/elementos/mangue_semi_desbloqueado.png',
         height: MediaQuery
             .of(context)
             .size
@@ -109,7 +109,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
             .size
             .width, fit: BoxFit.cover);
 
-    fundo_mangue_preto = new Image.asset('lib/assets/images/elementos/fundo_mangue_preto.jpg',
+    fundo_mangue_preto = new Image.asset('lib/assets/images/elementos/fundo_mangue_preto.png',
         height: MediaQuery
             .of(context)
             .size
@@ -118,7 +118,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
             .of(context)
             .size
             .width, fit: BoxFit.cover);
-    fundo_mangue_vermelho = new Image.asset('lib/assets/images/elementos/fundo_mangue_vermelho.png',
+    fundo_mangue_vermelho = new Image.asset('lib/assets/images/elementos/fundo_mangue_vermelho.jpg',
         height: MediaQuery
             .of(context)
             .size
@@ -431,7 +431,6 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                         print("MAPA PRETO");
                         print(map_red_finalizado);
                         if (!map_black_finalizado && map_red_finalizado)
-                          setState(() {
 
                             Navigator.push(
                               context,
@@ -439,7 +438,6 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
 
                               },repository,som)),
                             );
-                          });
                         },
                       child:
                       AnimatedSize(
@@ -476,14 +474,12 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
                  GestureDetector(
                       onTap:(){
                         if (!map_white_finalizado && map_red_finalizado && map_black_finalizado)
-                            setState(() {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => MapaBranco((){
 
                               },repository,som)));
 
-                            });
                         },
                       child:
 
@@ -543,12 +539,10 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
           Visibility(visible: limpou_mangue_branco,child:
             GestureDetector(
                 onTap:(){
-                  setState(() {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => Home(true)),
                     );
-                  });
                 },child:
               Container( color:Colors.white.withAlpha(200),height: MediaQuery
                   .of(context)
@@ -593,9 +587,7 @@ class _GameMap extends State<GameMap> with TickerProviderStateMixin  {
               child:
               GestureDetector(
                   onTap:(){
-                    Future(() {
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> Home(false)));
-                    });
                     // Navigator.of(
                     //   context).push(
                     //   MaterialPageRoute(builder: (context) => Home(false)),

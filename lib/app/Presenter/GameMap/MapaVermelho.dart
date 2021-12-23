@@ -29,7 +29,7 @@ class MapaVermelho extends StatefulWidget {
 
 }
 
-class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMixin {
+class _MapaVermelho extends State<MapaVermelho> with  SingleTickerProviderStateMixin {
   bool som=false;
   _MapaVermelho(this.repository,this.som);
   Game game = Game();
@@ -94,8 +94,7 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(duration: const Duration(milliseconds: 1200), vsync: this);
-    _controller.repeat(reverse: true);
+
     form_red.addAll(game.respostas[0]);
     mapaSelect_red = resposta_certa[0];
     playMusic();
@@ -126,7 +125,7 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
             .of(context)
             .size
             .width*.3, fit: BoxFit.cover);
-    fundo_mangue_vermelho = Image.asset('lib/assets/images/elementos/fundo_mangue_vermelho.jpeg',
+    fundo_mangue_vermelho = Image.asset('lib/assets/images/elementos/fundo_mangue_vermelho.jpg',
         height: MediaQuery.of(context).size.height,
         width: MediaQuery
             .of(context)
@@ -870,7 +869,7 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
                 garca_triste,
 
                 GestureDetector(
-                    onTap: (){Navigator.push(
+                    onTap: (){Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => GameMap("0",som,false,repository)),
                     ); },
@@ -900,7 +899,7 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
   Widget popFinalMap(){
     return
       FinalVermelho((){
-        repository.updateJogador("1");
+         repository.updateJogador("1");
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => GameMap("1",som,true,repository)),
@@ -950,12 +949,14 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
   }
 
   @override
-  void dispose()  {
-    super.dispose(); //change here
-    _timer_carang.cancel();
+  dispose()  {
+    // audioPlayermusic.stop();
+    // _timer_carang.cancel();
     _timer_pop.cancel();
     audioPlayermusic.dispose();
     audioPlayer.dispose();
+    super.dispose(); //change here
+
   }
 
   playErroSound() async {
@@ -963,7 +964,7 @@ class _MapaVermelho extends State<MapaVermelho> with SingleTickerProviderStateMi
     if (som){
     final file = new File('${(await getTemporaryDirectory()).path}/erro.mp3');
     await file.writeAsBytes((await loadAsset('lib/assets/sons/som_error.mp3')).buffer.asUint8List());
-    final result = await audioPlayermusic
+    final result = await audioPlayer
         .play(file.path, isLocal: true,volume: 0.1);
     }
   }

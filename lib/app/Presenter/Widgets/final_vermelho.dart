@@ -27,7 +27,7 @@ class _FinalVermelho extends State<FinalVermelho> with SingleTickerProviderState
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    bg_image = Image.asset('lib/assets/images/elementos/cenario_tralhoto.jpg' ,
+    bg_image = Image.asset('lib/assets/images/elementos/cenario_tralhoto.png' ,
       fit: BoxFit.cover,  height:MediaQuery.of(context).size.height,
       width:MediaQuery.of(context).size.width,);
     precacheImage(bg_image.image,context).then((value) =>
@@ -37,6 +37,7 @@ class _FinalVermelho extends State<FinalVermelho> with SingleTickerProviderState
     }));
 
   }
+
 
   @override
   void initState() {

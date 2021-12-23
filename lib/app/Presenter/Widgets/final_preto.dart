@@ -29,7 +29,7 @@ class _FinalPreto extends State<FinalPreto> with SingleTickerProviderStateMixin 
   void didChangeDependencies()  {
     super.didChangeDependencies();
     bg_image = Image.asset(
-      "lib/assets/images/elementos/cenario_tralhoto.jpg",
+      "lib/assets/images/elementos/cenario_tralhoto.png",
       fit: BoxFit.cover,  height:MediaQuery.of(context).size.height,
       width:MediaQuery.of(context).size.width,);
 
@@ -43,12 +43,12 @@ class _FinalPreto extends State<FinalPreto> with SingleTickerProviderStateMixin 
       height:MediaQuery.of(context).size.height*.5,);
 
 
-    precacheImage(garca_e_carangueijo.image,context).then((value) =>
+    precacheImage(garca_e_carangueijo.image,context);
         precacheImage(bg_image.image,context).then((value) =>
             setState(() {
               load=true;
             })
-        ));
+        );
 
   }
 
@@ -91,7 +91,7 @@ class _FinalPreto extends State<FinalPreto> with SingleTickerProviderStateMixin 
                 bottom:0,
                 right:MediaQuery.of(context).size.width*.35,child:
             GestureDetector(onTap:(){
-              setState((){finalizado();});
+             finalizado();
             },child:
             Container(
               margin: EdgeInsets.all(15),

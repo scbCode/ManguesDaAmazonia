@@ -66,7 +66,6 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
        });
      }else {
          fase=jogador!.fase_atual;
-         fase="0";
          som = jogador!.som == 0 ? false : true;
          setState(() {
            if (fase=="3")
@@ -156,7 +155,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin  {
                       );
                     },child:    ScaleTransition(
                     scale: _tween.animate(CurvedAnimation(parent: _controller_anim_selo, curve: Curves.easeInExpo)),
-                    child:Image.asset('lib/assets/images/elementos/selo.png',
+                    child:Image.asset('lib/assets/images/elementos/layout_certificado.png',
                       fit: BoxFit.scaleDown,
                       height: MediaQuery.of(context).size.height*.2,
                       width: MediaQuery.of(context).size.width*.2)))

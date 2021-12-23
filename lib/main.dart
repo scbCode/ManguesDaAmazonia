@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     return Scaffold(
       body: Material(
            type: MaterialType.transparency,
-          child: Splash())
+          child:Splash())
     );
   }
 }

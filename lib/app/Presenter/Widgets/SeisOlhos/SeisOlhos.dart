@@ -13,7 +13,6 @@ class SeisOlhos extends StatefulWidget {
 
 class _SeisOlhos extends State<SeisOlhos> with SingleTickerProviderStateMixin {
 
-  late AnimationController _controller;
   late Timer _timer;
   late Timer _timer_branco;
   late Timer _timer_preto;
@@ -27,16 +26,31 @@ class _SeisOlhos extends State<SeisOlhos> with SingleTickerProviderStateMixin {
     super.initState();
 
     // TODO: implement initState
-    _controller = AnimationController(
-        duration: const Duration(milliseconds: 1200), vsync: this);
-    _controller.repeat(reverse: true);
-
     if (part==0)
       startTimerAnim();
     if (part==1)
       startTimerAnimPreto();
     if (part==2)
       startTimerAnimBranco();
+
+  }
+
+  @override
+  dispose()  {
+    // audioPlayermusic.stop();
+    // _timer_carang.cancel();
+    // _timer_pop.cancel();
+
+
+
+
+    if (part==0)
+      _timer.cancel();
+    if (part==1)
+      _timer_preto.cancel();
+    if (part==2)
+      _timer_branco.cancel();
+    super.dispose(); //change here
 
   }
   @override

@@ -59,7 +59,7 @@ class _CompartilharCertificado extends State<CompartilharCertificado> with Singl
 
                         Container(
                             height: MediaQuery.of(context).size.height*.8,
-                            width: MediaQuery.of(context).size.width*.5,
+                            width: MediaQuery.of(context).size.width*.95,
                             color: Colors.white,
                             alignment: Alignment.center,
                             child:

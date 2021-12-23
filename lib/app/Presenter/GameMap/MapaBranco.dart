@@ -42,8 +42,6 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
 
   AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
   AudioPlayer audioPlayermusic = AudioPlayer();
-  late AnimationController _controller;
-  Tween<double> _tween = Tween(begin: 0.9, end: 1.5);
   bool form_red_v=false;
   int mapaSelect_red=0;
   bool acerto = false;
@@ -103,22 +101,22 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
     super.initState();
 
     // TODO: implement initState
-    _controller = AnimationController(
-        duration: const Duration(milliseconds: 1200), vsync: this);
-    _controller.repeat(reverse: true);
+
     form_red.addAll(game.respostas[2]);
     mapaSelect_red = resposta_certa[0];
-
+    playMusic();
   }
 
   @override
-  void dispose()  {
-    super.dispose(); //change here
-     audioPlayermusic.stop();
-    _timer_carang.cancel();
+  dispose()  {
+    // audioPlayermusic.stop();
+    // _timer_carang.cancel();
+    // _timer_pop.cancel();
     _timer_pop.cancel();
     audioPlayermusic.dispose();
     audioPlayer.dispose();
+    super.dispose(); //change here
+
   }
 
   @override
@@ -142,7 +140,7 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
             .of(context)
             .size
             .width*.3, fit: BoxFit.cover);
-    fundo_mangue_branco = Image.asset('lib/assets/images/elementos/fundo_mangue_branco.jpeg',
+    fundo_mangue_branco = Image.asset('lib/assets/images/elementos/fundo_mangue_branco.jpg',
         width:MediaQuery.of(context).size.width,
         height:MediaQuery.of(context).size.height,
         fit: BoxFit.cover);
@@ -414,10 +412,7 @@ class _MapaBranco extends State<MapaBranco> with SingleTickerProviderStateMixin 
           child:
           Stack(children:[
 
-            Image.asset('lib/assets/images/elementos/fundo_mangue_branco.jpeg',
-                width:MediaQuery.of(context).size.width,
-                height:MediaQuery.of(context).size.height,
-                fit: BoxFit.cover),
+
             Positioned(
             top:-30,
             left:MediaQuery.of(context).size.width*.25,

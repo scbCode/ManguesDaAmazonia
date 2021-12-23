@@ -79,7 +79,7 @@ class _MapaPreto extends State<MapaPreto> with SingleTickerProviderStateMixin {
   late AssetImage image_caixa_dialogo;
   AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
   AudioPlayer audioPlayermusic = AudioPlayer();
-
+  final GlobalKey<NavigatorState> globalKey = GlobalKey<NavigatorState>();
   late  Image garca_triste;
 
   @override
@@ -87,21 +87,20 @@ class _MapaPreto extends State<MapaPreto> with SingleTickerProviderStateMixin {
     super.initState();
 
     // TODO: implement initState
-    _controller = AnimationController(
-        duration: const Duration(milliseconds: 1200), vsync: this);
-    _controller.repeat(reverse: true);
+
     form_red.addAll(game.respostas[1]);
     mapaSelect_red = resposta_certa[0];
     playMusic();
   }
   @override
-    void dispose()  {
-
-      super.dispose(); //change here
-    _timer_carang.cancel();
+  dispose()  {
+    // audioPlayermusic.stop();
+    // _timer_carang.cancel();
     _timer_pop.cancel();
     audioPlayermusic.dispose();
     audioPlayer.dispose();
+    super.dispose(); //change here
+
   }
   @override
   void didChangeDependencies() {
@@ -109,7 +108,7 @@ class _MapaPreto extends State<MapaPreto> with SingleTickerProviderStateMixin {
     w_alt = MediaQuery.of(context).size.width*.55;
     image_caixa_dialogo =  AssetImage("lib/assets/images/elementos/caixa_dialogo.png",);
 
-    fundo_mangue_preto=Image.asset('lib/assets/images/elementos/fundo_mangue_preto.jpeg',
+    fundo_mangue_preto=Image.asset('lib/assets/images/elementos/fundo_mangue_preto.png',
         height: MediaQuery.of(context).size.height,
         width: MediaQuery
             .of(context)
@@ -147,6 +146,7 @@ class _MapaPreto extends State<MapaPreto> with SingleTickerProviderStateMixin {
           },
           child:
       Material(
+        key: globalKey,
           type: MaterialType.transparency,
           child:
           Stack(
@@ -389,7 +389,7 @@ class _MapaPreto extends State<MapaPreto> with SingleTickerProviderStateMixin {
           child:
           Stack(children:[
 
-            Image.asset('lib/assets/images/elementos/fundo_mangue_preto.jpeg',
+            Image.asset('lib/assets/images/elementos/fundo_mangue_preto.png',
                 width:MediaQuery.of(context).size.width,
                 height:MediaQuery.of(context).size.height,
                 fit: BoxFit.cover),
@@ -868,7 +868,7 @@ class _MapaPreto extends State<MapaPreto> with SingleTickerProviderStateMixin {
                 garca_triste,
 
                 GestureDetector(
-                    onTap: (){Navigator.push(
+                    onTap: (){Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => GameMap("1",som,false,repository)),
                     ); },
@@ -898,7 +898,8 @@ class _MapaPreto extends State<MapaPreto> with SingleTickerProviderStateMixin {
     return
     FinalPreto((){
       repository.updateJogador("2");
-      Navigator.push(
+
+      Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => GameMap("2",som,true,repository)),
     );});
@@ -935,7 +936,7 @@ class _MapaPreto extends State<MapaPreto> with SingleTickerProviderStateMixin {
     if (som){
       final file = new File('${(await getTemporaryDirectory()).path}/erro.mp3');
       await file.writeAsBytes((await loadAsset('lib/assets/sons/som_error.mp3')).buffer.asUint8List());
-      final result = await audioPlayer.play(file.path, isLocal: true,volume: 0.1);
+      final result = await audioPlayer.play(file.path, isLocal: true,volume: 0.1).whenComplete(() => audioPlayer.dispose());
     }
   }
 
